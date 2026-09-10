@@ -291,7 +291,7 @@ export default function Login({ onNavigate }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    placeholder={roleTab === 'admin' ? "admin@campus.edu" : "student.id@campus.edu"}
+                    placeholder={roleTab === 'admin' ? "principal@mictech.ac.in" : "student@mictech.ac.in"}
                     className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all"
                   />
                 </div>
@@ -360,7 +360,7 @@ export default function Login({ onNavigate }) {
               </button>
             </form>
 
-            {/* Subtle, Professional Institutional Evaluation Pass Accordion */}
+            {/* Institutional Fast-Access Accounts & Evaluation Personas */}
             <div className="pt-4 border-t border-slate-200/80">
               <button
                 type="button"
@@ -369,7 +369,7 @@ export default function Login({ onNavigate }) {
               >
                 <span className="flex items-center space-x-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Institutional Evaluation & Audit Credentials</span>
+                  <span>Official Quick Login & Evaluation Personas</span>
                 </span>
                 {showEvaluationPass ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
               </button>
@@ -377,24 +377,35 @@ export default function Login({ onNavigate }) {
               {showEvaluationPass && (
                 <div className="mt-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs animate-in fade-in">
                   <p className="text-[11px] text-slate-500">
-                    For examiners conducting statutory evaluations, click below to authenticate test personas:
+                    Select an official college profile or statutory evaluation persona to sign in immediately:
                   </p>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <button
                       type="button"
-                      onClick={() => handleQuickPersona('alex.kumar@campus.edu', 'student-dashboard')}
-                      className="text-left bg-white hover:bg-blue-50 border border-slate-200 p-2.5 rounded-lg transition-colors"
+                      onClick={() => handleQuickPersona('student@mictech.ac.in', 'student-dashboard')}
+                      className="text-left bg-white hover:bg-blue-50 border border-blue-200 p-2.5 rounded-lg transition-colors shadow-sm"
                     >
-                      <span className="font-bold text-slate-800 block text-[11px]">Alex Kumar (Student)</span>
-                      <span className="text-[10px] text-slate-500">Roll: CS-2023-0489</span>
+                      <span className="font-bold text-blue-700 block text-[11px]">Official Student</span>
+                      <span className="text-[10px] text-slate-500 block">DVR & Dr. HS MIC College</span>
+                      <span className="text-[9px] text-emerald-600 font-semibold font-mono">84.0% Attendance</span>
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleQuickPersona('admin@campus.edu', 'admin-dashboard')}
-                      className="text-left bg-white hover:bg-purple-50 border border-slate-200 p-2.5 rounded-lg transition-colors"
+                      onClick={() => handleQuickPersona('principal@mictech.ac.in', 'admin-dashboard')}
+                      className="text-left bg-white hover:bg-purple-50 border border-purple-200 p-2.5 rounded-lg transition-colors shadow-sm"
                     >
-                      <span className="font-bold text-slate-800 block text-[11px]">Dr. S. Raman (Admin)</span>
-                      <span className="text-[10px] text-slate-500">Chief Registrar</span>
+                      <span className="font-bold text-purple-700 block text-[11px]">Dr. T. Vamsee Kiran</span>
+                      <span className="text-[10px] text-slate-500 block">Principal / Admin Console</span>
+                      <span className="text-[9px] text-purple-600 font-semibold font-mono">Full Authority</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleQuickPersona('alex.kumar@campus.edu', 'student-dashboard')}
+                      className="text-left bg-white hover:bg-amber-50 border border-amber-200 p-2.5 rounded-lg transition-colors shadow-sm"
+                    >
+                      <span className="font-bold text-amber-800 block text-[11px]">Evaluator Test Case</span>
+                      <span className="text-[10px] text-slate-500 block">Alex Kumar (Test Case)</span>
+                      <span className="text-[9px] text-amber-600 font-semibold font-mono">68.5% Condonation Test</span>
                     </button>
                   </div>
                 </div>

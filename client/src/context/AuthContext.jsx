@@ -52,6 +52,8 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem('campus_token');
+    localStorage.removeItem('campus_current_user_v3');
+    localStorage.removeItem('campus_current_user');
     setToken(null);
     setUser(null);
   };

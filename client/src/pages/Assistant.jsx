@@ -103,21 +103,11 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
         priority: response.priority,
         confidence: response.confidence,
         actionRequired: response.actionRequired,
+        ticketProposal: response.ticketProposal,
         timestamp: new Date().toISOString()
       };
 
       setMessages(prev => [...prev, botMessage]);
-
-      if (response.actionRequired && response.ticketProposal) {
-        setTicketDraft({
-          title: response.ticketProposal.title,
-          category: response.ticketProposal.category,
-          department: response.ticketProposal.department,
-          priority: response.ticketProposal.priority,
-          description: response.ticketProposal.description,
-          urgencyReason: response.ticketProposal.urgencyReason
-        });
-      }
     } catch (err) {
       console.error('AI assistant error:', err);
       setMessages(prev => [
@@ -284,6 +274,23 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
                   >
                     <span>View Ticket {msg.ticketId} Status Timeline</span>
                     <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+
+              {/* Optional Ticket Proposal Action if student chooses to file a formal request */}
+              {msg.ticketProposal && !ticketDraft && (
+                <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-[11px] text-slate-500">
+                    Need formal departmental processing or official request?
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setTicketDraft(msg.ticketProposal)}
+                    className="inline-flex items-center space-x-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-md transition-colors border border-blue-200"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+                    <span>File Administrative Ticket &rarr;</span>
                   </button>
                 </div>
               )}

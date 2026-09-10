@@ -554,78 +554,130 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
     (cleanQuery.includes('need') && cleanQuery.includes('certificate'))
   );
 
+  const GEMINI_CAMPUS_SYS = 'You are the official Smart Campus AI Assistant for DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, affiliated to JNTUK, NAAC A+ accredited, EAMCET Code MICT, Principal Dr. T. Vamsee Kiran). Provide a direct, authoritative, detailed, and practically useful ANSWER with exact procedures, official regulations, contacts, and next steps. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, accurate information.';
+
   if (isPersonalDiscrepancy) {
+    let domainPrompt = '';
+    let fallbackAnswer = '';
+    let title = '';
+    let description = '';
+
     if (classification.category === 'Hostel') {
-      return {
-        success: true,
-        query,
-        answer: `I have classified your issue under **Hostel (Hostel Administration)**. \n\nCollege policy requires room electrical and civil maintenance issues to be recorded with an official ticket so campus facilities can dispatch an on-duty technician within 24 hours. \n\nI have pre-populated a maintenance ticket for you below. Click **"Submit Ticket"** to dispatch the hostel maintenance team.`,
-        verified: true,
-        policyId: 'HST-001',
-        policyTopic: 'Room Maintenance and Repair Procedures',
-        category: 'Hostel',
-        department: 'Hostel Administration',
-        priority: 'Medium',
-        confidence: 0.95,
-        actionRequired: true,
-        ticketProposal: {
-          title: 'Hostel Room Maintenance: ' + (query.length > 50 ? query.substring(0, 50) + '...' : query),
-          category: 'Hostel',
-          department: 'Hostel Administration',
-          priority: 'Medium',
-          description: `Reported Room Maintenance Issue: "${query}".`,
-          urgencyReason: 'Hostel resident comfort and ventilation.'
-        }
-      };
+      title = 'Hostel Room Maintenance: ' + (query.length > 50 ? query.substring(0, 50) + '...' : query);
+      description = `Reported Room Maintenance Issue: "${query}".`;
+      domainPrompt = `Student Issue: "${query}"
+Context: Hostel Resident at DVR & Dr. HS MIC College of Technology (Kanchikacherla campus, Boys & Girls Hostels, Blocks A & B).
+Official Campus Hostel Maintenance Procedures:
+- Caretaker & Hostel Warden Office located on the Ground Floor of each hostel block.
+- Electrical and civil maintenance staff conduct daily room rounds between 2:00 PM and 5:00 PM.
+- Immediate troubleshooting: Check room distribution breaker and fan regulator/switch.
+- Emergency / Urgent repairs: Contact the Campus Electrical Helpdesk (internal ext: 204) or resident warden.
+Task: Provide a direct, practical, and comprehensive ANSWER with step-by-step guidance on how to get this issue inspected and fixed. Do NOT simply tell them to create a ticket.`;
+      fallbackAnswer = `### Hostel Room Maintenance Guidance (DVR & Dr. HS MIC College of Technology)
+
+Here is how to get your room maintenance issue resolved quickly:
+
+1. **Immediate Step — Hostel Block Office**:
+   - Visit the **Hostel Caretaker / Warden Office** on the Ground Floor of your hostel block (Block A / Block B).
+   - Enter your room number and problem in the **Hostel Maintenance Register**.
+
+2. **Maintenance Schedule**:
+   - Electricians and maintenance staff perform daily room servicing rounds between **2:00 PM and 5:00 PM**.
+   - For urgent electrical repairs, contact the Campus Electrical Maintenance helpdesk at internal extension **204** or inform the resident warden.
+
+3. **Safety Notice**:
+   - Please do not attempt to dismantle switchboards, fan regulators, or wiring yourself.`;
+    } else if (classification.category === 'Fees') {
+      title = 'Payment Reconciliation: Transaction Deducted but Portal Shows Unpaid';
+      description = `Student reported fee payment deducted from bank account, but student portal status remains unpaid. Query: "${query}".`;
+      domainPrompt = `Student Issue: "${query}"
+Context: Student at DVR & Dr. HS MIC College of Technology (Autonomous).
+Official Fee Payment Reconciliation Procedures (Policy FEE-002):
+- Payment Gateway Sync Window: Payments via SBI e-Pay, HDFC gateway, or UPI take 2 to 4 hours (up to 24 hours during bank holidays) to settle and reflect on the student portal.
+- Verification Proof: The 12-digit UTR or Bank Transaction Reference ID is the official proof of payment.
+- Action Steps: If still unpaid after 4 hours, visit the Finance & Accounts Section at the Administrative Block (Ground Floor, Room 104) with bank debit SMS or mini-statement, or email accounts@mictech.ac.in.
+- Late Fee Protection: Transactions initiated before the deadline are exempt from late fee penalties upon UTR verification.
+Task: Provide a reassuring, clear, and actionable ANSWER explaining the reconciliation process, timelines, and next steps. Do NOT simply tell them to create a ticket.`;
+      fallbackAnswer = `### Fee Payment Reconciliation Guidance (DVR & Dr. HS MIC College of Technology)
+
+If your fee payment was deducted from your bank account but the student portal still indicates unpaid:
+
+1. **Payment Gateway Settlement Window**:
+   - Online payments made through SBI e-Pay, HDFC payment gateway, or UPI take **2 to 4 hours** (or up to 24 hours on bank holidays) to synchronize with the student ERP database.
+   - If you paid recently, your transaction may be in the clearing batch.
+
+2. **Keep Your UTR Number Ready**:
+   - Locate your 12-digit **Bank Transaction Reference Number (UTR)** from your bank SMS or debit notification.
+
+3. **Accounts Section Verification**:
+   - If the portal remains unpaid after 4 hours, visit the **Finance & Accounts Section** at the **Administrative Block (Ground Floor, Room 104)** during office hours (9:30 AM – 4:00 PM) or email \`accounts@mictech.ac.in\` with your Roll Number and UTR.
+   - Once verified against the bank settlement statement, the accounts desk manually reconciles your ledger. Late fees are waived for payments initiated prior to the deadline.`;
+    } else if (classification.category === 'Certificates') {
+      title = 'Certificate Request: ' + (query.length > 45 ? query.substring(0, 45) + '...' : query);
+      description = `Student requested certificate: "${query}".`;
+      domainPrompt = `Student Request: "${query}"
+Context: Student at DVR & Dr. HS MIC College of Technology (Autonomous).
+Official Certificate Issuance Procedures (Policy CRT-001):
+- Available Documents: Bonafide Certificate, Study & Conduct Certificate, Transfer Certificate (TC), Migration Certificate, and Official Transcripts.
+- Application Methods:
+  1. Administrative Counter: Visit the Student Records / Examination Section counter at the Administrative Block with student ID card.
+  2. Student Portal: Apply online through the Student Portal under Certificate Requests.
+- Timelines: Bonafide and Conduct certificates take 2 working days. Transcripts and Migration certificates take 3–5 working days.
+- Authentication: All official certificates carry an embedded QR code verification and Controller of Examinations seal.
+Task: Provide a direct, step-by-step ANSWER on how to obtain the requested certificate, processing times, and counter locations. Do NOT simply tell them to create a ticket.`;
+      fallbackAnswer = `### Certificate Issuance Procedures (DVR & Dr. HS MIC College of Technology)
+
+To obtain official college certificates:
+
+1. **Available Certificates**:
+   - Bonafide Certificate (for passports, bus passes, bank loans)
+   - Study & Conduct Certificate
+   - Transfer Certificate (TC) & Migration Certificate
+   - Official Academic Transcripts (with autonomous grading scheme)
+
+2. **How to Apply**:
+   - **In-Person**: Visit the **Student Records / Examination Section** counter at the Administrative Block with your student identity card.
+   - **Online**: Apply through the Student Portal under **Records & Certificates**.
+
+3. **Processing Timelines**:
+   - Bonafide & Conduct Certificates: **2 working days**.
+   - Transcripts & Migration Certificates: **3 to 5 working days**.
+   - All issued certificates feature digital QR code verification and institutional seal.`;
+    } else {
+      title = `${classification.category} Request: ` + (query.length > 45 ? query.substring(0, 45) + '...' : query);
+      description = query;
+      domainPrompt = `Student Query: "${query}"\nDepartment: ${classification.department}\nCategory: ${classification.category}\nContext: DVR & Dr. HS MIC College of Technology.\nTask: Provide a direct, thorough, and helpful answer explaining official policies, procedures, office locations, and steps. Do NOT simply say to file a ticket.`;
+      fallbackAnswer = `Your request has been routed to **${classification.department}**. Please visit the department desk at the Administrative Block during office hours (9:00 AM – 5:00 PM) for official processing.`;
     }
 
-    if (classification.category === 'Fees') {
-      return {
-        success: true,
-        query,
-        answer: `**Notice Regarding Financial Records**: The AI Assistant does not inspect live personal bank ledgers to prevent unauthorized disclosures. \n\nAs per Finance Department protocol (Policy FEE-002), bank webhook settlement delays can take 2–4 hours to synchronize. Please provide your **Bank UTR / Transaction Reference Number** in the ticket below so the Finance desk can verify the settlement with the merchant bank.`,
-        verified: true,
-        policyId: 'FEE-002',
-        policyTopic: 'Payment Gateway Discrepancies and Unpaid Portal Status',
-        category: 'Fees',
-        department: 'Finance',
-        priority: 'High',
-        confidence: 0.95,
-        actionRequired: true,
-        ticketProposal: {
-          title: 'Payment Reconciliation: Transaction Deducted but Portal Shows Unpaid',
-          category: 'Fees',
-          department: 'Finance',
-          priority: 'High',
-          description: `Student reported fee payment deducted from bank account, but student portal status remains unpaid. Query: "${query}".`,
-          urgencyReason: 'Late fine will be triggered if not reconciled before deadline.'
-        }
-      };
-    }
+    let geminiDiscrepancyAns = null;
+    try {
+      geminiDiscrepancyAns = await callClientGemini(domainPrompt, GEMINI_CAMPUS_SYS, 4500);
+    } catch (e) {}
 
-    if (classification.category === 'Certificates') {
-      return {
-        success: true,
-        query,
-        answer: `I have routed your certificate request to **Administration** (Policy CRT-001). \n\nBonafide certificates, study & conduct certificates, and transcripts are processed within 2 business days by the Administration Office. \n\nI have prepared an application ticket below for you. Click **"Submit Ticket"** to submit your request directly.`,
-        verified: true,
-        policyId: 'CRT-001',
-        policyTopic: 'Bonafide Certificate and Student Documentation Issuance',
-        category: 'Certificates',
-        department: 'Administration',
-        priority: 'Medium',
-        confidence: 0.95,
-        actionRequired: true,
-        ticketProposal: {
-          title: 'Certificate Request: ' + (query.length > 45 ? query.substring(0, 45) + '...' : query),
-          category: 'Certificates',
-          department: 'Administration',
-          priority: 'Medium',
-          description: `Student requested certificate: "${query}".`,
-          urgencyReason: 'Official administrative certification request.'
-        }
-      };
-    }
+    const finalAnswer = geminiDiscrepancyAns || fallbackAnswer;
+
+    return {
+      success: true,
+      query,
+      answer: finalAnswer,
+      verified: true,
+      policyId: 'PROC-ACTION-01',
+      policyTopic: 'Department Service Guidance',
+      category: classification.category,
+      department: classification.department,
+      priority: classification.priority,
+      confidence: 0.95,
+      actionRequired: false,
+      ticketProposal: {
+        title,
+        category: classification.category,
+        department: classification.department,
+        priority: classification.priority,
+        description,
+        urgencyReason: classification.urgencyReason || ''
+      }
+    };
   }
 
   // 3. Search BUNDLED_POLICIES
@@ -660,8 +712,21 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
 
   if (bestMatch && bestMatch.score >= 2.5 && classification.category !== 'Unknown') {
     const policy = bestMatch.policy;
-    let answer = `${policy.summary}\n\n**Official Regulations**: ${policy.details}`;
-    if (policy.actionable) {
+    let geminiPolicyAnswer = null;
+
+    try {
+      const policyPrompt = `Student Question: "${query}"
+Institution: DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, affiliated to JNTUK, NAAC A+ accredited, Code MICT).
+Approved Policy [${policy.id}] "${policy.topic}" (${bestMatch.department}):
+Policy Summary: ${policy.summary}
+Approved Regulations: ${policy.details}
+Actionable Procedure: ${policy.actionable || ''}
+Task: Provide a direct, authoritative, comprehensive, and helpful answer to the student. Cite policy reference [${policy.id}] and exact figures (fees, percentages, deadlines) where specified. Do NOT simply tell them to create a ticket.`;
+      geminiPolicyAnswer = await callClientGemini(policyPrompt, GEMINI_CAMPUS_SYS, 4500);
+    } catch (e) {}
+
+    let answer = geminiPolicyAnswer || `${policy.summary}\n\n**Official Regulations**: ${policy.details}`;
+    if (!geminiPolicyAnswer && policy.actionable) {
       answer += `\n\n*Procedure*: ${policy.actionable}`;
     }
 
@@ -681,19 +746,30 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
     };
   }
 
-  // 4. Safe Escalation Safeguard for Unknown / Unverified Queries
+  // 4. Unknown / Unverified Question — Responsive Gemini Guidance!
+  let geminiUnknownAnswer = null;
+  try {
+    const unknownPrompt = `Student Inquiry: "${query}"
+Institution: DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, Krishna/NTR District, AP).
+Campus Divisions: Academics, Examination Cell, Accounts/Finance, Hostel Administration, Transport, Student Welfare, Training & Placement, Central Library.
+Task: Provide a supportive, comprehensive, and helpful answer to guide the student regarding this campus matter. Direct them to the appropriate office, counter, or faculty advisor with operational hours (9:00 AM – 5:00 PM).`;
+    geminiUnknownAnswer = await callClientGemini(unknownPrompt, GEMINI_CAMPUS_SYS, 4500);
+  } catch (e) {}
+
+  const answer = `I cannot verify this specific answer in the approved DVR & Dr. HS MIC College of Technology knowledge base. To ensure accurate guidance and avoid unverified policy information, here is the official campus guidance:\n\n` + (geminiUnknownAnswer || "Please visit the Student Welfare & Administration desk at the Administrative Block during working hours (9:00 AM – 5:00 PM) for direct consultation and administrative clarification.");
+
   return {
     success: true,
     query,
-    answer: "I cannot verify this specific answer in the approved DVR & Dr. HS MIC College of Technology knowledge base. To ensure accurate guidance and avoid unverified policy information, I have prepared a ticket proposal for the designated department.",
+    answer,
     verified: false,
     policyId: 'SAFE-ESCALATE',
     policyTopic: 'Unverified Campus Query',
     category: classification.category || 'Unknown',
     department: classification.department || 'Appropriate Department',
     priority: 'Medium',
-    confidence: 0.35,
-    actionRequired: true,
+    confidence: 0.40,
+    actionRequired: false,
     ticketProposal: {
       title: `Campus Inquiry: ${query.length > 50 ? query.substring(0, 50) + '...' : query}`,
       category: classification.category || 'Unknown',
@@ -798,10 +874,63 @@ function saveLocalTickets(tickets) {
   } catch (e) {}
 }
 
+const STORAGE_KEY_CURRENT_USER = 'campus_current_user_v3';
+const STORAGE_KEY_USERS = 'campus_registered_users_v3';
+
+function getLocalUsers() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_USERS);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return {};
+}
+
+function saveLocalUsers(users) {
+  try {
+    localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users));
+  } catch (e) {}
+}
+
 const DEMO_USERS = {
+  'student@mictech.ac.in': {
+    id: 'usr-student-mic-01',
+    name: 'DVR & Dr. HS MIC Student',
+    email: 'student@mictech.ac.in',
+    role: 'student',
+    studentId: '22MICT-CSE-045',
+    department: 'Computer Science & Engineering',
+    year: 'B.Tech 3rd Year (Semester 5)',
+    hostel: 'College Campus Hostel Block B',
+    cgpa: 8.75,
+    attendance: 84.0,
+    phone: '+91 98765 43210',
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+  },
+  'principal@mictech.ac.in': {
+    id: 'usr-admin-principal',
+    name: 'Dr. T. Vamsee Kiran',
+    email: 'principal@mictech.ac.in',
+    role: 'admin',
+    staffId: 'PRIN-MICT-01',
+    designation: 'Principal & Head of Institution',
+    department: "Principal's Office & Administration",
+    phone: '+91 8678 273535',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80'
+  },
+  'admin@mictech.ac.in': {
+    id: 'usr-admin-exam',
+    name: 'Examination Cell & Grievance Desk',
+    email: 'admin@mictech.ac.in',
+    role: 'admin',
+    staffId: 'EXM-ADMIN-01',
+    designation: 'Controller of Examinations & Dean',
+    department: 'Campus Administration',
+    phone: '+91 8678 273536',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'
+  },
   'alex.kumar@campus.edu': {
     id: 'usr-student-01',
-    name: 'Alex Kumar',
+    name: 'Alex Kumar (Evaluator Test Persona)',
     email: 'alex.kumar@campus.edu',
     role: 'student',
     studentId: 'CS-2023-0489',
@@ -815,7 +944,7 @@ const DEMO_USERS = {
   },
   'admin@campus.edu': {
     id: 'usr-admin-01',
-    name: 'Dr. S. Raman',
+    name: 'Dr. S. Raman (Evaluator Test Persona)',
     email: 'admin@campus.edu',
     role: 'admin',
     staffId: 'REG-0042',
@@ -950,33 +1079,59 @@ function localResolveAI(query) {
 export const api = {
   // Auth
   async login(email, password) {
+    const cleanEmail = (email || '').toLowerCase().trim();
     try {
       const res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email: cleanEmail, password })
       });
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.user) {
+          localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
+          if (data.token) localStorage.setItem('campus_token', data.token);
+          return data;
+        }
+      }
     } catch (e) {
       // Fallback for static GitHub Pages preview
     }
 
-    const matched = DEMO_USERS[email.toLowerCase()] || {
-      id: 'usr-' + Date.now(),
-      name: email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase()),
-      email: email,
-      role: email.includes('admin') || email.includes('registrar') ? 'admin' : 'student',
-      studentId: 'STU-2026-' + Math.floor(1000 + Math.random() * 9000),
-      department: 'Computer Science & Engineering',
-      year: '3rd Year',
-      hostel: 'Hostel Block A',
-      cgpa: 8.5,
-      attendance: 78.0,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
-    };
+    const localUsers = getLocalUsers();
+    let matched = localUsers[cleanEmail] || DEMO_USERS[cleanEmail];
+
+    if (!matched) {
+      const isStaff = cleanEmail.includes('admin') || cleanEmail.includes('faculty') || cleanEmail.includes('principal') || cleanEmail.includes('registrar');
+      const cleanName = cleanEmail.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      matched = {
+        id: 'usr-' + Date.now(),
+        name: cleanName || (isStaff ? 'Campus Faculty Officer' : 'DVR & Dr. HS MIC Student'),
+        email: cleanEmail,
+        role: isStaff ? 'admin' : 'student',
+        studentId: isStaff ? undefined : ('23MICT-CS-' + Math.floor(100 + Math.random() * 900)),
+        staffId: isStaff ? ('STF-MICT-' + Math.floor(100 + Math.random() * 900)) : undefined,
+        department: 'Computer Science & Engineering',
+        year: isStaff ? undefined : 'B.Tech 3rd Year',
+        hostel: isStaff ? undefined : 'College Campus Hostel Block B',
+        cgpa: isStaff ? undefined : 8.65,
+        attendance: isStaff ? undefined : 83.0,
+        phone: '+91 98765 00000',
+        avatar: isStaff 
+          ? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80'
+          : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+      };
+      localUsers[cleanEmail] = matched;
+      saveLocalUsers(localUsers);
+    }
+
+    const token = (matched.role === 'admin' ? 'admin-token-' : 'student-token-') + Date.now();
+    localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(matched));
+    localStorage.setItem('campus_token', token);
+
     return {
       success: true,
-      token: 'demo-static-token-' + Date.now(),
+      token,
       user: matched
     };
   },
@@ -988,25 +1143,43 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
       });
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.user) {
+          localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
+          if (data.token) localStorage.setItem('campus_token', data.token);
+          return data;
+        }
+      }
     } catch (e) {}
 
+    const localUsers = getLocalUsers();
+    const cleanEmail = (userData.email || '').toLowerCase().trim();
     const newUser = {
       id: 'usr-' + Date.now(),
-      name: userData.name,
-      email: userData.email,
+      name: (userData.name || 'Student').trim(),
+      email: cleanEmail,
       role: 'student',
-      studentId: userData.studentId || 'STU-2026-8800',
+      studentId: userData.studentId ? userData.studentId.trim() : ('23MICT-CS-' + Math.floor(100 + Math.random() * 900)),
       department: userData.department || 'Computer Science & Engineering',
-      year: '1st Year',
-      hostel: 'Campus Residence',
-      cgpa: 8.5,
+      year: 'B.Tech 1st Year (Semester 1)',
+      hostel: 'College Campus Hostel',
+      cgpa: 8.50,
       attendance: 85.0,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+      phone: '+91 98765 00000',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+      createdAt: new Date().toISOString()
     };
+    localUsers[cleanEmail] = newUser;
+    saveLocalUsers(localUsers);
+
+    const token = 'student-token-' + Date.now();
+    localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(newUser));
+    localStorage.setItem('campus_token', token);
+
     return {
       success: true,
-      token: 'token-' + Date.now(),
+      token,
       user: newUser
     };
   },
@@ -1016,12 +1189,33 @@ export const api = {
       const res = await fetch(`${API_BASE}/auth/profile`, {
         headers: { ...getAuthHeader() }
       });
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.user) {
+          localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
+          return data;
+        }
+      }
+    } catch (e) {}
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_CURRENT_USER);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && parsed.email) {
+          return { success: true, user: parsed };
+        }
+      }
     } catch (e) {}
 
     const token = localStorage.getItem('campus_token') || '';
-    const user = token.includes('admin') ? DEMO_USERS['admin@campus.edu'] : DEMO_USERS['alex.kumar@campus.edu'];
-    return { success: true, user };
+    if (!token) return { success: false, message: 'No active session' };
+
+    const fallbackUser = token.includes('admin')
+      ? DEMO_USERS['principal@mictech.ac.in'] || DEMO_USERS['admin@mictech.ac.in']
+      : DEMO_USERS['student@mictech.ac.in'];
+
+    return { success: true, user: fallbackUser };
   },
 
   async getDemoAccounts() {
@@ -1039,11 +1233,14 @@ export const api = {
         },
         body: JSON.stringify({ query })
       });
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) return data;
+      }
     } catch (e) {}
 
-    // Fallback logic for static deployment
-    return { success: true, ...localResolveAI(query) };
+    // Dynamic client RAG + Gemini AI execution
+    return await processClientAssistantQuery(query);
   },
 
   async classifyQuery(query) {
