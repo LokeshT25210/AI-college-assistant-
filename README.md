@@ -2,6 +2,8 @@
 
 > **"Our Smart Campus Assistant does not just answer student questions; it understands the student's intent, provides verified information when available, and automatically converts unresolved issues into trackable requests for the right department."**
 
+🌐 **Live Web Application**: [https://lokesht25210.github.io/AI-college-assistant-/](https://lokesht25210.github.io/AI-college-assistant-/)
+
 ---
 
 ## 🌟 Executive Summary & Examiner Pitch
