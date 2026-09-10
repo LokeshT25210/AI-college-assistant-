@@ -39,9 +39,9 @@ export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="font-bold text-sm sm:text-base tracking-tight text-white font-serif">DVR & Dr HS MIC COLLEGE OF TECHNOLOGY</span>
+              <span className="font-bold text-sm sm:text-base tracking-tight text-white font-serif">AUTONOMOUS ENGINEERING COLLEGE</span>
               <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 border border-blue-700/50">
-                Official Portal
+                Student Portal
               </span>
             </div>
             <p className="text-xs text-slate-400 -mt-0.5">Smart Campus AI Assistant & Ticketing</p>

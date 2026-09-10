@@ -15,6 +15,7 @@ import {
   ShieldCheck, 
   FileCheck
 } from 'lucide-react';
+import StudentCaptcha from './StudentCaptcha';
 
 const CATEGORIES = [
   { id: 'fees', name: 'Fees & Accounts', icon: CreditCard, department: 'Finance & Accounts', color: 'from-amber-500 to-amber-600' },
@@ -32,6 +33,11 @@ export default function CreateTicketModal({ isOpen, onClose, initialCategory = '
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successTicket, setSuccessTicket] = useState(null);
+
+  // Student Human Verification CAPTCHA state
+  const [captchaInput, setCaptchaInput] = useState('');
+  const [currentCaptchaCode, setCurrentCaptchaCode] = useState('');
+  const [captchaSubmitted, setCaptchaSubmitted] = useState(false);
 
   // Specifications state by category
   // 1. Fees
@@ -89,6 +95,13 @@ export default function CreateTicketModal({ isOpen, onClose, initialCategory = '
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
+
+    // Verify Human Student CAPTCHA
+    setCaptchaSubmitted(true);
+    if (!captchaInput || captchaInput.trim().toUpperCase() !== (currentCaptchaCode || '').toUpperCase()) {
+      setErrorMsg('Student Human Verification Required: Please enter the exact security CAPTCHA code shown to verify this request is filed by a student, not automated AI.');
+      return;
+    }
 
     const activeCatObj = CATEGORIES.find(c => c.id === category) || CATEGORIES[0];
     let generatedTitle = '';
@@ -216,12 +229,14 @@ export default function CreateTicketModal({ isOpen, onClose, initialCategory = '
   const handleCloseAndReset = () => {
     setSuccessTicket(null);
     setErrorMsg('');
+    setCaptchaInput('');
+    setCaptchaSubmitted(false);
     onClose();
   };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-3xl overflow-hidden animate-fadeIn">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-3xl overflow-hidden animate-fadeIn">
         
         {/* Header */}
         <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-5 sm:p-6 relative">
@@ -819,7 +834,7 @@ export default function CreateTicketModal({ isOpen, onClose, initialCategory = '
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 uppercase tracking-wide mb-1">
+                <label className="block font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide mb-1">
                   Additional Notes (Optional)
                 </label>
                 <input
@@ -827,13 +842,21 @@ export default function CreateTicketModal({ isOpen, onClose, initialCategory = '
                   value={additionalNotes}
                   onChange={(e) => setAdditionalNotes(e.target.value)}
                   placeholder="Any extra context for the desk officer..."
-                  className="w-full bg-white border border-slate-300 rounded-lg p-2 font-medium text-slate-800 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg p-2 font-medium text-slate-800 dark:text-white focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
 
+            {/* Student Human Verification (Anti-AI) CAPTCHA */}
+            <StudentCaptcha
+              userValue={captchaInput}
+              onChange={setCaptchaInput}
+              onCodeGenerated={setCurrentCaptchaCode}
+              isSubmitted={captchaSubmitted}
+            />
+
             {/* Submit Action */}
-            <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
+            <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
               <button
                 type="button"
                 onClick={handleCloseAndReset}
