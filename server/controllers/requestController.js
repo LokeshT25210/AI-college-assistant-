@@ -2,7 +2,7 @@ const db = require('../db/database');
 
 exports.createRequest = async (req, res) => {
   try {
-    const { title, description, category, department, priority, urgencyReason } = req.body;
+    const { title, description, category, department, priority, urgencyReason, specifications } = req.body;
 
     // Validation: Empty or invalid input
     if (!title || !title.trim()) {
@@ -42,6 +42,7 @@ exports.createRequest = async (req, res) => {
       department: department || 'General Campus Administration',
       priority: priority || 'Medium',
       urgencyReason: urgencyReason || 'Standard submission via student portal.',
+      specifications: specifications || {},
       sourceNote: 'Created via Smart Campus Assistant AI-to-Action workflow.'
     });
 

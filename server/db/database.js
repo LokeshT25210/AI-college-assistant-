@@ -370,6 +370,7 @@ class Database {
       priority: reqData.priority || 'Medium',
       title: reqData.title,
       description: reqData.description,
+      specifications: reqData.specifications || {},
       status: reqData.status || 'Submitted',
       urgencyReason: reqData.urgencyReason || '',
       createdAt: new Date().toISOString(),

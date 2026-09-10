@@ -13,6 +13,7 @@ import {
   Printer, 
   ShieldCheck, 
   FileText, 
+  FileCheck, 
   Send,
   Sparkles
 } from 'lucide-react';
@@ -214,6 +215,28 @@ export default function RequestDetails({ ticketId, onBack, onNavigate }) {
             </p>
           )}
         </div>
+
+        {/* Structured Student Specifications (If present) */}
+        {ticket.specifications && Object.keys(ticket.specifications).length > 0 && (
+          <div className="bg-blue-50/60 rounded-xl p-4 border border-blue-200 text-xs space-y-2.5">
+            <div className="flex items-center space-x-2 text-blue-900 font-bold border-b border-blue-200/80 pb-1.5">
+              <FileCheck className="w-4 h-4 text-blue-600" />
+              <span>Official Student Specifications ({ticket.category})</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+              {Object.entries(ticket.specifications).map(([key, val]) => (
+                <div key={key} className="bg-white rounded-lg p-2.5 border border-blue-100 shadow-xs">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                    {key.replace(/([A-Z])/g, ' $1')}
+                  </span>
+                  <span className="font-semibold text-slate-800 font-mono text-xs mt-0.5 block break-words">
+                    {String(val)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 4-Stage Status Timeline Card */}

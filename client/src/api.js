@@ -1313,17 +1313,24 @@ export const api = {
 
     const tickets = getLocalTickets();
     const count = tickets.length + 1045;
+    let currentUser = {};
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_CURRENT_USER);
+      if (stored) currentUser = JSON.parse(stored);
+    } catch (e) {}
+
     const newTicket = {
       ticketId: `TKT-2026-${count}`,
-      studentId: 'usr-student-01',
-      studentName: 'Alex Kumar',
-      studentRollNo: 'CS-2023-0489',
-      studentEmail: 'alex.kumar@campus.edu',
+      studentId: currentUser.id || currentUser.studentId || 'usr-student-01',
+      studentName: currentUser.name || 'Alex Kumar',
+      studentRollNo: currentUser.studentId || 'CS-2023-0489',
+      studentEmail: currentUser.email || 'alex.kumar@campus.edu',
       category: ticketData.category,
       department: ticketData.department,
       priority: ticketData.priority || 'Medium',
       title: ticketData.title,
       description: ticketData.description,
+      specifications: ticketData.specifications || {},
       status: 'Submitted',
       urgencyReason: ticketData.urgencyReason || '',
       createdAt: new Date().toISOString(),
@@ -1332,8 +1339,8 @@ export const api = {
         {
           stage: 'Submitted',
           timestamp: new Date().toISOString(),
-          actor: 'Alex Kumar (Student)',
-          note: 'Request logged via Smart Campus Assistant AI-to-Action engine.'
+          actor: `${currentUser.name || 'Alex Kumar'} (Student)`,
+          note: ticketData.submissionNote || 'Request logged via Autonomous Smart Campus Portal.'
         }
       ]
     };

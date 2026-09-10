@@ -225,6 +225,40 @@ export default function AdminRequests({ onSelectTicket }) {
                       <p className="text-[11px] text-slate-400 line-clamp-1">
                         {ticket.description}
                       </p>
+                      {ticket.specifications && Object.keys(ticket.specifications).length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {ticket.specifications.utrNumber && (
+                            <span className="text-[9px] font-mono bg-amber-50 text-amber-800 px-1.5 py-0.2 rounded border border-amber-200">
+                              UTR: {ticket.specifications.utrNumber}
+                            </span>
+                          )}
+                          {ticket.specifications.roomNumber && (
+                            <span className="text-[9px] font-mono bg-emerald-50 text-emerald-800 px-1.5 py-0.2 rounded border border-emerald-200">
+                              Room: {ticket.specifications.roomNumber} ({ticket.specifications.hostelBlock?.split(' ')[0] || 'Hostel'})
+                            </span>
+                          )}
+                          {ticket.specifications.subjectCode && (
+                            <span className="text-[9px] font-mono bg-indigo-50 text-indigo-800 px-1.5 py-0.2 rounded border border-indigo-200">
+                              Subject: {ticket.specifications.subjectCode}
+                            </span>
+                          )}
+                          {ticket.specifications.medicalProofRef && (
+                            <span className="text-[9px] bg-blue-50 text-blue-800 px-1.5 py-0.2 rounded border border-blue-200">
+                              Medical Doc Attached
+                            </span>
+                          )}
+                          {ticket.specifications.certificateType && (
+                            <span className="text-[9px] bg-rose-50 text-rose-800 px-1.5 py-0.2 rounded border border-rose-200">
+                              {ticket.specifications.certificateType}
+                            </span>
+                          )}
+                          {ticket.specifications.routeNumber && (
+                            <span className="text-[9px] bg-teal-50 text-teal-800 px-1.5 py-0.2 rounded border border-teal-200">
+                              Bus: {ticket.specifications.routeNumber.split(' - ')[0]}
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </td>
 
                     <td className="py-3 px-4 whitespace-nowrap text-slate-600">
@@ -302,6 +336,20 @@ export default function AdminRequests({ onSelectTicket }) {
             <p className="text-xs text-slate-600 font-medium line-clamp-2">
               <strong>{activeTicket.studentName}:</strong> "{activeTicket.title}"
             </p>
+
+            {activeTicket.specifications && Object.keys(activeTicket.specifications).length > 0 && (
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-[11px] space-y-1">
+                <span className="font-bold text-slate-700 block uppercase text-[9px] tracking-wide">Student Specifications</span>
+                <div className="grid grid-cols-2 gap-1.5 font-mono text-[10px] text-slate-700">
+                  {Object.entries(activeTicket.specifications).map(([k, v]) => (
+                    <div key={k} className="truncate">
+                      <span className="text-slate-400 capitalize">{k.replace(/([A-Z])/g, ' $1')}:</span>{' '}
+                      <span className="font-bold">{String(v)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <form onSubmit={handleSaveQuickUpdate} className="space-y-3 text-xs">
               <div>
