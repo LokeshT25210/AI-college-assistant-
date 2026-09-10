@@ -124,10 +124,87 @@ function evaluateAttendanceLogic(query) {
   return null;
 }
 
+const https = require('https');
+
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
+
+/**
+ * Call Google Gemini LLM API with timeout and graceful fallback
+ */
+async function callGemini(prompt, systemInstruction = '', timeoutMs = 5000) {
+  if (!GEMINI_API_KEY) return null;
+
+  return new Promise((resolve) => {
+    let resolved = false;
+    const timer = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        resolve(null);
+      }
+    }, timeoutMs);
+
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }]
+      };
+      if (systemInstruction) {
+        payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+      }
+
+      const req = https.request(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }, (res) => {
+        let body = '';
+        res.on('data', d => body += d);
+        res.on('end', () => {
+          if (!resolved) {
+            resolved = true;
+            clearTimeout(timer);
+            try {
+              if (res.statusCode === 200) {
+                const data = JSON.parse(body);
+                const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                resolve(text ? text.trim() : null);
+              } else {
+                resolve(null);
+              }
+            } catch (e) {
+              resolve(null);
+            }
+          }
+        });
+      });
+
+      req.on('error', () => {
+        if (!resolved) {
+          resolved = true;
+          clearTimeout(timer);
+          resolve(null);
+        }
+      });
+
+      req.write(JSON.stringify(payload));
+      req.end();
+    } catch (err) {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timer);
+        resolve(null);
+      }
+    }
+  });
+}
+
 /**
  * Handle questions that are completely unrelated to college or university administration
  */
-function handleUnrelatedQuery(query) {
+async function handleUnrelatedQuery(query) {
   const clean = (query || '').toLowerCase().trim();
 
   // Direct concise answers for common trivia/chat questions before stating college scope
@@ -153,7 +230,16 @@ function handleUnrelatedQuery(query) {
     directAnswer = 'To make a chocolate cake, mix flour, cocoa powder, sugar, baking powder, eggs, and milk, then bake at 175°C (350°F) for 30–35 minutes.\n\n';
   }
 
-  const answer = `${directAnswer}📌 **DVR & Dr. HS MIC College Smart Campus Scope Notice**:
+  // Attempt live Gemini response if available for open-ended queries without pre-defined answers
+  let geminiAnswer = null;
+  if (!directAnswer) {
+    try {
+      const sys = 'You are the official Smart Campus AI Assistant for DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla). The user asked a non-college question. Answer the user question in 1-2 polite sentences, then remind them that you are the DVR & Dr. HS MIC College assistant for academics, exams, fees, hostels, certificates, scholarships, and transport.';
+      geminiAnswer = await callGemini(query, sys, 3500);
+    } catch (e) {}
+  }
+
+  const answer = geminiAnswer || `${directAnswer}📌 **DVR & Dr. HS MIC College Smart Campus Scope Notice**:
 This inquiry is outside the scope of **DVR & Dr. HS MIC College of Technology** campus services and university administration.
 
 I am the dedicated **Smart Campus AI Assistant** specialized in providing authentic, verified guidance on college policies, academics, facilities, and administration.
@@ -182,7 +268,8 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
     priority: 'Low',
     confidence: 0.95,
     actionRequired: false,
-    ticketProposal: null
+    ticketProposal: null,
+    model: 'gemini-3.5-flash-lite'
   };
 }
 
@@ -358,5 +445,6 @@ module.exports = {
   processAssistantQuery,
   searchKnowledge,
   loadKnowledgeBase,
-  summarizeTicketForAdmin
+  summarizeTicketForAdmin,
+  callGemini
 };

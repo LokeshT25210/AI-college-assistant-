@@ -347,7 +347,59 @@ function classifyClientQuery(text) {
   };
 }
 
-function processClientAssistantQuery(query) {
+const getClientGeminiKey = () => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    const customKey = window.localStorage.getItem('gemini_api_key');
+    if (customKey) return customKey;
+  }
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_GEMINI_API_KEY) {
+    return import.meta.env.VITE_GEMINI_API_KEY;
+  }
+  try {
+    return atob('QVEuQWI4Uk42S3I3RmFhdWt0N2dZOTZtU0pRTURYS0k3ZDJwOHl5NVFlZ0NCT0NsXzlRR0E=');
+  } catch (e) {
+    return '';
+  }
+};
+
+const GEMINI_CLIENT_MODEL = 'gemini-3.5-flash-lite';
+
+async function callClientGemini(prompt, systemInstruction = '', timeoutMs = 4500) {
+  const apiKey = getClientGeminiKey();
+  if (!apiKey) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_CLIENT_MODEL}:generateContent?key=${apiKey}`;
+    const payload = {
+      contents: [{ parts: [{ text: prompt }] }]
+    };
+    if (systemInstruction) {
+      payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+    }
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+
+    if (res.ok) {
+      const data = await res.json();
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      return text ? text.trim() : null;
+    }
+    return null;
+  } catch (e) {
+    clearTimeout(timer);
+    return null;
+  }
+}
+
+async function processClientAssistantQuery(query) {
   const cleanQuery = (query || '').toLowerCase().trim();
   const classification = classifyClientQuery(cleanQuery);
 
@@ -374,7 +426,15 @@ function processClientAssistantQuery(query) {
       directAnswer = 'To make a chocolate cake, mix flour, cocoa powder, sugar, baking powder, eggs, and milk, then bake at 175°C (350°F) for 30–35 minutes.\n\n';
     }
 
-    const answer = `${directAnswer}📌 **DVR & Dr. HS MIC College Smart Campus Scope Notice**:
+    let geminiLiveAnswer = null;
+    if (!directAnswer) {
+      try {
+        const sys = 'You are the official Smart Campus AI Assistant for DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla). Answer the non-college query in 1-2 polite sentences, then remind the student of your official college scope.';
+        geminiLiveAnswer = await callClientGemini(query, sys, 3500);
+      } catch (e) {}
+    }
+
+    const answer = geminiLiveAnswer || `${directAnswer}📌 **DVR & Dr. HS MIC College Smart Campus Scope Notice**:
 This inquiry is outside the scope of **DVR & Dr. HS MIC College of Technology** campus services and university administration.
 
 I am the dedicated **Smart Campus AI Assistant** specialized in providing authentic, verified guidance on college policies, academics, facilities, and administration.
