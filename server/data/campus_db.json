@@ -1,0 +1,375 @@
+{
+  "users": [
+    {
+      "id": "usr-student-01",
+      "name": "Alex Kumar",
+      "email": "alex.kumar@campus.edu",
+      "password": "$2a$10$OVH8b1sYp7VOfN6sAY246O.v40zVE9ycmZrCTDRS80G91YyJSr9U6",
+      "role": "student",
+      "studentId": "CS-2023-0489",
+      "department": "Computer Science & Engineering",
+      "year": "3rd Year (Semester 5)",
+      "hostel": "Block B - Room 204",
+      "cgpa": 8.42,
+      "attendance": 68.5,
+      "phone": "+91 98765 43210",
+      "avatar": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
+      "createdAt": "2023-08-01T09:00:00.000Z"
+    },
+    {
+      "id": "usr-student-02",
+      "name": "Priya Sharma",
+      "email": "priya.sharma@campus.edu",
+      "password": "$2a$10$OVH8b1sYp7VOfN6sAY246O.v40zVE9ycmZrCTDRS80G91YyJSr9U6",
+      "role": "student",
+      "studentId": "EC-2023-0112",
+      "department": "Electronics & Communication",
+      "year": "3rd Year (Semester 5)",
+      "hostel": "Block A - Room 118",
+      "cgpa": 9.15,
+      "attendance": 84,
+      "phone": "+91 98765 88990",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+      "createdAt": "2023-08-01T09:00:00.000Z"
+    },
+    {
+      "id": "usr-admin-01",
+      "name": "Dr. S. Raman",
+      "email": "admin@campus.edu",
+      "password": "$2a$10$OVH8b1sYp7VOfN6sAY246O.v40zVE9ycmZrCTDRS80G91YyJSr9U6",
+      "role": "admin",
+      "staffId": "REG-0042",
+      "designation": "Registrar & Chief Grievance Officer",
+      "department": "Campus Administration",
+      "phone": "+91 98401 23456",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
+      "createdAt": "2020-01-15T09:00:00.000Z"
+    },
+    {
+      "id": "usr-admin-02",
+      "name": "Prof. Vikram Mehta",
+      "email": "finance@campus.edu",
+      "password": "$2a$10$OVH8b1sYp7VOfN6sAY246O.v40zVE9ycmZrCTDRS80G91YyJSr9U6",
+      "role": "admin",
+      "staffId": "FIN-1090",
+      "designation": "Finance Officer",
+      "department": "Finance & Accounts",
+      "phone": "+91 98402 34567",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "createdAt": "2021-03-10T09:00:00.000Z"
+    }
+  ],
+  "requests": [
+    {
+      "ticketId": "TKT-2026-1053",
+      "studentId": "usr-student-01",
+      "studentName": "Alex Kumar",
+      "studentRollNo": "CS-2023-0489",
+      "studentEmail": "alex.kumar@campus.edu",
+      "category": "Certificates",
+      "department": "Student Affairs & Certificates",
+      "priority": "Medium",
+      "title": "Certificates Request: I need an official bonafide certificate for m...",
+      "description": "I need an official bonafide certificate for my passport application.",
+      "status": "Submitted",
+      "urgencyReason": "Standard academic service queue.",
+      "createdAt": "2026-09-10T04:27:48.553Z",
+      "updatedAt": "2026-09-10T04:27:48.553Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-10T04:27:48.553Z",
+          "actor": "Alex Kumar (Student)",
+          "note": "Created via Smart Campus Assistant AI-to-Action workflow."
+        }
+      ],
+      "adminNotes": null,
+      "resolvedAt": null
+    },
+    {
+      "ticketId": "TKT-2026-1052",
+      "studentId": "usr-student-01",
+      "studentName": "Alex Kumar",
+      "studentRollNo": "CS-2023-0489",
+      "studentEmail": "alex.kumar@campus.edu",
+      "category": "Certificates",
+      "department": "Student Affairs & Certificates",
+      "priority": "Medium",
+      "title": "Degree Certificate Verification",
+      "description": "Need verification seal on provisional certificate.",
+      "status": "In Progress",
+      "urgencyReason": "",
+      "createdAt": "2026-09-10T04:19:34.860Z",
+      "updatedAt": "2026-09-10T04:19:34.861Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-10T04:19:34.860Z",
+          "actor": "Alex Kumar (Student)",
+          "note": "Request submitted through Smart Campus Assistant."
+        },
+        {
+          "stage": "In Progress",
+          "timestamp": "2026-09-10T04:19:34.861Z",
+          "actor": "Dr. S. Raman (Registrar)",
+          "note": "Application received and passed to verifying officer."
+        }
+      ],
+      "adminNotes": null,
+      "resolvedAt": null
+    },
+    {
+      "ticketId": "TKT-2026-1051",
+      "studentId": "usr-student-01",
+      "studentName": "Alex Kumar",
+      "studentRollNo": "CS-2023-0489",
+      "studentEmail": "alex.kumar@campus.edu",
+      "category": "Exams",
+      "department": "Examination Cell",
+      "priority": "High",
+      "title": "Confidential Grade Discrepancy",
+      "description": "Alex confidential grade review request.",
+      "status": "Submitted",
+      "urgencyReason": "",
+      "createdAt": "2026-09-10T04:19:34.859Z",
+      "updatedAt": "2026-09-10T04:19:34.859Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-10T04:19:34.859Z",
+          "actor": "Alex Kumar (Student)",
+          "note": "Request submitted through Smart Campus Assistant."
+        }
+      ],
+      "adminNotes": null,
+      "resolvedAt": null
+    },
+    {
+      "ticketId": "TKT-2026-1050",
+      "studentId": "usr-student-01",
+      "studentName": "Alex Kumar",
+      "studentRollNo": "CS-2023-0489",
+      "studentEmail": "alex.kumar@campus.edu",
+      "category": "Hostel",
+      "department": "Hostel Administration",
+      "priority": "Low",
+      "title": "Water tap leaking in washroom",
+      "description": "Water tap continuously dripping.",
+      "status": "Submitted",
+      "urgencyReason": "",
+      "createdAt": "2026-09-10T04:19:34.857Z",
+      "updatedAt": "2026-09-10T04:19:34.857Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-10T04:19:34.857Z",
+          "actor": "Alex Kumar (Student)",
+          "note": "Request submitted through Smart Campus Assistant."
+        }
+      ],
+      "adminNotes": null,
+      "resolvedAt": null
+    },
+    {
+      "ticketId": "TKT-2026-1042",
+      "studentId": "usr-student-01",
+      "studentName": "Alex Kumar",
+      "studentRollNo": "CS-2023-0489",
+      "studentEmail": "alex.kumar@campus.edu",
+      "category": "Fees",
+      "department": "Finance & Accounts",
+      "priority": "High",
+      "title": "Semester 5 Tuition Fee deducted but portal showing unpaid",
+      "description": "I paid my semester fee of ₹45,000 on Sep 07 via HDFC NetBanking (UTR: HDFC009823101). The amount was deducted from my account, but the fee payment status in the portal still indicates UNPAID.",
+      "status": "In Progress",
+      "urgencyReason": "Late fine will be triggered if not reconciled before deadline.",
+      "createdAt": "2026-09-08T16:19:34.849Z",
+      "updatedAt": "2026-09-10T00:19:34.850Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-08T16:19:34.850Z",
+          "actor": "Alex Kumar (Student)",
+          "note": "Ticket automatically classified as High Priority (Finance) via Smart Campus AI-to-Action engine."
+        },
+        {
+          "stage": "Under Review",
+          "timestamp": "2026-09-09T08:19:34.850Z",
+          "actor": "Prof. Vikram Mehta (Finance Officer)",
+          "note": "Received UTR HDFC009823101. Forwarded to HDFC Payment Gateway settlement desk for batch reconciliation."
+        },
+        {
+          "stage": "In Progress",
+          "timestamp": "2026-09-10T00:19:34.850Z",
+          "actor": "Finance Accounts Desk",
+          "note": "Settlement confirmed by bank. Ledger update queued for midnight batch sync."
+        }
+      ],
+      "adminNotes": "Transaction batch acknowledged by gateway. Auto-clearance pending overnight batch sync.",
+      "resolvedAt": null
+    },
+    {
+      "ticketId": "TKT-2026-0985",
+      "studentId": "usr-student-01",
+      "studentName": "Alex Kumar",
+      "studentRollNo": "CS-2023-0489",
+      "studentEmail": "alex.kumar@campus.edu",
+      "category": "Hostel",
+      "department": "Hostel Administration",
+      "priority": "Medium",
+      "title": "Ceiling fan making screeching noise and regulator broken in Room 204",
+      "description": "Room 204, Block B ceiling fan has stopped rotating smoothly and regulator is non-responsive.",
+      "status": "Resolved",
+      "urgencyReason": "Hostel resident comfort and ventilation.",
+      "createdAt": "2026-09-07T04:19:34.850Z",
+      "updatedAt": "2026-09-09T16:19:34.850Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-07T04:19:34.850Z",
+          "actor": "Alex Kumar (Student)",
+          "note": "Created via AI Campus Assistant."
+        },
+        {
+          "stage": "Under Review",
+          "timestamp": "2026-09-07T16:19:34.850Z",
+          "actor": "Hostel Warden Block B",
+          "note": "Maintenance job scheduled for afternoon electrician rounds."
+        },
+        {
+          "stage": "In Progress",
+          "timestamp": "2026-09-08T22:19:34.850Z",
+          "actor": "Campus Electrical Maintenance",
+          "note": "Electrician assigned with replacement capacitor and stepped regulator unit."
+        },
+        {
+          "stage": "Resolved",
+          "timestamp": "2026-09-09T16:19:34.850Z",
+          "actor": "Hostel Warden Block B",
+          "note": "Fan bearing replaced and tested. Resident confirmed working condition."
+        }
+      ],
+      "adminNotes": "Replaced capacitor and fan regulator switch. Signature logged.",
+      "resolvedAt": "2026-09-09T16:19:34.850Z"
+    },
+    {
+      "ticketId": "TKT-2026-1011",
+      "studentId": "usr-student-02",
+      "studentName": "Priya Sharma",
+      "studentRollNo": "EC-2023-0112",
+      "studentEmail": "priya.sharma@campus.edu",
+      "category": "Certificates",
+      "department": "Student Affairs & Certificates",
+      "priority": "Low",
+      "title": "Bonafide Certificate request for passport application",
+      "description": "Requesting official signed bonafide certificate stating current enrollment in B.Tech ECE for passport renewal.",
+      "status": "Resolved",
+      "urgencyReason": "Passport office appointment scheduled next Tuesday.",
+      "createdAt": "2026-09-06T04:19:34.850Z",
+      "updatedAt": "2026-09-08T04:19:34.850Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-06T04:19:34.850Z",
+          "actor": "Priya Sharma (Student)",
+          "note": "Submitted certificate issuance request."
+        },
+        {
+          "stage": "In Progress",
+          "timestamp": "2026-09-07T04:19:34.850Z",
+          "actor": "Student Records Section",
+          "note": "Verification of academic record completed."
+        },
+        {
+          "stage": "Resolved",
+          "timestamp": "2026-09-08T04:19:34.850Z",
+          "actor": "Dr. S. Raman (Registrar)",
+          "note": "Digital bonafide certificate with QR code issued and attached to student portal."
+        }
+      ],
+      "adminNotes": "Digital certificate issued: CERT-BF-2026-4412.",
+      "resolvedAt": "2026-09-08T04:19:34.850Z"
+    },
+    {
+      "ticketId": "TKT-2026-1055",
+      "studentId": "usr-student-02",
+      "studentName": "Priya Sharma",
+      "studentRollNo": "EC-2023-0112",
+      "studentEmail": "priya.sharma@campus.edu",
+      "category": "Fees",
+      "department": "Finance & Accounts",
+      "priority": "High",
+      "title": "Exam fee deducted twice from UPI but receipt generated only once",
+      "description": "During online exam registration, first payment errored out at UPI gateway but was debited. Second payment succeeded. Need refund of ₹1,500.",
+      "status": "Under Review",
+      "urgencyReason": "Double debit on student savings account.",
+      "createdAt": "2026-09-09T14:19:34.850Z",
+      "updatedAt": "2026-09-09T22:19:34.850Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-09T14:19:34.850Z",
+          "actor": "Priya Sharma (Student)",
+          "note": "Auto-escalated from AI Chat regarding duplicate payment."
+        },
+        {
+          "stage": "Under Review",
+          "timestamp": "2026-09-09T22:19:34.850Z",
+          "actor": "Prof. Vikram Mehta (Finance Officer)",
+          "note": "Validating duplicate reference with bank payment switch."
+        }
+      ],
+      "adminNotes": "Duplicate charge verified. Initiating merchant reversal.",
+      "resolvedAt": null
+    },
+    {
+      "ticketId": "TKT-2026-1060",
+      "studentId": "usr-student-01",
+      "studentName": "Alex Kumar",
+      "studentRollNo": "CS-2023-0489",
+      "studentEmail": "alex.kumar@campus.edu",
+      "category": "Attendance",
+      "department": "Academic Affairs",
+      "priority": "Medium",
+      "title": "Medical condonation request for viral fever absence (Sep 01 - Sep 06)",
+      "description": "Seeking attendance condonation for 6 days absence due to viral fever. Attaching medical certificate and fitness certificate from campus health clinic.",
+      "status": "Submitted",
+      "urgencyReason": "Attendance margin currently at 68.5% requiring condonation to meet 75% exam cutoff.",
+      "createdAt": "2026-09-10T02:19:34.850Z",
+      "updatedAt": "2026-09-10T02:19:34.850Z",
+      "timeline": [
+        {
+          "stage": "Submitted",
+          "timestamp": "2026-09-10T02:19:34.850Z",
+          "actor": "Alex Kumar (Student)",
+          "note": "Submitted attendance condonation application via assistant escalation."
+        }
+      ],
+      "adminNotes": null,
+      "resolvedAt": null
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ann-01",
+      "title": "End-Semester Examination Schedule Announced",
+      "date": "2026-09-08",
+      "category": "Exams",
+      "summary": "Final timetable for odd-semester 2026 examinations published on exam portal. Hall ticket download opens Sep 15."
+    },
+    {
+      "id": "ann-02",
+      "title": "Tuition Fee Payment Window Extended by 5 Days",
+      "date": "2026-09-06",
+      "category": "Fees",
+      "summary": "In view of bank holiday weekend, tuition fee without late fee has been extended to Sep 18, 2026."
+    },
+    {
+      "id": "ann-03",
+      "title": "Hostel Maintenance & Pest Control Schedule",
+      "date": "2026-09-04",
+      "category": "Hostel",
+      "summary": "Routine maintenance and electrical safety audit for Blocks A, B, and C during Sep 12-14."
+    }
+  ]
+}

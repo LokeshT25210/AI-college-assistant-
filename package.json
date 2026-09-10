@@ -1,0 +1,12 @@
+{
+  "name": "smart-campus-assistant",
+  "version": "1.0.0",
+  "description": "Enterprise Smart Campus Assistant & Grievance SLA Platform",
+  "scripts": {
+    "test": "node server/tests/runTests.js",
+    "server": "npm --prefix server start",
+    "client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build"
+  },
+  "keywords": ["smart-campus", "ai-to-action", "student-grievance", "rag", "university-portal"]
+}
