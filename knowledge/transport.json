@@ -1,0 +1,23 @@
+{
+  "category": "Transport",
+  "department": "Campus Transport & Fleet Management",
+  "responsibleOfficer": "Transport In-Charge Officer",
+  "policies": [
+    {
+      "id": "TRN-001",
+      "topic": "College Bus Services and Routes",
+      "summary": "DVR & Dr. HS MIC College of Technology operates an extensive fleet of over 45 college buses covering Vijayawada, Guntur, Nandigama, Jaggaiahpeta, and surrounding towns.",
+      "details": "The institution provides safe, GPS-enabled transportation across more than 45 routes. Major coverage areas include: 1. Vijayawada City (Benz Circle, PNBS, Ramavarappadu Ring, Bhavanipuram, Gollapudi, Vidyadharapuram), 2. Guntur City & Environs, 3. Nandigama, 4. Jaggaiahpeta, 5. Vissannapeta, 6. Mylavaram, 7. Kodad, 8. Tiruvuru, 9. Ibrahimpatnam, and intermediate boarding points along NH-65. Buses arrive at campus by 8:45 AM and depart at 4:30 PM.",
+      "keywords": ["bus", "buses", "transport", "bus route", "vijayawada bus", "guntur bus", "nandigama", "jaggaiahpeta", "bus timing", "bus stops", "travel to college"],
+      "actionable": "Obtain an official route schedule and stop chart from the Transport In-Charge Counter."
+    },
+    {
+      "id": "TRN-002",
+      "topic": "Bus Pass Issuance and Transport Fee",
+      "summary": "Annual college bus passes are issued by the Transport Section after payment of route-wise transportation charges.",
+      "details": "Students must carry their authorized Bus Pass with RFID barcode daily. Bus fees vary by distance/zone and can be paid in two installments. Spot verification is conducted regularly by the vigilance transport squad.",
+      "keywords": ["bus pass", "bus fee", "transport fee", "renew bus pass", "bus pass application"],
+      "actionable": "Apply for bus pass renewal at the Transport Office at the beginning of the odd semester."
+    }
+  ]
+}

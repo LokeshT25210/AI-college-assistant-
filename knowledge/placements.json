@@ -1,0 +1,31 @@
+{
+  "category": "Placements",
+  "department": "Training & Placement Cell",
+  "responsibleOfficer": "Head of Training & Placement Cell (T&P)",
+  "policies": [
+    {
+      "id": "PLC-001",
+      "topic": "Campus Placements and Top Recruiters",
+      "summary": "The college maintains an active Training & Placement Cell with leading MNC recruiters including TCS, Cognizant, Infosys, Wipro, Accenture, Capgemini, HCL, and Tech Mahindra.",
+      "details": "DVR & Dr. HS MIC College of Technology has a proven placement track record. Top recruiting partners include Tata Consultancy Services (TCS), Cognizant, Infosys, Wipro, Accenture, Capgemini, HCL Technologies, Tech Mahindra, Hexaware, Virtusa, and Mindtree. Packages range up to ₹10-12 LPA for product and specialized roles, with an average package of ₹4.0 - 4.5 LPA across eligible engineering branches.",
+      "keywords": ["placement", "placements", "recruit", "recruiting", "recruiters", "recruitment", "companies", "company", "which companies", "top recruiters", "tcs", "infosys", "wipro", "cognizant", "accenture", "capgemini", "hcl", "package", "highest package", "average package", "jobs", "hiring"],
+      "actionable": "Register on the Placement Portal during the 6th semester and upload verified academic resumes."
+    },
+    {
+      "id": "PLC-002",
+      "topic": "Campus Recruitment Training (CRT) and Skill Development",
+      "summary": "Comprehensive Campus Recruitment Training (CRT) begins from the 2nd year covering quantitative aptitude, reasoning, coding, and verbal communication.",
+      "details": "The college organizes intensive coding bootcamps on Python, Java, Data Structures & Algorithms, LeetCode, and HackerRank problem solving. Pre-placement mock interviews, group discussions (GD), and resume reviews are conducted by industry experts before the placement season.",
+      "keywords": ["crt", "placement training", "aptitude", "mock interview", "coding practice", "soft skills", "placement preparation"],
+      "actionable": "Attendance is mandatory in all scheduled CRT sessions for placement registration eligibility."
+    },
+    {
+      "id": "PLC-003",
+      "topic": "Placement Eligibility and One-Student-One-Job Policy",
+      "summary": "Students must have a minimum aggregate CGPA of 6.0 with no standing backlogs to participate in campus recruitment drives.",
+      "details": "Most tier-1 MNCs require 60% or 6.5 CGPA in 10th, 12th/Diploma, and B.Tech with no active arrears. Once a student secures an offer, they can only apply for dream companies offering at least 1.5x of their current offer package.",
+      "keywords": ["placement eligibility", "backlog policy for placements", "cgpa criteria for placements", "placement rules", "dream company"],
+      "actionable": "Clear all backlogs before the start of the 7th semester to qualify for Day-1 hiring drives."
+    }
+  ]
+}

@@ -44,8 +44,9 @@ function searchKnowledge(query, category) {
 
       // Keyword matches
       for (const kw of policy.keywords) {
-        if (cleanQuery.includes(kw.toLowerCase())) {
-          score += kw.includes(' ') ? 4.0 : 2.0;
+        const cleanKw = kw.toLowerCase();
+        if (cleanQuery.includes(cleanKw)) {
+          score += cleanKw.includes(' ') ? 5.0 : 3.0;
         }
       }
 
@@ -53,11 +54,11 @@ function searchKnowledge(query, category) {
       const topicWords = policy.topic.toLowerCase().split(/\s+/);
       for (const word of topicWords) {
         if (word.length > 3 && cleanQuery.includes(word)) {
-          score += 1.5;
+          score += 2.0;
         }
       }
 
-      if (score > 2.0) {
+      if (score >= 2.5) {
         candidates.push({
           policy,
           category: doc.category,
@@ -205,7 +206,7 @@ async function processAssistantQuery(query, studentContext = {}) {
   }
 
   // 4. Standard Policy Inquiry found in KB
-  if (bestMatch && bestMatch.score >= 4.0) {
+  if (bestMatch && bestMatch.score >= 2.5) {
     const policy = bestMatch.policy;
     let answer = `${policy.summary}\n\n**Official Regulations**: ${policy.details}`;
     if (policy.actionable) {

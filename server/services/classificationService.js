@@ -37,12 +37,32 @@ const CATEGORY_MAP = {
   scholarships: {
     category: 'Scholarships',
     department: 'Scholarship & Financial Aid Cell',
-    keywords: ['scholarship', 'financial aid', 'fee concession', 'nsp', 'merit scholarship', 'income certificate', 'minority', 'state scholarship', 'post matric', 'waiver']
+    keywords: ['scholarship', 'financial aid', 'fee concession', 'nsp', 'merit scholarship', 'income certificate', 'minority', 'state scholarship', 'post matric', 'waiver', 'jvd', 'vidya deevena']
   },
   academics: {
     category: 'Academics',
     department: 'Academic Registrar',
-    keywords: ['course', 'elective', 'add drop', 'syllabus', 'credits', 'faculty advisor', 'mentor', 'internship', 'placement', 'noc', 'curriculum', 'advisor', 'probation', 'prerequisite']
+    keywords: ['course', 'elective', 'add drop', 'syllabus', 'credits', 'faculty advisor', 'mentor', 'internship', 'noc', 'curriculum', 'advisor', 'probation', 'prerequisite']
+  },
+  placements: {
+    category: 'Placements',
+    department: 'Training & Placement Cell',
+    keywords: ['placement', 'placements', 'recruit', 'recruiting', 'recruiter', 'recruiters', 'recruitment', 'company', 'companies', 'top recruiters', 'tcs', 'infosys', 'wipro', 'cognizant', 'accenture', 'capgemini', 'hcl', 'package', 'highest package', 'average package', 'salary', 'lpa', 'crt', 'aptitude', 'job', 'jobs', 'hiring', 'campus drive']
+  },
+  transport: {
+    category: 'Transport',
+    department: 'Campus Transport & Fleet Management',
+    keywords: ['bus', 'buses', 'transport', 'bus route', 'bus routes', 'bus pass', 'vijayawada', 'guntur', 'nandigama', 'jaggaiahpeta', 'bus timing', 'bus stop', 'travel', 'commute']
+  },
+  library: {
+    category: 'Library',
+    department: 'Central Library & Information Centre',
+    keywords: ['library', 'books', 'central library', 'digital library', 'library timing', 'library hours', 'ieee', 'delnet', 'borrow book', 'return book', 'journal', 'journals']
+  },
+  college_info: {
+    category: 'College Information',
+    department: "Principal's Office & Administration",
+    keywords: ['eamcet', 'eapcet', 'college code', 'code', 'mict', 'polycet', 'icet', 'principal', 'vamsee kiran', 'director', 'address', 'location', 'kanchikacherla', 'contact', 'phone', 'helpline', 'email', 'about college', 'overview', 'autonomous', 'jntuk', 'courses offered', 'branches', 'b.tech', 'btech', 'm.tech', 'mtech', 'mba', 'mca', 'diploma', 'polytechnic']
   }
 };
 

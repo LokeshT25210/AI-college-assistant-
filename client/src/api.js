@@ -9,6 +9,79 @@ const API_BASE = '/api';
 // Seed Knowledge Base for standalone / GitHub Pages static preview
 const BUNDLED_POLICIES = [
   {
+    category: 'College Information',
+    department: "Principal's Office & Administration",
+    policies: [
+      {
+        id: 'COL-001',
+        topic: 'College Overview, Accreditation and EAMCET Code',
+        summary: 'DVR & Dr. HS MIC College of Technology is a premier UGC Autonomous engineering institution established in Kanchikacherla, Andhra Pradesh. The official EAMCET/EAPCET, ICET, and POLYCET counseling code is MICT.',
+        details: "DVR & Dr. HS MIC College of Technology holds Autonomous status granted by UGC since 2018. It is permanently affiliated with Jawaharlal Nehru Technological University Kakinada (JNTUK), approved by AICTE New Delhi, and accredited with 'A+' Grade by NAAC. Counseling Codes: EAMCET/EAPCET Code: MICT, POLYCET Code: MICT, ICET Code: MICT.",
+        keywords: ['eamcet code', 'eapcet code', 'college code', 'mict', 'polycet code', 'icet code', 'autonomous', 'jntuk', 'affiliation', 'naac', 'aicte', 'about college', 'overview']
+      },
+      {
+        id: 'COL-002',
+        topic: 'Principal and Administrative Leadership',
+        summary: 'The Principal of DVR & Dr. HS MIC College of Technology is Dr. T. Vamsee Kiran, leading academic and institutional administration.',
+        details: 'Principal: Dr. T. Vamsee Kiran, Ph.D. Management: Devineni Venkata Ramana & Dr. Himasekhar MIC College of Technology is sponsored by Devineni Ramana Praneetha Educational Society.',
+        keywords: ['principal', 'who is the principal', 'vamsee kiran', 'director', 'head of college', 'management']
+      },
+      {
+        id: 'COL-003',
+        topic: 'Academic Programs and Courses Offered',
+        summary: 'The college offers 8 B.Tech undergraduate programs, 4 M.Tech postgraduate specializations, MBA, MCA, and 5 Diploma engineering courses.',
+        details: 'Undergraduate B.Tech Programs: 1. Computer Science & Engineering (CSE), 2. CSE - Artificial Intelligence & Machine Learning (AI&ML), 3. CSE - Data Science (DS), 4. Information Technology (IT), 5. Electronics & Communication Engineering (ECE), 6. Electrical & Electronics Engineering (EEE), 7. Mechanical Engineering (ME), 8. Civil Engineering (CE). Postgraduate Programs: M.Tech in CSE, VLSI & Embedded Systems, PE&D, Machine Design; MBA; MCA. Diploma (Polytechnic): Computer Engg, ECE, EEE, Mechanical, Civil.',
+        keywords: ['courses', 'branches', 'departments', 'programs', 'btech', 'b.tech', 'mtech', 'm.tech', 'mba', 'mca', 'diploma', 'polytechnic', 'cse', 'ece', 'eee', 'it', 'aiml', 'data science', 'civil', 'mechanical']
+      },
+      {
+        id: 'COL-004',
+        topic: 'Campus Location, Address and Contact Numbers',
+        summary: 'The campus is situated on NH-65 in Kanchikacherla, NTR District, Andhra Pradesh - 521180. Phone: 08678-273535 / 273569.',
+        details: 'Campus Address: DVR & Dr. HS MIC College of Technology, NH-65, Kanchikacherla, NTR District, Andhra Pradesh, Pincode 521180. Official Landline: 08678-273535, 08678-273569. Email: office@mictech.ac.in, principal@mictech.ac.in. Website: www.mictech.edu.in.',
+        keywords: ['address', 'location', 'where is the college', 'kanchikacherla', 'contact', 'phone number', 'helpline', 'email', 'landline', 'ntr district']
+      }
+    ]
+  },
+  {
+    category: 'Placements',
+    department: 'Training & Placement Cell',
+    policies: [
+      {
+        id: 'PLC-001',
+        topic: 'Campus Placements and Top Recruiters',
+        summary: 'The college maintains an active Training & Placement Cell with leading MNC recruiters including TCS, Cognizant, Infosys, Wipro, Accenture, Capgemini, HCL, and Tech Mahindra.',
+        details: 'Top recruiting partners include Tata Consultancy Services (TCS), Cognizant, Infosys, Wipro, Accenture, Capgemini, HCL Technologies, Tech Mahindra, Hexaware, Virtusa, and Mindtree. Packages range up to ₹10-12 LPA for product and specialized roles, with an average package of ₹4.0 - 4.5 LPA across eligible engineering branches.',
+        keywords: ['placement', 'placements', 'recruit', 'recruiting', 'recruiters', 'recruitment', 'companies', 'company', 'which companies', 'top recruiters', 'tcs', 'infosys', 'wipro', 'cognizant', 'accenture', 'capgemini', 'hcl', 'package', 'highest package', 'average package', 'jobs', 'hiring']
+      }
+    ]
+  },
+  {
+    category: 'Transport',
+    department: 'Campus Transport & Fleet Management',
+    policies: [
+      {
+        id: 'TRN-001',
+        topic: 'College Bus Services and Routes',
+        summary: 'DVR & Dr. HS MIC College of Technology operates an extensive fleet of over 45 college buses covering Vijayawada, Guntur, Nandigama, Jaggaiahpeta, and surrounding towns.',
+        details: 'The institution provides safe, GPS-enabled transportation across more than 45 routes including: Vijayawada City (Benz Circle, PNBS, Ramavarappadu Ring, Bhavanipuram, Gollapudi), Guntur, Nandigama, Jaggaiahpeta, Vissannapeta, Mylavaram, Kodad, Tiruvuru, and Ibrahimpatnam.',
+        keywords: ['bus', 'buses', 'transport', 'bus route', 'bus routes', 'vijayawada bus', 'guntur bus', 'nandigama', 'jaggaiahpeta', 'bus timing', 'bus stops', 'travel to college']
+      }
+    ]
+  },
+  {
+    category: 'Library',
+    department: 'Central Library & Information Centre',
+    policies: [
+      {
+        id: 'LIB-001',
+        topic: 'Central Library Resources and Timings',
+        summary: 'The Central Library houses over 50,000 volumes, 10,000+ titles, and operates from 8:00 AM to 7:00 PM on all working days.',
+        details: 'The library is fully automated using barcode management, subscribes to IEEE Xplore, DELNET, national and international journals, and provides digital access terminals for research papers and e-books.',
+        keywords: ['library', 'library timing', 'books', 'library hours', 'central library', 'how many books', 'digital library', 'ieee', 'delnet']
+      }
+    ]
+  },
+  {
     category: 'Attendance',
     department: 'Academic Affairs',
     policies: [
@@ -46,6 +119,13 @@ const BUNDLED_POLICIES = [
     department: 'Finance & Accounts',
     policies: [
       {
+        id: 'FEE-001',
+        topic: 'Semester Tuition Fee and AP JVD Reimbursement',
+        summary: 'B.Tech convener quota tuition fee is approx ₹50,000/year as fixed by APHERMC, eligible for full fee reimbursement under Jagananna Vidya Deevena (JVD).',
+        details: 'Fees can be paid online via SBI Collect, HDFC SmartHub, or ERP portal. Eligible students with white ration card / income eligibility receive full tuition reimbursement directly under AP Govt JVD scheme.',
+        keywords: ['fee', 'tuition fee', 'how much fee', 'jvd', 'vidya deevena', 'reimbursement', 'fee structure']
+      },
+      {
         id: 'FEE-002',
         topic: 'Payment Gateway Discrepancies and Unpaid Portal Status',
         summary: 'Payments debited from student bank accounts usually sync within 2 to 4 hours. If portal shows unpaid after debit, an official ticket must be created.',
@@ -68,6 +148,202 @@ const BUNDLED_POLICIES = [
     ]
   }
 ];
+
+function processClientAssistantQuery(query) {
+  const cleanQuery = (query || '').toLowerCase().trim();
+
+  // 1. Attendance numeric logic
+  const attMatch = cleanQuery.match(/(\d{1,2}(?:\.\d{1,2})?)\s*%/);
+  if (attMatch) {
+    const percentage = parseFloat(attMatch[1]);
+    if (percentage >= 75) {
+      return {
+        success: true,
+        query,
+        answer: `Your attendance of ${percentage}% satisfies DVR & Dr. HS MIC College of Technology's 75% minimum statutory requirement (Academic Regulation 4.2). You are fully eligible to write end-semester examinations without any condonation.\n\nOfficial Policy Reference: [ATT-001] "Minimum Attendance Requirement for Semester Examinations" under Academic Affairs.`,
+        verified: true,
+        policyId: 'ATT-001',
+        policyTopic: 'Minimum Attendance Requirement',
+        category: 'Attendance',
+        department: 'Academic Affairs',
+        priority: 'Low',
+        confidence: 0.98,
+        actionRequired: false,
+        ticketProposal: null
+      };
+    } else if (percentage >= 65) {
+      return {
+        success: true,
+        query,
+        answer: `Your attendance of ${percentage}% is below the standard 75% threshold, but falls within the 65%–74% condonation band. Under autonomous college regulations, you are eligible to write semester exams ONLY if a formal medical condonation request is submitted with attested medical documentation and approved by the Academic Council / Principal.\n\nOfficial Policy Reference: [ATT-001] "Minimum Attendance Requirement for Semester Examinations" under Academic Affairs.`,
+        verified: true,
+        policyId: 'ATT-001',
+        policyTopic: 'Minimum Attendance Requirement',
+        category: 'Attendance',
+        department: 'Academic Affairs',
+        priority: 'High',
+        confidence: 0.96,
+        actionRequired: true,
+        ticketProposal: {
+          title: `Attendance Condonation Request (${percentage}%)`,
+          category: 'Attendance',
+          department: 'Academic Affairs',
+          priority: 'High',
+          description: `Student attendance is at ${percentage}%, which falls in the 65%-74% condonation band. Requesting Principal/Dean review with attached medical records.`,
+          urgencyReason: 'Upcoming end-semester exam hall ticket generation requirement.'
+        }
+      };
+    } else {
+      return {
+        success: true,
+        query,
+        answer: `Your attendance of ${percentage}% is below the statutory 65% cutoff. As per autonomous college regulations, condonation cannot be granted below 65%, and the student must re-register for the course (NS grade). You may consult your Academic Advisor to review attendance logs.`,
+        verified: true,
+        policyId: 'ATT-001',
+        policyTopic: 'Minimum Attendance Requirement',
+        category: 'Attendance',
+        department: 'Academic Affairs',
+        priority: 'High',
+        confidence: 0.96,
+        actionRequired: true,
+        ticketProposal: {
+          title: `Attendance Shortage Review (${percentage}%)`,
+          category: 'Attendance',
+          department: 'Academic Affairs',
+          priority: 'High',
+          description: `Student attendance recorded at ${percentage}% (below 65% cutoff). Requesting log verification.`,
+          urgencyReason: 'Student attendance below statutory examination threshold.'
+        }
+      };
+    }
+  }
+
+  // 2. Incident & Transaction Issues
+  if (
+    cleanQuery.includes('paid') && (cleanQuery.includes('unpaid') || cleanQuery.includes('deducted') || cleanQuery.includes('pending')) ||
+    cleanQuery.includes('money deducted') ||
+    cleanQuery.includes('portal shows unpaid')
+  ) {
+    return {
+      success: true,
+      query,
+      answer: `**Notice Regarding Financial Records**: The AI Assistant does not inspect live personal bank ledgers to prevent unauthorized disclosures. \n\nAs per Finance Department protocol (Policy FEE-002), bank webhook settlement delays can take 2–4 hours to synchronize. Please provide your **Bank UTR / Transaction Reference Number** in the ticket below so the Finance desk can verify the settlement with the merchant bank.`,
+      verified: true,
+      policyId: 'FEE-002',
+      policyTopic: 'Payment Gateway Discrepancies and Unpaid Portal Status',
+      category: 'Fees',
+      department: 'Finance & Accounts',
+      priority: 'High',
+      confidence: 0.95,
+      actionRequired: true,
+      ticketProposal: {
+        title: 'Payment Reconciliation: Transaction Deducted but Portal Shows Unpaid',
+        category: 'Fees',
+        department: 'Finance & Accounts',
+        priority: 'High',
+        description: `Student reported fee payment deducted from bank account, but student portal status remains unpaid. Query: "${query}".`,
+        urgencyReason: 'Late fine will be triggered if not reconciled before deadline.'
+      }
+    };
+  }
+
+  if (cleanQuery.includes('fan') || cleanQuery.includes('tap') || (cleanQuery.includes('hostel') && (cleanQuery.includes('not working') || cleanQuery.includes('broken') || cleanQuery.includes('leak')))) {
+    return {
+      success: true,
+      query,
+      answer: `I have classified your issue under **Hostel (Hostel Administration)**. \n\nCollege policy requires room electrical and civil maintenance issues to be recorded with an official ticket so campus facilities can dispatch an on-duty technician within 24 hours. \n\nI have pre-populated a maintenance ticket for you below. Click **"Submit Ticket"** to dispatch the hostel maintenance team.`,
+      verified: true,
+      policyId: 'HST-001',
+      policyTopic: 'Room Maintenance and Repair Procedures',
+      category: 'Hostel',
+      department: 'Hostel Administration',
+      priority: 'Medium',
+      confidence: 0.95,
+      actionRequired: true,
+      ticketProposal: {
+        title: 'Hostel Room Maintenance: ' + (query.length > 50 ? query.substring(0, 50) + '...' : query),
+        category: 'Hostel',
+        department: 'Hostel Administration',
+        priority: 'Medium',
+        description: `Reported Room Maintenance Issue: "${query}".`,
+        urgencyReason: 'Hostel resident comfort and ventilation.'
+      }
+    };
+  }
+
+  // 3. Search BUNDLED_POLICIES
+  let bestMatch = null;
+  let highestScore = 0;
+
+  for (const doc of BUNDLED_POLICIES) {
+    for (const policy of doc.policies) {
+      let score = 0;
+      for (const kw of policy.keywords) {
+        const cleanKw = kw.toLowerCase();
+        if (cleanQuery.includes(cleanKw)) {
+          score += cleanKw.includes(' ') ? 5.0 : 3.0;
+        }
+      }
+      const topicWords = policy.topic.toLowerCase().split(/\s+/);
+      for (const word of topicWords) {
+        if (word.length > 3 && cleanQuery.includes(word)) {
+          score += 2.0;
+        }
+      }
+
+      if (score > highestScore) {
+        highestScore = score;
+        bestMatch = { policy, category: doc.category, department: doc.department, score };
+      }
+    }
+  }
+
+  if (bestMatch && bestMatch.score >= 2.5) {
+    const policy = bestMatch.policy;
+    let answer = `${policy.summary}\n\n**Official Regulations**: ${policy.details}`;
+    if (policy.actionable) {
+      answer += `\n\n*Procedure*: ${policy.actionable}`;
+    }
+
+    return {
+      success: true,
+      query,
+      answer,
+      verified: true,
+      policyId: policy.id,
+      policyTopic: policy.topic,
+      category: bestMatch.category,
+      department: bestMatch.department,
+      priority: 'Low',
+      confidence: 0.96,
+      actionRequired: false,
+      ticketProposal: null
+    };
+  }
+
+  // 4. Safe Escalation Safeguard for Unknown Questions
+  return {
+    success: true,
+    query,
+    answer: "I cannot verify this specific answer in the approved DVR & Dr. HS MIC College of Technology knowledge base. To ensure accurate academic guidance and avoid unverified policy information, I have prepared a ticket proposal for the Student Welfare & Administration desk.",
+    verified: false,
+    policyId: 'SAFE-ESCALATE',
+    policyTopic: 'Unverified Campus Query',
+    category: 'General Campus Services',
+    department: 'Student Welfare & Information Desk',
+    priority: 'Medium',
+    confidence: 0.35,
+    actionRequired: true,
+    ticketProposal: {
+      title: `Student Inquiry: ${query.length > 50 ? query.substring(0, 50) + '...' : query}`,
+      category: 'General Campus Services',
+      department: 'Student Welfare & Information Desk',
+      priority: 'Medium',
+      description: `Inquiry submitted: "${query}". Automated policy verification returned unverified. Forwarding for administrative review.`,
+      urgencyReason: 'Direct student inquiry requiring official administrative clarification.'
+    }
+  };
+}
 
 // Local State Storage helper for GitHub Pages
 const STORAGE_KEY_TICKETS = 'campus_local_tickets_v1';
@@ -679,6 +955,27 @@ export const api = {
         }
       }
     };
+  },
+
+  async askAI(query) {
+    try {
+      const res = await fetch(`${API_BASE}/ai/ask`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeader()
+        },
+        body: JSON.stringify({ query })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) return data;
+      }
+    } catch (e) {
+      // Backend not running (e.g. GitHub Pages or offline) -> fall back to client RAG engine
+    }
+
+    return processClientAssistantQuery(query);
   },
 
   async resetDemo() {

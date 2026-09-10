@@ -1,0 +1,23 @@
+{
+  "category": "Library",
+  "department": "Central Library & Information Centre",
+  "responsibleOfficer": "Chief Librarian",
+  "policies": [
+    {
+      "id": "LIB-001",
+      "topic": "Central Library Resources and Timings",
+      "summary": "The Central Library houses over 50,000 volumes, 10,000+ titles, and operates from 8:00 AM to 7:00 PM on all working days.",
+      "details": "The library is fully automated using barcode management. It subscribes to national and international print journals, reference books, GATE/GRE preparation materials, and newspapers. Circulation section allows borrowing of up to 4 books for undergraduate students for 14 days renewal period.",
+      "keywords": ["library", "library timing", "books", "library hours", "central library", "how many books", "book issue", "circulation"],
+      "actionable": "Use student RFID smart card to check out and return books at the circulation desk."
+    },
+    {
+      "id": "LIB-002",
+      "topic": "Digital Library and Online E-Resources",
+      "summary": "The Digital Library provides 30+ high-speed workstations with access to IEEE Xplore, DELNET, NPTEL, and National Digital Library of India (NDLI).",
+      "details": "High-bandwidth Wi-Fi and wired internet facilitate research paper downloads, e-books, and video lectures. Students have access to institutional repositories and open access journals for project and research documentation.",
+      "keywords": ["digital library", "ieee", "delnet", "nptel", "e-books", "research papers", "online journals", "ndli"],
+      "actionable": "Log into the digital library terminals using your student credentials to access IEEE Xplore and DELNET databases."
+    }
+  ]
+}

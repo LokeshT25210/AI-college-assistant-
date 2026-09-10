@@ -1,0 +1,39 @@
+{
+  "category": "College Information",
+  "department": "Principal's Office & Administration",
+  "responsibleOfficer": "Dr. T. Vamsee Kiran (Principal)",
+  "policies": [
+    {
+      "id": "COL-001",
+      "topic": "College Overview, Accreditation and EAMCET Code",
+      "summary": "DVR & Dr. HS MIC College of Technology is a premier UGC Autonomous engineering institution established in Kanchikacherla, Andhra Pradesh. The official EAMCET/EAPCET, ICET, and POLYCET counseling code is MICT.",
+      "details": "DVR & Dr. HS MIC College of Technology holds Autonomous status granted by UGC since 2018. It is permanently affiliated with Jawaharlal Nehru Technological University Kakinada (JNTUK), approved by AICTE New Delhi, and accredited with 'A+' Grade by NAAC. The college is recognized under Section 2(f) and 12(B) of the UGC Act 1956. Counseling Codes: EAMCET/EAPCET Code: MICT, POLYCET Code: MICT, ICET Code: MICT.",
+      "keywords": ["eamcet code", "eapcet code", "college code", "mict", "polycet code", "icet code", "autonomous", "jntuk", "affiliation", "naac", "aicte", "about college", "overview", "what is the college code"],
+      "actionable": "For admission inquiries, use code MICT during AP EAMCET/EAPCET, POLYCET, or ICET web counseling options."
+    },
+    {
+      "id": "COL-002",
+      "topic": "Principal and Administrative Leadership",
+      "summary": "The Principal of DVR & Dr. HS MIC College of Technology is Dr. T. Vamsee Kiran, leading academic and institutional administration.",
+      "details": "Principal: Dr. T. Vamsee Kiran, Ph.D. Management: Devineni Venkata Ramana & Dr. Himasekhar MIC College of Technology is sponsored by Devineni Ramana Praneetha Educational Society. The administration operates under the guidance of the Governing Body, Academic Council, and Controller of Examinations.",
+      "keywords": ["principal", "who is the principal", "vamsee kiran", "director", "head of college", "management", "founder", "chairman"],
+      "actionable": "Students may meet the Principal during open grievance hours (3:00 PM to 4:30 PM on working days) or contact principal@mictech.ac.in."
+    },
+    {
+      "id": "COL-003",
+      "topic": "Academic Programs and Courses Offered",
+      "summary": "The college offers 8 B.Tech undergraduate programs, 4 M.Tech postgraduate specializations, MBA, MCA, and 5 Diploma engineering courses.",
+      "details": "Undergraduate B.Tech Programs: 1. Computer Science & Engineering (CSE), 2. CSE - Artificial Intelligence & Machine Learning (AI&ML), 3. CSE - Data Science (DS), 4. Information Technology (IT), 5. Electronics & Communication Engineering (ECE), 6. Electrical & Electronics Engineering (EEE), 7. Mechanical Engineering (ME), 8. Civil Engineering (CE). Postgraduate Programs: M.Tech in CSE, VLSI & Embedded Systems, Power Electronics & Drives (PE&D), Machine Design; Master of Business Administration (MBA); Master of Computer Applications (MCA). Diploma Courses (Polytechnic): Computer Engg, ECE, EEE, Mechanical, Civil.",
+      "keywords": ["courses", "branches", "departments", "programs", "btech", "b.tech", "mtech", "m.tech", "mba", "mca", "diploma", "polytechnic", "cse", "ece", "eee", "it", "aiml", "data science", "civil", "mechanical"],
+      "actionable": "Check syllabus and curriculum regulations (R20/R23) on the student portal or consult the Department HOD office."
+    },
+    {
+      "id": "COL-004",
+      "topic": "Campus Location, Address and Contact Numbers",
+      "summary": "The campus is situated on NH-65 in Kanchikacherla, NTR District, Andhra Pradesh - 521180. Phone: 08678-273535 / 273569.",
+      "details": "Campus Address: DVR & Dr. HS MIC College of Technology, NH-65, Kanchikacherla, NTR District, Andhra Pradesh, Pincode 521180. Official Landline: 08678-273535, 08678-273569. Administrative Email: office@mictech.ac.in, Principal Email: principal@mictech.ac.in. Official Website: www.mictech.edu.in.",
+      "keywords": ["address", "location", "where is the college", "kanchikacherla", "contact", "phone number", "helpline", "email", "landline", "ntr district"],
+      "actionable": "For campus visits or administrative inquiries, reach out to the Administrative Office on NH-65 Kanchikacherla."
+    }
+  ]
+}
