@@ -1128,27 +1128,46 @@ export const api = {
     const localUsers = getLocalUsers();
     let matched = localUsers[cleanEmail] || DEMO_USERS[cleanEmail];
 
+    // Match by roll number / studentId or staffId if not matched directly
+    if (!matched) {
+      for (const u of Object.values(localUsers)) {
+        if (u.studentId && u.studentId.toLowerCase().trim() === cleanEmail) { matched = u; break; }
+        if (u.staffId && u.staffId.toLowerCase().trim() === cleanEmail) { matched = u; break; }
+        if (cleanEmail.includes('@') && u.studentId && cleanEmail.startsWith(u.studentId.toLowerCase().trim())) { matched = u; break; }
+      }
+    }
+    if (!matched) {
+      for (const u of Object.values(DEMO_USERS)) {
+        if (u.studentId && u.studentId.toLowerCase().trim() === cleanEmail) { matched = u; break; }
+        if (u.staffId && u.staffId.toLowerCase().trim() === cleanEmail) { matched = u; break; }
+        if (cleanEmail.includes('@') && u.studentId && cleanEmail.startsWith(u.studentId.toLowerCase().trim())) { matched = u; break; }
+      }
+    }
+
     if (!matched) {
       const isStaff = cleanEmail.includes('admin') || cleanEmail.includes('faculty') || cleanEmail.includes('principal') || cleanEmail.includes('registrar');
       const cleanName = cleanEmail.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      const rollMatch = cleanEmail.includes('@') ? cleanEmail.split('@')[0].toUpperCase() : cleanEmail.toUpperCase();
       matched = {
         id: 'usr-' + Date.now(),
-        name: cleanName || (isStaff ? 'Campus Faculty Officer' : 'DVR & Dr. HS MIC Student'),
-        email: cleanEmail,
+        name: cleanName || (isStaff ? 'Campus Faculty Officer' : 'Student Scholar'),
+        email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@campus.edu`,
         role: isStaff ? 'admin' : 'student',
-        studentId: isStaff ? undefined : ('23MICT-CS-' + Math.floor(100 + Math.random() * 900)),
-        staffId: isStaff ? ('STF-MICT-' + Math.floor(100 + Math.random() * 900)) : undefined,
+        studentId: isStaff ? undefined : rollMatch,
+        staffId: isStaff ? ('STF-' + Math.floor(100 + Math.random() * 900)) : undefined,
         department: 'Computer Science & Engineering',
-        year: isStaff ? undefined : 'B.Tech 3rd Year',
-        hostel: isStaff ? undefined : 'College Campus Hostel Block B',
-        cgpa: isStaff ? undefined : 8.65,
-        attendance: isStaff ? undefined : 83.0,
+        year: isStaff ? undefined : 'B.Tech 3rd Year (Semester 5)',
+        regulation: 'R23 Autonomous',
+        residenceType: 'Day Scholar',
+        busRoute: 'Route 01 - Vijayawada (Benz Circle)',
+        cgpa: isStaff ? undefined : 8.20,
+        attendance: isStaff ? undefined : 82.0,
         phone: '+91 98765 00000',
         avatar: isStaff 
           ? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80'
           : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
       };
-      localUsers[cleanEmail] = matched;
+      localUsers[matched.email] = matched;
       saveLocalUsers(localUsers);
     }
 
@@ -1359,7 +1378,23 @@ export const api = {
     } catch (e) {}
 
     const tickets = getLocalTickets();
-    return { success: true, count: tickets.length, requests: tickets };
+    let currentUser = {};
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_CURRENT_USER);
+      if (stored) currentUser = JSON.parse(stored);
+    } catch (e) {}
+
+    // Strict user isolation: Students only see their own tickets
+    const myTickets = tickets.filter(t => {
+      if (currentUser.role === 'admin') return true;
+      if (!currentUser.email && !currentUser.studentId && !currentUser.id) return false;
+      const matchEmail = currentUser.email && t.studentEmail && t.studentEmail.toLowerCase() === currentUser.email.toLowerCase();
+      const matchRoll = currentUser.studentId && t.studentRollNo && t.studentRollNo.toLowerCase() === currentUser.studentId.toLowerCase();
+      const matchId = currentUser.id && t.studentId && t.studentId === currentUser.id;
+      return Boolean(matchEmail || matchRoll || matchId);
+    });
+
+    return { success: true, count: myTickets.length, requests: myTickets };
   },
 
   async getAllRequests(filters = {}) {

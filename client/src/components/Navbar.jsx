@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { 
   GraduationCap, 
   ShieldCheck, 
@@ -9,11 +10,14 @@ import {
   Sparkles, 
   Bell, 
   HelpCircle,
-  RefreshCw
+  RefreshCw,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
   const { user, quickSwitchUser, logout } = useAuth();
+  const { theme, toggleTheme, isDark } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [switching, setSwitching] = useState(false);
 
@@ -56,6 +60,20 @@ export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
             <Sparkles className="w-3.5 h-3.5 text-slate-950" />
             <span className="hidden sm:inline">Examiner Guide & Scoring (100 pts)</span>
             <span className="sm:hidden">Examiner Demo</span>
+          </button>
+
+          {/* Dark / Light Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 transition-all flex items-center justify-center shadow-sm"
+            title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            aria-label="Toggle Theme"
+          >
+            {isDark ? (
+              <Sun className="w-4 h-4 text-amber-400" />
+            ) : (
+              <Moon className="w-4 h-4 text-blue-300" />
+            )}
           </button>
 
           {user ? (
