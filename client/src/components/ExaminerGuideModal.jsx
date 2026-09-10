@@ -39,7 +39,9 @@ const BENCHMARK_DATASET = [
   { text: "I need a certificate", category: "Certificates", department: "Administration", priority: "Medium", action: "create_ticket_or_answer" },
   { text: "I need scholarship information", category: "Scholarships", department: "Scholarships", priority: "Medium", action: "answer_or_escalate" },
   { text: "I have an academic issue", category: "Academics", department: "Academics", priority: "Medium", action: "answer_or_escalate" },
-  { text: "I have an unknown campus problem", category: "Unknown", department: "Appropriate Department", priority: "Medium", action: "escalate" }
+  { text: "I have an unknown campus problem", category: "Unknown", department: "Appropriate Department", priority: "Medium", action: "escalate" },
+  { text: "What is the capital of France?", category: "Non-College / Out of Scope", department: "Not Applicable", priority: "Low", action: "out_of_scope_notice" },
+  { text: "How to make a chocolate cake?", category: "Non-College / Out of Scope", department: "Not Applicable", priority: "Low", action: "out_of_scope_notice" }
 ];
 
 export default function ExaminerGuideModal({ isOpen, onClose, onSelectDemoScenario, onNavigate }) {

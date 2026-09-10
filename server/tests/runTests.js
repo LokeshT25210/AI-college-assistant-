@@ -243,6 +243,32 @@ async function runAllTests() {
     logFail('Test 12: AI grounded response', e.message);
   }
 
+  // Test 13: Non-related trivia question handling -> Accurately identified out-of-scope without creating ticket
+  try {
+    const triviaQuery = 'What is the capital of France?';
+    const res = await processAssistantQuery(triviaQuery);
+    if (res.category === 'Non-College / Out of Scope' && res.actionRequired === false && res.answer.includes('Paris')) {
+      logPass('Test 13: Non-related trivia question -> Accurately identified out-of-scope without creating ticket');
+    } else {
+      logFail('Test 13: Non-related trivia question', `Expected Out of Scope with no ticket, got category: ${res.category}`);
+    }
+  } catch (e) {
+    logFail('Test 13: Non-related trivia question', e.message);
+  }
+
+  // Test 14: Non-related lifestyle/recipe question handling -> Accurately identified out-of-scope with scope guidance
+  try {
+    const cookingQuery = 'How to make a chocolate cake?';
+    const res = await processAssistantQuery(cookingQuery);
+    if (res.category === 'Non-College / Out of Scope' && res.actionRequired === false && res.department === 'Not Applicable') {
+      logPass('Test 14: Non-related lifestyle/recipe question -> Accurately identified out-of-scope with scope guidance');
+    } else {
+      logFail('Test 14: Non-related lifestyle/recipe question', `Expected Out of Scope, got category: ${res.category}`);
+    }
+  } catch (e) {
+    logFail('Test 14: Non-related lifestyle/recipe question', e.message);
+  }
+
   // Section 2: Official User Benchmark Dataset Validation (12 Inquiries)
   console.log('\n------------------------------------------------------');
   console.log('📋 Evaluating User Benchmark Dataset (12 Ground-Truth Cases)');

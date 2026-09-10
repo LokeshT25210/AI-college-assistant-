@@ -78,6 +78,29 @@ const URGENCY_TRIGGERS = [
   { level: 'Low', patterns: [/inquiry/i, /how to/i, /rules/i, /what is/i] }
 ];
 
+const OFF_TOPIC_PATTERNS = [
+  /^(?:what is|what's|who is|who's|which is) the (?:capital|president|prime minister|population|currency|national animal|national bird|longest river|tallest building|highest mountain) of/i,
+  /^(?:who is|who's) (?:narendra modi|biden|trump|obama|elon musk|virat kohli|ms dhoni|messi|ronaldo|sachin|shah rukh|salman|prabhas|allu arjun|bill gates|steve jobs)/i,
+  /(?:capital of france|capital of australia|capital of japan|capital of usa|capital of germany|capital of italy|capital of india)/i,
+  /(?:how to (?:make|bake|cook) (?:a )?(?:cake|pizza|biryani|tea|coffee|curry|pasta|bread|cookies|food|dish)|recipe for)/i,
+  /(?:tell me a joke|tell a joke|tell a riddle|make me laugh|sing a song|movie recommendation|suggest a movie|latest movies|box office|song lyrics)/i,
+  /(?:cricket score|who won the (?:match|world cup|ipl|game)|fifa|ipl score|football match)/i,
+  /^(?:write (?:a )?(?:python|java|c\+\+|javascript|c#|code|script|program) (?:to|for)|how to write (?:code|program) to|binary search in|factorial in)/i,
+  /(?:how to fix (?:windows|iphone|android|car|bike|tire)|format hard drive|blue screen)/i,
+  /(?:do you love me|will you marry me|are you single|are you real|how old are you)/i,
+  /(?:how to lose weight|diet chart|workout routine|gym plan|horoscope|zodiac)/i,
+  /(?:weather in|forecast for|temperature in)/i
+];
+
+const CAMPUS_INDICATORS = [
+  'campus', 'college', 'university', 'academic', 'academics', 'exam', 'exams', 'attendance', 'fee', 'fees',
+  'hostel', 'library', 'bus', 'transport', 'placement', 'scholarship', 'scholarships', 'certificate',
+  'certificates', 'faculty', 'principal', 'mict', 'dvr', 'kanchikacherla', 'jntuk', 'hall ticket',
+  'revaluation', 'bonafide', 'tuition', 'mess', 'warden', 'advising', 'credits', 'course', 'curriculum',
+  'syllabus', 'dean', 'hod', 'student', 'laboratory', 'lab', 'classroom', 'cgpa', 'detained',
+  'condonation', 'discrepancy', 'unknown campus problem', 'unknown problem'
+];
+
 function classifyQuery(text) {
   if (!text || typeof text !== 'string') {
     return {
@@ -91,7 +114,7 @@ function classifyQuery(text) {
     };
   }
 
-  const clean = text.toLowerCase();
+  const clean = text.toLowerCase().trim();
   const scores = {};
   const matchedTokens = {};
 
@@ -121,6 +144,26 @@ function classifyQuery(text) {
       highestScore = score;
       bestKey = key;
     }
+  }
+
+  // Check if query is unrelated / out-of-scope (cooking, world trivia, movies, sports, jokes, etc.)
+  const matchesOffTopic = OFF_TOPIC_PATTERNS.some(p => p.test(clean));
+  const hasCampusContext = CAMPUS_INDICATORS.some(ind => clean.includes(ind));
+
+  const isUnrelated = matchesOffTopic || (highestScore === 0 && !hasCampusContext && clean.length > 0);
+
+  if (isUnrelated) {
+    return {
+      category: 'Non-College / Out of Scope',
+      department: 'Not Applicable',
+      intent: 'out_of_scope',
+      priority: 'Low',
+      urgencyReason: 'Non-college query outside institutional administrative scope.',
+      confidence: 0.95,
+      isActionRequired: false,
+      isUnrelated: true,
+      matchedKeywords: []
+    };
   }
 
   // Fallback if no strong category match

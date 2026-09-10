@@ -125,11 +125,79 @@ function evaluateAttendanceLogic(query) {
 }
 
 /**
+ * Handle questions that are completely unrelated to college or university administration
+ */
+function handleUnrelatedQuery(query) {
+  const clean = (query || '').toLowerCase().trim();
+
+  // Direct concise answers for common trivia/chat questions before stating college scope
+  let directAnswer = '';
+
+  if (/capital of france/i.test(clean)) {
+    directAnswer = 'The capital of France is **Paris**.\n\n';
+  } else if (/capital of australia/i.test(clean)) {
+    directAnswer = 'The capital of Australia is **Canberra**.\n\n';
+  } else if (/capital of japan/i.test(clean)) {
+    directAnswer = 'The capital of Japan is **Tokyo**.\n\n';
+  } else if (/capital of (?:usa|united states)/i.test(clean)) {
+    directAnswer = 'The capital of the United States is **Washington, D.C.**\n\n';
+  } else if (/capital of india/i.test(clean)) {
+    directAnswer = 'The capital of India is **New Delhi**.\n\n';
+  } else if (/president of france/i.test(clean)) {
+    directAnswer = 'The President of France is **Emmanuel Macron**.\n\n';
+  } else if (/prime minister of india/i.test(clean)) {
+    directAnswer = 'The Prime Minister of India is **Narendra Modi**.\n\n';
+  } else if (/tell me a joke|tell a joke/i.test(clean)) {
+    directAnswer = 'Why did the computer go to the doctor? Because it caught a virus! 😄\n\n';
+  } else if (/how to (?:make|bake) (?:a )?chocolate cake/i.test(clean)) {
+    directAnswer = 'To make a chocolate cake, mix flour, cocoa powder, sugar, baking powder, eggs, and milk, then bake at 175°C (350°F) for 30–35 minutes.\n\n';
+  }
+
+  const answer = `${directAnswer}📌 **DVR & Dr. HS MIC College Smart Campus Scope Notice**:
+This inquiry is outside the scope of **DVR & Dr. HS MIC College of Technology** campus services and university administration.
+
+I am the dedicated **Smart Campus AI Assistant** specialized in providing authentic, verified guidance on college policies, academics, facilities, and administration.
+
+### Here is what you can ask me about:
+- 🎓 **Academics & Attendance**: 75% statutory requirement, 65%–74% condonation band, faculty advisors, course regulations
+- 📝 **Examinations**: Semester timetables, hall ticket downloads, revaluation (₹750 per subject), supplementary exams
+- 💳 **Fees & Accounts**: Tuition fees (~₹50,000/yr), AP Jagananna Vidya Deevena (JVD) reimbursement, bank payment reconciliation
+- 🏢 **Hostel Administration**: Electrical/fan maintenance tickets, plumbing issues, room amenities
+- 📜 **Official Certificates**: Bonafide certificates, academic transcripts, study & conduct certificates
+- 💰 **Scholarships**: Institutional merit scholarships (CGPA ≥ 8.5), National Scholarship Portal (NSP)
+- 💼 **Placements & Training**: Leading MNC recruiters (TCS, Cognizant, Infosys, Wipro, Accenture), packages up to 10–12 LPA
+- 🚌 **Campus Transport**: 45+ GPS-enabled buses servicing Vijayawada, Guntur, Nandigama, Jaggaiahpeta
+- ℹ️ **College Overview**: UGC Autonomous status, EAMCET Code **MICT**, Principal Dr. T. Vamsee Kiran, Kanchikacherla campus
+
+*Please submit a question related to DVR & Dr. HS MIC College of Technology and I will be delighted to assist you!*`;
+
+  return {
+    query,
+    answer,
+    verified: false,
+    policyId: 'OUT-OF-SCOPE',
+    policyTopic: 'Non-College / Out-of-Scope Query',
+    category: 'Non-College / Out of Scope',
+    department: 'Not Applicable',
+    priority: 'Low',
+    confidence: 0.95,
+    actionRequired: false,
+    ticketProposal: null
+  };
+}
+
+/**
  * Main AI Query Process Engine:
  * Strictly grounded, verifies against approved KB, produces AI-to-Action workflow.
  */
 async function processAssistantQuery(query, studentContext = {}) {
   const classification = classifyQuery(query);
+
+  // 0. Handle completely unrelated / out-of-scope queries
+  if (classification.isUnrelated || classification.category === 'Non-College / Out of Scope') {
+    return handleUnrelatedQuery(query);
+  }
+
   const bestMatch = searchKnowledge(query, classification.category);
   const attendanceLogic = evaluateAttendanceLogic(query);
 

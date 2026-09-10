@@ -33,7 +33,9 @@ const SUGGESTED_QUESTIONS = [
   { text: "I need a certificate", category: "Certificates", tag: "Administration • Bonafide" },
   { text: "I need scholarship information", category: "Scholarships", tag: "Scholarships • Schemes" },
   { text: "I have an academic issue", category: "Academics", tag: "Academics • Advising" },
-  { text: "I have an unknown campus problem", category: "Unknown", tag: "Safe Escalation" }
+  { text: "I have an unknown campus problem", category: "Unknown", tag: "Safe Escalation" },
+  { text: "What is the capital of France?", category: "Non-College / Out of Scope", tag: "Out-of-Scope Handling" },
+  { text: "How to make a chocolate cake?", category: "Non-College / Out of Scope", tag: "Non-College Handling" }
 ];
 
 export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) {

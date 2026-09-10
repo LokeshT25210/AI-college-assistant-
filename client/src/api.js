@@ -258,6 +258,29 @@ const CLIENT_URGENCY_TRIGGERS = [
   { level: 'Low', patterns: [/inquiry/i, /how to/i, /rules/i, /what is/i] }
 ];
 
+const CLIENT_OFF_TOPIC_PATTERNS = [
+  /^(?:what is|what's|who is|who's|which is) the (?:capital|president|prime minister|population|currency|national animal|national bird|longest river|tallest building|highest mountain) of/i,
+  /^(?:who is|who's) (?:narendra modi|biden|trump|obama|elon musk|virat kohli|ms dhoni|messi|ronaldo|sachin|shah rukh|salman|prabhas|allu arjun|bill gates|steve jobs)/i,
+  /(?:capital of france|capital of australia|capital of japan|capital of usa|capital of germany|capital of italy|capital of india)/i,
+  /(?:how to (?:make|bake|cook) (?:a )?(?:cake|pizza|biryani|tea|coffee|curry|pasta|bread|cookies|food|dish)|recipe for)/i,
+  /(?:tell me a joke|tell a joke|tell a riddle|make me laugh|sing a song|movie recommendation|suggest a movie|latest movies|box office|song lyrics)/i,
+  /(?:cricket score|who won the (?:match|world cup|ipl|game)|fifa|ipl score|football match)/i,
+  /^(?:write (?:a )?(?:python|java|c\+\+|javascript|c#|code|script|program) (?:to|for)|how to write (?:code|program) to|binary search in|factorial in)/i,
+  /(?:how to fix (?:windows|iphone|android|car|bike|tire)|format hard drive|blue screen)/i,
+  /(?:do you love me|will you marry me|are you single|are you real|how old are you)/i,
+  /(?:how to lose weight|diet chart|workout routine|gym plan|horoscope|zodiac)/i,
+  /(?:weather in|forecast for|temperature in)/i
+];
+
+const CLIENT_CAMPUS_INDICATORS = [
+  'campus', 'college', 'university', 'academic', 'academics', 'exam', 'exams', 'attendance', 'fee', 'fees',
+  'hostel', 'library', 'bus', 'transport', 'placement', 'scholarship', 'scholarships', 'certificate',
+  'certificates', 'faculty', 'principal', 'mict', 'dvr', 'kanchikacherla', 'jntuk', 'hall ticket',
+  'revaluation', 'bonafide', 'tuition', 'mess', 'warden', 'advising', 'credits', 'course', 'curriculum',
+  'syllabus', 'dean', 'hod', 'student', 'laboratory', 'lab', 'classroom', 'cgpa', 'detained',
+  'condonation', 'discrepancy', 'unknown campus problem', 'unknown problem'
+];
+
 function classifyClientQuery(text) {
   const clean = (text || '').toLowerCase().trim();
   const scores = {};
@@ -283,6 +306,21 @@ function classifyClientQuery(text) {
     }
   }
 
+  // Check if query is unrelated / out-of-scope
+  const matchesOffTopic = CLIENT_OFF_TOPIC_PATTERNS.some(p => p.test(clean));
+  const hasCampusContext = CLIENT_CAMPUS_INDICATORS.some(ind => clean.includes(ind));
+
+  const isUnrelated = matchesOffTopic || (highestScore === 0 && !hasCampusContext && clean.length > 0);
+
+  if (isUnrelated) {
+    return {
+      category: 'Non-College / Out of Scope',
+      department: 'Not Applicable',
+      priority: 'Low',
+      isUnrelated: true
+    };
+  }
+
   const categoryData = bestKey ? CLIENT_CATEGORY_MAP[bestKey] : {
     category: 'Unknown',
     department: 'Appropriate Department'
@@ -304,13 +342,71 @@ function classifyClientQuery(text) {
   return {
     category: categoryData.category,
     department: categoryData.department,
-    priority: detectedPriority
+    priority: detectedPriority,
+    isUnrelated: false
   };
 }
 
 function processClientAssistantQuery(query) {
   const cleanQuery = (query || '').toLowerCase().trim();
   const classification = classifyClientQuery(cleanQuery);
+
+  // 0. Non-college / Out-of-scope query handling
+  if (classification.isUnrelated || classification.category === 'Non-College / Out of Scope') {
+    let directAnswer = '';
+    if (/capital of france/i.test(cleanQuery)) {
+      directAnswer = 'The capital of France is **Paris**.\n\n';
+    } else if (/capital of australia/i.test(cleanQuery)) {
+      directAnswer = 'The capital of Australia is **Canberra**.\n\n';
+    } else if (/capital of japan/i.test(cleanQuery)) {
+      directAnswer = 'The capital of Japan is **Tokyo**.\n\n';
+    } else if (/capital of (?:usa|united states)/i.test(cleanQuery)) {
+      directAnswer = 'The capital of the United States is **Washington, D.C.**\n\n';
+    } else if (/capital of india/i.test(cleanQuery)) {
+      directAnswer = 'The capital of India is **New Delhi**.\n\n';
+    } else if (/president of france/i.test(cleanQuery)) {
+      directAnswer = 'The President of France is **Emmanuel Macron**.\n\n';
+    } else if (/prime minister of india/i.test(cleanQuery)) {
+      directAnswer = 'The Prime Minister of India is **Narendra Modi**.\n\n';
+    } else if (/tell me a joke|tell a joke/i.test(cleanQuery)) {
+      directAnswer = 'Why did the computer go to the doctor? Because it caught a virus! 😄\n\n';
+    } else if (/how to (?:make|bake) (?:a )?chocolate cake/i.test(cleanQuery)) {
+      directAnswer = 'To make a chocolate cake, mix flour, cocoa powder, sugar, baking powder, eggs, and milk, then bake at 175°C (350°F) for 30–35 minutes.\n\n';
+    }
+
+    const answer = `${directAnswer}📌 **DVR & Dr. HS MIC College Smart Campus Scope Notice**:
+This inquiry is outside the scope of **DVR & Dr. HS MIC College of Technology** campus services and university administration.
+
+I am the dedicated **Smart Campus AI Assistant** specialized in providing authentic, verified guidance on college policies, academics, facilities, and administration.
+
+### Here is what you can ask me about:
+- 🎓 **Academics & Attendance**: 75% statutory requirement, 65%–74% condonation band, faculty advisors, course regulations
+- 📝 **Examinations**: Semester timetables, hall ticket downloads, revaluation (₹750 per subject), supplementary exams
+- 💳 **Fees & Accounts**: Tuition fees (~₹50,000/yr), AP Jagananna Vidya Deevena (JVD) reimbursement, bank payment reconciliation
+- 🏢 **Hostel Administration**: Electrical/fan maintenance tickets, plumbing issues, room amenities
+- 📜 **Official Certificates**: Bonafide certificates, academic transcripts, study & conduct certificates
+- 💰 **Scholarships**: Institutional merit scholarships (CGPA ≥ 8.5), National Scholarship Portal (NSP)
+- 💼 **Placements & Training**: Leading MNC recruiters (TCS, Cognizant, Infosys, Wipro, Accenture), packages up to 10–12 LPA
+- 🚌 **Campus Transport**: 45+ GPS-enabled buses servicing Vijayawada, Guntur, Nandigama, Jaggaiahpeta
+- ℹ️ **College Overview**: UGC Autonomous status, EAMCET Code **MICT**, Principal Dr. T. Vamsee Kiran, Kanchikacherla campus
+
+*Please submit a question related to DVR & Dr. HS MIC College of Technology and I will be delighted to assist you!*`;
+
+    return {
+      success: true,
+      query,
+      answer,
+      verified: false,
+      policyId: 'OUT-OF-SCOPE',
+      policyTopic: 'Non-College / Out-of-Scope Query',
+      category: 'Non-College / Out of Scope',
+      department: 'Not Applicable',
+      priority: 'Low',
+      confidence: 0.95,
+      actionRequired: false,
+      ticketProposal: null
+    };
+  }
 
   // 1. Attendance numeric & condonation logic
   const attMatch = cleanQuery.match(/(\d{1,2}(?:\.\d{1,2})?)\s*(?:%|percent(?:age)?)/i);
