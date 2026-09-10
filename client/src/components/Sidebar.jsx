@@ -107,7 +107,7 @@ export default function Sidebar({ currentPage, onNavigate }) {
 
         <div className="text-center">
           <p className="text-[10px] text-slate-400">
-            Apex University &copy; 2026
+            DVR & Dr HS MIC College &copy; 2026
           </p>
         </div>
       </div>

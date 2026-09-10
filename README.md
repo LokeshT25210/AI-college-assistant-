@@ -1,4 +1,4 @@
-# 🎓 Apex University &bull; Smart Campus Assistant Enterprise Platform
+# 🎓 DVR & Dr HS MIC COLLEGE OF TECHNOLOGY &bull; Smart Campus Assistant Enterprise Platform
 
 > **"Our Smart Campus Assistant does not just answer student questions; it understands the student's intent, provides verified information when available, and automatically converts unresolved issues into trackable requests for the right department."**
 

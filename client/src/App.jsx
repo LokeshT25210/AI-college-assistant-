@@ -41,7 +41,7 @@ export default function App() {
       <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white text-xs">
         <div className="flex flex-col items-center space-y-3">
           <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-          <span>Apex Smart Campus System Initializing...</span>
+          <span>DVR & Dr HS MIC College System Initializing...</span>
         </div>
       </div>
     );

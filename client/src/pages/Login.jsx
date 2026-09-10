@@ -114,7 +114,7 @@ export default function Login({ onNavigate }) {
                 <GraduationCap className="w-7 h-7" />
               </div>
               <div>
-                <h1 className="text-xl font-bold font-serif tracking-tight text-white">Apex University</h1>
+                <h1 className="text-xl font-bold font-serif tracking-tight text-white">DVR & Dr HS MIC College of Technology</h1>
                 <p className="text-[11px] text-blue-300 font-sans tracking-wide uppercase font-semibold">Central Identity Service</p>
               </div>
             </div>
@@ -404,7 +404,7 @@ export default function Login({ onNavigate }) {
           </div>
 
           <p className="text-[11px] text-slate-400 text-center pt-6">
-            Apex University &copy; 2026 &bull; Central Authentication Authority &bull; All Rights Reserved
+            DVR & Dr HS MIC College of Technology &copy; 2026 &bull; Central Authentication Authority &bull; All Rights Reserved
           </p>
 
         </div>

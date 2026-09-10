@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db = require('../db/database');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'campus_secure_secret_key_2026_apex';
+const JWT_SECRET = process.env.JWT_SECRET || 'campus_secure_secret_key_2026_mic';
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];

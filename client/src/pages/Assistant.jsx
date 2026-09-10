@@ -36,7 +36,7 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
     {
       id: 'msg-welcome',
       sender: 'assistant',
-      text: `Hello ${user?.name || 'Student'}! I am the official Apex Smart Campus Assistant. I can answer verified policy questions about attendance, exams, fees, hostels, and certificates. \n\nIf you have an unresolved issue or equipment maintenance request, I will automatically draft an official ticket for the designated department.`,
+      text: `Hello ${user?.name || 'Student'}! I am the official DVR & Dr HS MIC College Smart Campus Assistant. I can answer verified policy questions about attendance, exams, fees, hostels, and certificates. \n\nIf you have an unresolved issue or equipment maintenance request, I will automatically draft an official ticket for the designated department.`,
       verified: true,
       timestamp: new Date().toISOString()
     }

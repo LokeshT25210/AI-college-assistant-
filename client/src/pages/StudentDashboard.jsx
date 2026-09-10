@@ -76,7 +76,7 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center space-x-2 text-blue-300 text-xs font-semibold mb-1">
-              <span>Apex University Student Portal</span>
+              <span>DVR & Dr HS MIC College Student Portal</span>
               <span>&bull;</span>
               <span>Academic Year 2026</span>
             </div>
