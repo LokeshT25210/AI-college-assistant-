@@ -11,38 +11,43 @@
 const CATEGORY_MAP = {
   attendance: {
     category: 'Attendance',
-    department: 'Academic Affairs',
-    keywords: ['attendance', 'percentage', 'condonation', 'medical certificate', 'shortage', 'absent', 'present', 'detention', 'detained', 'bunk', 'od', 'on duty', 'leave', 'biometric', '68%', '75%', '65%', 'minimum attendance']
+    department: 'Academics',
+    keywords: ['attendance', 'low attendance', 'percentage', 'percent', 'condonation', 'medical certificate', 'shortage', 'absent', 'present', 'detention', 'detained', 'bunk', 'od', 'on duty', 'leave', 'biometric', '68%', '68 percent', '75%', '65%', 'minimum attendance']
   },
   exams: {
     category: 'Exams',
-    department: 'Examination Cell',
-    keywords: ['exam', 'exams', 'hall ticket', 'admit card', 'supplementary', 'arrear', 'revaluation', 'photocopy', 'timetable', 'schedule', 'results', 'grades', 'cgpa', 'backlog', 're-exam', 'controller of examination', 'coe']
+    department: 'Exams',
+    keywords: ['exam date', 'exam deadline', 'semester exam date', 'semester exam', 'hall ticket', 'admit card', 'supplementary', 'arrear', 'revaluation', 'photocopy', 'timetable', 'schedule', 'results', 'grades', 'cgpa', 'backlog', 're-exam', 'controller of examination', 'coe', 'exam', 'exams']
   },
   fees: {
     category: 'Fees',
-    department: 'Finance & Accounts',
-    keywords: ['fee', 'fees', 'tuition', 'payment', 'paid', 'unpaid', 'portal shows unpaid', 'transaction', 'utr', 'bank', 'deducted', 'gateway', 'receipt', 'refund', 'caution deposit', 'installment', 'fine', 'penalty']
+    department: 'Finance',
+    keywords: ['portal says unpaid', 'portal shows unpaid', 'payment is not reflected', 'not reflected', 'fee payment', 'semester fee', 'paid my', 'unpaid', 'money deducted', 'fee', 'fees', 'tuition', 'payment', 'transaction', 'utr', 'bank', 'deducted', 'gateway', 'receipt', 'refund', 'caution deposit', 'installment', 'fine', 'penalty']
   },
   hostel: {
     category: 'Hostel',
     department: 'Hostel Administration',
-    keywords: ['hostel', 'room', 'fan', 'light', 'plumbing', 'tap', 'leak', 'curfew', 'outpass', 'warden', 'mess', 'food', 'bed', 'mess committee', 'electrical', 'switch', 'door', 'washroom', 'room change', 'allotment']
+    keywords: ['hostel room maintenance', 'maintenance issue', 'hostel fan', 'hostel room', 'hostel', 'fan is not working', 'fan', 'light', 'plumbing', 'tap', 'leak', 'curfew', 'outpass', 'warden', 'mess', 'food', 'bed', 'mess committee', 'electrical', 'switch', 'door', 'washroom', 'room change', 'allotment']
   },
   certificates: {
     category: 'Certificates',
-    department: 'Student Affairs & Certificates',
-    keywords: ['certificate', 'bonafide', 'transcript', 'id card', 'duplicate id', 'study certificate', 'smart card', 'grade sheet', 'character certificate', 'migration', 'transfer certificate', 'tc', 'lor']
+    department: 'Administration',
+    keywords: ['need a certificate', 'need certificate', 'certificate', 'certificates', 'bonafide', 'transcript', 'id card', 'duplicate id', 'study certificate', 'smart card', 'grade sheet', 'character certificate', 'migration', 'transfer certificate', 'tc', 'lor']
   },
   scholarships: {
     category: 'Scholarships',
-    department: 'Scholarship & Financial Aid Cell',
-    keywords: ['scholarship', 'financial aid', 'fee concession', 'nsp', 'merit scholarship', 'income certificate', 'minority', 'state scholarship', 'post matric', 'waiver', 'jvd', 'vidya deevena']
+    department: 'Scholarships',
+    keywords: ['scholarship information', 'need scholarship', 'scholarship', 'scholarships', 'financial aid', 'fee concession', 'nsp', 'merit scholarship', 'income certificate', 'minority', 'state scholarship', 'post matric', 'waiver', 'jvd', 'vidya deevena']
   },
   academics: {
     category: 'Academics',
-    department: 'Academic Registrar',
-    keywords: ['course', 'elective', 'add drop', 'syllabus', 'credits', 'faculty advisor', 'mentor', 'internship', 'noc', 'curriculum', 'advisor', 'probation', 'prerequisite']
+    department: 'Academics',
+    keywords: ['academic issue', 'academic problem', 'academics', 'academic', 'course', 'elective', 'add drop', 'syllabus', 'credits', 'faculty advisor', 'mentor', 'internship', 'noc', 'curriculum', 'advisor', 'probation', 'prerequisite']
+  },
+  unknown: {
+    category: 'Unknown',
+    department: 'Appropriate Department',
+    keywords: ['unknown campus problem', 'unknown problem', 'unknown issue', 'unknown']
   },
   placements: {
     category: 'Placements',
@@ -68,9 +73,9 @@ const CATEGORY_MAP = {
 
 const URGENCY_TRIGGERS = [
   { level: 'Urgent', patterns: [/emergency/i, /fire/i, /spark/i, /electric shock/i, /flooding/i, /tomorrow/i, /within 24 hours/i, /exam today/i, /hall ticket missing/i] },
-  { level: 'High', patterns: [/paid .* unpaid/i, /money deducted/i, /deducted.*unpaid/i, /portal shows unpaid/i, /duplicate payment/i, /charged twice/i, /shortage.*exam/i, /deadline.*today/i, /last date/i, /detained/i] },
-  { level: 'Medium', patterns: [/not working/i, /broken/i, /repair/i, /faulty/i, /issue/i, /problem/i, /condonation/i, /medical/i, /delay/i] },
-  { level: 'Low', patterns: [/inquiry/i, /information/i, /how to/i, /criteria/i, /when is/i, /rules/i, /what is/i] }
+  { level: 'High', patterns: [/paid .* unpaid/i, /portal (?:says|shows) unpaid/i, /not reflected/i, /money deducted/i, /deducted.*unpaid/i, /duplicate payment/i, /charged twice/i, /shortage.*exam/i, /deadline.*today/i, /last date/i, /detained/i] },
+  { level: 'Medium', patterns: [/not working/i, /maintenance issue/i, /fan/i, /broken/i, /repair/i, /faulty/i, /issue/i, /problem/i, /condonation/i, /medical/i, /delay/i, /certificate/i, /scholarship/i, /academic/i, /exam date/i, /exam deadline/i, /low attendance/i, /68/i, /unknown/i] },
+  { level: 'Low', patterns: [/inquiry/i, /how to/i, /rules/i, /what is/i] }
 ];
 
 function classifyQuery(text) {
@@ -104,6 +109,10 @@ function classifyQuery(text) {
     }
   }
 
+  if (clean.includes('attendance')) {
+    scores['attendance'] = (scores['attendance'] || 0) + 12.0;
+  }
+
   // Find category with highest match score
   let bestKey = null;
   let highestScore = 0;
@@ -116,31 +125,38 @@ function classifyQuery(text) {
 
   // Fallback if no strong category match
   const categoryData = bestKey ? CATEGORY_MAP[bestKey] : {
-    category: 'General Campus Services',
-    department: 'Campus Administration',
+    category: 'Unknown',
+    department: 'Appropriate Department',
     keywords: []
   };
 
-  // Determine urgency/priority
+  // Determine urgency/priority (URGENCY_TRIGGERS is ordered: Urgent -> High -> Medium -> Low)
   let detectedPriority = 'Medium';
   let urgencyReason = 'Standard academic service queue.';
 
   for (const trigger of URGENCY_TRIGGERS) {
+    let matched = false;
     for (const pattern of trigger.patterns) {
       if (pattern.test(clean)) {
         detectedPriority = trigger.level;
         urgencyReason = `Flagged as ${trigger.level} based on temporal keyword or financial/operational urgency.`;
+        matched = true;
         break;
       }
     }
-    if (detectedPriority === trigger.level && trigger.level !== 'Medium') break;
+    if (matched) break;
   }
 
   // Detect whether action/ticketing is required (e.g., breakdown, payment mismatch, physical service)
   const isActionRequired = (
     clean.includes('not working') ||
     clean.includes('broken') ||
+    clean.includes('portal says unpaid') ||
     clean.includes('portal shows unpaid') ||
+    clean.includes('not reflected') ||
+    clean.includes('maintenance issue') ||
+    clean.includes('need a certificate') ||
+    clean.includes('unknown') ||
     clean.includes('deducted') ||
     clean.includes('leak') ||
     clean.includes('lost') ||
@@ -148,6 +164,8 @@ function classifyQuery(text) {
     clean.includes('request') ||
     clean.includes('discrepancy') ||
     clean.includes('my attendance is') ||
+    clean.includes('68 percent') ||
+    clean.includes('68%') ||
     clean.includes('condonation')
   );
 

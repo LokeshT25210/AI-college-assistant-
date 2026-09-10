@@ -85,10 +85,10 @@ async function runAllTests() {
   // Test 5: Certificate request -> Certificate/Administration route
   try {
     const res = await processAssistantQuery('I need an official bonafide certificate for my passport application.');
-    if (res.category === 'Certificates' && res.department.includes('Student Affairs')) {
+    if (res.category === 'Certificates' && (res.department.includes('Administration') || res.department.includes('Student Affairs'))) {
       logPass('Test 5: Certificate request -> Certificate/Administration route');
     } else {
-      logFail('Test 5: Certificate request', 'Did not route to Student Affairs & Certificates');
+      logFail('Test 5: Certificate request', 'Did not route to Administration');
     }
   } catch (e) {
     logFail('Test 5: Certificate request', e.message);
@@ -241,6 +241,32 @@ async function runAllTests() {
     }
   } catch (e) {
     logFail('Test 12: AI grounded response', e.message);
+  }
+
+  // Section 2: Official User Benchmark Dataset Validation (12 Inquiries)
+  console.log('\n------------------------------------------------------');
+  console.log('📋 Evaluating User Benchmark Dataset (12 Ground-Truth Cases)');
+  console.log('------------------------------------------------------\n');
+
+  try {
+    const benchmarkData = require('../data/benchmark_dataset.json');
+    let benchmarkPassCount = 0;
+    for (const item of benchmarkData) {
+      const res = await processAssistantQuery(item.text, studentUser);
+      const catPass = (res.category === item.category);
+      const deptPass = (res.department === item.department);
+      const prioPass = (res.priority === item.priority);
+
+      if (catPass && deptPass && prioPass) {
+        benchmarkPassCount++;
+        console.log(`  \x1b[32m✔ BENCHMARK PASS\x1b[0m: "${item.text}" -> [${res.category} | ${res.department} | ${res.priority}]`);
+      } else {
+        console.log(`  \x1b[31m✖ BENCHMARK MISMATCH\x1b[0m: "${item.text}" -> Expected: [${item.category} | ${item.department} | ${item.priority}], Got: [${res.category} | ${res.department} | ${res.priority}]`);
+      }
+    }
+    console.log(`\n  Benchmark Result: ${benchmarkPassCount} / ${benchmarkData.length} fully verified.`);
+  } catch (err) {
+    console.error('Error in benchmark test suite:', err);
   }
 
   console.log('\n======================================================');

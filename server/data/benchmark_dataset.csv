@@ -1,0 +1,13 @@
+text,category,department,priority,action
+My attendance is 68 percent can I write exams,Attendance,Academics,Medium,answer_or_escalate
+Can I write semester exams with low attendance,Attendance,Academics,Medium,answer_or_escalate
+What is the semester exam date,Exams,Exams,Medium,answer_or_escalate
+What is the exam deadline,Exams,Exams,Medium,answer_or_escalate
+I paid my semester fee but portal says unpaid,Fees,Finance,High,create_ticket
+My fee payment is not reflected,Fees,Finance,High,create_ticket
+My hostel fan is not working,Hostel,Hostel Administration,Medium,create_ticket
+Hostel room maintenance issue,Hostel,Hostel Administration,Medium,create_ticket
+I need a certificate,Certificates,Administration,Medium,create_ticket_or_answer
+I need scholarship information,Scholarships,Scholarships,Medium,answer_or_escalate
+I have an academic issue,Academics,Academics,Medium,answer_or_escalate
+I have an unknown campus problem,Unknown,Appropriate Department,Medium,escalate

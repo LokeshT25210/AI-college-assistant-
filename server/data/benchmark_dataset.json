@@ -1,0 +1,86 @@
+[
+  {
+    "text": "My attendance is 68 percent can I write exams",
+    "category": "Attendance",
+    "department": "Academics",
+    "priority": "Medium",
+    "action": "answer_or_escalate"
+  },
+  {
+    "text": "Can I write semester exams with low attendance",
+    "category": "Attendance",
+    "department": "Academics",
+    "priority": "Medium",
+    "action": "answer_or_escalate"
+  },
+  {
+    "text": "What is the semester exam date",
+    "category": "Exams",
+    "department": "Exams",
+    "priority": "Medium",
+    "action": "answer_or_escalate"
+  },
+  {
+    "text": "What is the exam deadline",
+    "category": "Exams",
+    "department": "Exams",
+    "priority": "Medium",
+    "action": "answer_or_escalate"
+  },
+  {
+    "text": "I paid my semester fee but portal says unpaid",
+    "category": "Fees",
+    "department": "Finance",
+    "priority": "High",
+    "action": "create_ticket"
+  },
+  {
+    "text": "My fee payment is not reflected",
+    "category": "Fees",
+    "department": "Finance",
+    "priority": "High",
+    "action": "create_ticket"
+  },
+  {
+    "text": "My hostel fan is not working",
+    "category": "Hostel",
+    "department": "Hostel Administration",
+    "priority": "Medium",
+    "action": "create_ticket"
+  },
+  {
+    "text": "Hostel room maintenance issue",
+    "category": "Hostel",
+    "department": "Hostel Administration",
+    "priority": "Medium",
+    "action": "create_ticket"
+  },
+  {
+    "text": "I need a certificate",
+    "category": "Certificates",
+    "department": "Administration",
+    "priority": "Medium",
+    "action": "create_ticket_or_answer"
+  },
+  {
+    "text": "I need scholarship information",
+    "category": "Scholarships",
+    "department": "Scholarships",
+    "priority": "Medium",
+    "action": "answer_or_escalate"
+  },
+  {
+    "text": "I have an academic issue",
+    "category": "Academics",
+    "department": "Academics",
+    "priority": "Medium",
+    "action": "answer_or_escalate"
+  },
+  {
+    "text": "I have an unknown campus problem",
+    "category": "Unknown",
+    "department": "Appropriate Department",
+    "priority": "Medium",
+    "action": "escalate"
+  }
+]

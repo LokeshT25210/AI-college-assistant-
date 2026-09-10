@@ -66,17 +66,17 @@ export default function App() {
     switch (scenarioType) {
       case 'attendance':
         await quickSwitchUser('alex.kumar@campus.edu');
-        setAssistantQuery('My attendance is 68%. Can I write the semester exams?');
+        setAssistantQuery('My attendance is 68 percent can I write exams');
         setCurrentPage('assistant');
         break;
       case 'hostel':
         await quickSwitchUser('alex.kumar@campus.edu');
-        setAssistantQuery('My hostel room fan is not working.');
+        setAssistantQuery('My hostel fan is not working');
         setCurrentPage('assistant');
         break;
       case 'fee':
         await quickSwitchUser('alex.kumar@campus.edu');
-        setAssistantQuery('I paid my semester fee but the portal still shows unpaid.');
+        setAssistantQuery('I paid my semester fee but portal says unpaid');
         setCurrentPage('assistant');
         break;
       case 'hallucination':
@@ -85,6 +85,11 @@ export default function App() {
         setCurrentPage('assistant');
         break;
       default:
+        if (typeof scenarioType === 'string' && scenarioType.trim()) {
+          await quickSwitchUser('alex.kumar@campus.edu');
+          setAssistantQuery(scenarioType);
+          setCurrentPage('assistant');
+        }
         break;
     }
   };

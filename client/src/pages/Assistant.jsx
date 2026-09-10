@@ -22,12 +22,18 @@ import {
 } from 'lucide-react';
 
 const SUGGESTED_QUESTIONS = [
-  { text: "My attendance is 68%. Can I write the semester exams?", category: "Attendance", tag: "Policy & Condonation" },
-  { text: "My hostel room fan is not working.", category: "Hostel", tag: "Maintenance Escalation" },
-  { text: "I paid my semester fee but the portal still shows unpaid.", category: "Fees", tag: "Financial Reconciliation" },
-  { text: "When is the deadline to download hall tickets for exams?", category: "Exams", tag: "Exam Schedule" },
-  { text: "Can I bring a live elephant into the physics laboratory?", category: "Safety", tag: "Hallucination Safeguard" },
-  { text: "I need an official bonafide certificate for my passport application.", category: "Certificates", tag: "Administrative Request" }
+  { text: "My attendance is 68 percent can I write exams", category: "Attendance", tag: "Academics • Condonation" },
+  { text: "Can I write semester exams with low attendance", category: "Attendance", tag: "Academics • Policy" },
+  { text: "What is the semester exam date", category: "Exams", tag: "Exams • Schedule" },
+  { text: "What is the exam deadline", category: "Exams", tag: "Exams • Deadline" },
+  { text: "I paid my semester fee but portal says unpaid", category: "Fees", tag: "Finance • High Priority" },
+  { text: "My fee payment is not reflected", category: "Fees", tag: "Finance • High Priority" },
+  { text: "My hostel fan is not working", category: "Hostel", tag: "Hostel Admin • Maintenance" },
+  { text: "Hostel room maintenance issue", category: "Hostel", tag: "Hostel Admin • Ticket" },
+  { text: "I need a certificate", category: "Certificates", tag: "Administration • Bonafide" },
+  { text: "I need scholarship information", category: "Scholarships", tag: "Scholarships • Schemes" },
+  { text: "I have an academic issue", category: "Academics", tag: "Academics • Advising" },
+  { text: "I have an unknown campus problem", category: "Unknown", tag: "Safe Escalation" }
 ];
 
 export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) {

@@ -78,7 +78,8 @@ function searchKnowledge(query, category) {
  * Check if query contains attendance percentage check (e.g. 68%)
  */
 function evaluateAttendanceLogic(query) {
-  const match = query.match(/(\d{1,2}(?:\.\d{1,2})?)\s*%/);
+  const clean = (query || '').toLowerCase();
+  const match = clean.match(/(\d{1,2}(?:\.\d{1,2})?)\s*(?:%|percent(?:age)?)/i);
   if (match) {
     const percentage = parseFloat(match[1]);
     if (percentage >= 75) {
@@ -93,9 +94,9 @@ function evaluateAttendanceLogic(query) {
         hasSpecificValue: true,
         percentage,
         verdict: 'Condonation Required (65% - 74%)',
-        explanation: `Your attendance of ${percentage}% is below the standard 75% threshold, but falls within the 65%–74% condonation band. You are eligible to write semester exams ONLY if a formal medical condonation request is submitted with attested medical documentation and approved by the Dean of Academic Affairs.`,
+        explanation: `Your attendance of ${percentage}% is below the standard 75% threshold, but falls within the 65%–74% condonation band. You are eligible to write semester exams ONLY if a formal medical condonation request is submitted with attested medical documentation and approved by the Dean of Academic Affairs / Principal.`,
         requiresEscalation: true,
-        escalationReason: 'Apply for Academic Dean Medical Condonation'
+        escalationReason: 'Apply for Academic Council Medical Condonation'
       };
     } else {
       return {
@@ -108,6 +109,18 @@ function evaluateAttendanceLogic(query) {
       };
     }
   }
+
+  if (clean.includes('low attendance') || (clean.includes('shortage') && clean.includes('attendance'))) {
+    return {
+      hasSpecificValue: false,
+      percentage: null,
+      verdict: 'Condonation Guidance',
+      explanation: `Under autonomous college regulations, 75% aggregate attendance is mandatory to appear for end-semester examinations. Shortage between 65% and 74% may be condoned on valid medical grounds with a formal application and medical certificate. Attendance below 65% results in detention. If your attendance is between 65% and 74%, you should submit an attendance condonation application for Academic Council review.`,
+      requiresEscalation: true,
+      escalationReason: 'Review attendance standing and apply for condonation if eligible.'
+    };
+  }
+
   return null;
 }
 
@@ -124,14 +137,22 @@ async function processAssistantQuery(query, studentContext = {}) {
 
   // 1. Check for transactional / personal record / physical breakdown queries (NEVER GUESS!)
   const isPersonalDiscrepancy = (
-    cleanQuery.includes('paid') && (cleanQuery.includes('unpaid') || cleanQuery.includes('deducted') || cleanQuery.includes('pending')) ||
+    (cleanQuery.includes('paid') && (cleanQuery.includes('unpaid') || cleanQuery.includes('deducted') || cleanQuery.includes('pending') || cleanQuery.includes('not reflected'))) ||
+    cleanQuery.includes('payment is not reflected') ||
+    cleanQuery.includes('fee payment') && cleanQuery.includes('not reflected') ||
+    cleanQuery.includes('not reflected') ||
     cleanQuery.includes('money deducted') ||
+    cleanQuery.includes('portal says unpaid') ||
+    cleanQuery.includes('portal shows unpaid') ||
+    cleanQuery.includes('hostel room maintenance') ||
+    cleanQuery.includes('maintenance issue') ||
+    cleanQuery.includes('fan is not working') ||
     cleanQuery.includes('fan') ||
     cleanQuery.includes('not working') ||
     cleanQuery.includes('broken') ||
     cleanQuery.includes('leak') ||
     cleanQuery.includes('lost my id') ||
-    cleanQuery.includes('bonafide') && cleanQuery.includes('need')
+    (cleanQuery.includes('need') && cleanQuery.includes('certificate'))
   );
 
   // 2. Verified Answer Handling
@@ -147,17 +168,17 @@ async function processAssistantQuery(query, studentContext = {}) {
       verified: true,
       policyId: bestMatch ? bestMatch.policy.id : 'ATT-001',
       policyTopic: bestMatch ? bestMatch.policy.topic : 'Minimum Attendance Requirement',
-      category: classification.category,
-      department: classification.department,
-      priority: classification.priority,
+      category: 'Attendance',
+      department: classification.department || 'Academics',
+      priority: classification.priority || 'Medium',
       confidence: 0.96,
       actionRequired: attendanceLogic.requiresEscalation || false,
       ticketProposal: attendanceLogic.requiresEscalation ? {
-        title: `Attendance Condonation Request (${attendanceLogic.percentage}%)`,
+        title: `Attendance Condonation Request (${attendanceLogic.percentage ? attendanceLogic.percentage + '%' : 'Shortage'})`,
         category: 'Attendance',
-        department: 'Academic Affairs',
-        priority: 'High',
-        description: `Student attendance is at ${attendanceLogic.percentage}%, which falls in the 65%-74% condonation band. Requesting Dean review with attached medical/OD records.`,
+        department: classification.department || 'Academics',
+        priority: 'Medium',
+        description: `Student attendance query: "${query}". Requesting Academic review with attached medical/OD records.`,
         urgencyReason: 'Upcoming end-semester exam hall ticket generation requirement.'
       } : null
     };
@@ -177,6 +198,10 @@ async function processAssistantQuery(query, studentContext = {}) {
       title = 'Payment Reconciliation: Transaction Deducted but Portal Shows Unpaid';
       description = `Student reported fee payment deducted from bank account, but student portal status remains unpaid. Query: "${query}".`;
       answerText = `**Notice Regarding Financial Records**: The AI Assistant does not inspect live personal bank ledgers to prevent unauthorized disclosures or guess financial reconciliation. \n\nAs per Finance Department protocol (Policy FEE-002), bank webhook delays can take 2–4 hours to synchronize. Please provide your **Bank UTR / Transaction Reference Number** in the ticket below so the Finance desk can verify the settlement with the merchant bank.`;
+    } else if (classification.category === 'Certificates') {
+      title = 'Certificate Request: ' + (query.length > 45 ? query.substring(0, 45) + '...' : query);
+      description = `Student requested certificate: "${query}".`;
+      answerText = `I have routed your certificate request to **${classification.department}** (Policy CRT-001). \n\nBonafide certificates, study & conduct certificates, and transcripts are processed within 2 business days. \n\nI have prepared an application ticket below for you. Click **"Submit Ticket"** to submit your request directly to Administration.`;
     } else {
       title = `${classification.category} Request: ` + (query.length > 45 ? query.substring(0, 45) + '...' : query);
       description = query;
