@@ -201,6 +201,23 @@ async function callGemini(prompt, systemInstruction = '', timeoutMs = 5000) {
   });
 }
 
+function sanitizeAIAnswer(text) {
+  if (!text || typeof text !== 'string') return text;
+  return text
+    .replace(/DVR\s*(?:&|and)\s*Dr\.?\s*HS\s*MIC\s*College\s*of\s*Technology/gi, 'our college')
+    .replace(/DVR\s*(?:&|and)\s*Dr\.?\s*HS\s*MIC\s*College/gi, 'our college')
+    .replace(/DVR\s*(?:&|and)\s*Dr\.?\s*HS\s*MIC/gi, 'our college')
+    .replace(/\s*\(\s*(?:our college|Autonomous[^\)]*Kanchikacherla[^\)]*)\s*\)/gi, '')
+    .replace(/###\s*(.*?)\s*\(\s*our college\s*\)/gi, '### $1')
+    .replace(/###\s*(.*?)\s*\(.*?\)/gi, (match, p1) => {
+      if (/hostel|fee|certificate|attendance|exam/i.test(p1)) return `### ${p1.trim()}`;
+      return match;
+    })
+    .replace(/our college of Technology/gi, 'our college')
+    .replace(/the our college/gi, 'our college')
+    .replace(/our college college/gi, 'our college');
+}
+
 /**
  * Handle questions that are completely unrelated to college or university administration
  */
@@ -234,13 +251,13 @@ async function handleUnrelatedQuery(query) {
   let geminiAnswer = null;
   if (!directAnswer) {
     try {
-      const sys = 'You are the official Smart Campus AI Assistant for DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla). The user asked a non-college question. Answer the user question in 1-2 polite sentences, then remind them that you are the DVR & Dr. HS MIC College assistant for academics, exams, fees, hostels, certificates, scholarships, and transport.';
+      const sys = 'You are the official Smart Campus AI Assistant. In your answer, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology"; refer to the institution as "our college" or "the campus". The user asked a non-college question. Answer the user question in 1-2 polite sentences, then remind them that you are the smart campus assistant for academics, exams, fees, hostels, certificates, scholarships, and transport.';
       geminiAnswer = await callGemini(query, sys, 3500);
     } catch (e) {}
   }
 
-  const answer = geminiAnswer || `${directAnswer}📌 **DVR & Dr. HS MIC College Smart Campus Scope Notice**:
-This inquiry is outside the scope of **DVR & Dr. HS MIC College of Technology** campus services and university administration.
+  const rawAnswer = geminiAnswer || `${directAnswer}📌 **Smart Campus Scope Notice**:
+This inquiry is outside the scope of campus services and university administration.
 
 I am the dedicated **Smart Campus AI Assistant** specialized in providing authentic, verified guidance on college policies, academics, facilities, and administration.
 
@@ -255,7 +272,9 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
 - 🚌 **Campus Transport**: 45+ GPS-enabled buses servicing Vijayawada, Guntur, Nandigama, Jaggaiahpeta
 - ℹ️ **College Overview**: UGC Autonomous status, EAMCET Code **MICT**, Principal Dr. T. Vamsee Kiran, Kanchikacherla campus
 
-*Please submit a question related to DVR & Dr. HS MIC College of Technology and I will be delighted to assist you!*`;
+*Please submit a question related to our campus services and I will be delighted to assist you!*`;
+
+  const answer = sanitizeAIAnswer(rawAnswer);
 
   return {
     query,
@@ -310,7 +329,11 @@ async function processAssistantQuery(query, studentContext = {}) {
     (cleanQuery.includes('need') && cleanQuery.includes('certificate'))
   );
 
-  const GEMINI_CAMPUS_SYS = 'You are the official Smart Campus AI Assistant for DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, affiliated to JNTUK, NAAC A+ accredited, EAMCET Code MICT, Principal Dr. T. Vamsee Kiran). Provide a direct, authoritative, detailed, and practically useful ANSWER with exact procedures, official regulations, contacts, and next steps. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, accurate information.';
+  const GEMINI_CAMPUS_SYS = `You are the official Smart Campus AI Assistant.
+IMPORTANT STRICT GUIDELINES:
+- In your answer, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology".
+- Refer to the institution naturally and neutrally as "our college", "the college", "the campus", "our autonomous institution", or "campus administration".
+- Provide a direct, authoritative, detailed, and practically useful ANSWER with exact procedures, official regulations, contacts, and next steps. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, accurate information.`;
 
   // 2. Verified Answer Handling for Attendance
   if (attendanceLogic) {
@@ -319,10 +342,11 @@ async function processAssistantQuery(query, studentContext = {}) {
       const attPrompt = `Student Attendance Question: "${query}"
 Specific Value Identified: ${attendanceLogic.percentage !== null ? attendanceLogic.percentage + '%' : 'General attendance shortage'}
 Official Regulation Analysis: ${attendanceLogic.explanation}
-DVR & Dr. HS MIC College Attendance Regulations (Autonomous):
+Autonomous College Attendance Regulations:
 - 75% minimum aggregate attendance required for semester-end examinations.
 - 65% to 74% condonation band on valid medical grounds with ₹500 condonation fee and medical certificate approved by Academic Council / Principal.
 - Below 65%: Detained (NS grade), student must repeat course in subsequent semesters.
+IMPORTANT: Do NOT mention the words "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
 Task: Provide a direct, authoritative, and helpful answer. Explain their exact status, condonation procedure if applicable, and next steps. Do NOT merely tell them to file a ticket.`;
       geminiAttendanceAnswer = await callGemini(attPrompt, GEMINI_CAMPUS_SYS, 4500);
     } catch (e) {}
@@ -338,7 +362,7 @@ Task: Provide a direct, authoritative, and helpful answer. Explain their exact s
 
     return {
       query,
-      answer: responseText,
+      answer: sanitizeAIAnswer(responseText),
       verified: true,
       policyId: bestMatch ? bestMatch.policy.id : 'ATT-001',
       policyTopic: bestMatch ? bestMatch.policy.topic : 'Minimum Attendance Requirement',
@@ -369,15 +393,16 @@ Task: Provide a direct, authoritative, and helpful answer. Explain their exact s
       title = 'Hostel Room Maintenance: ' + (query.length > 50 ? query.substring(0, 50) + '...' : query);
       description = `Reported Room Maintenance Issue: "${query}". Resident: ${studentContext.name || 'Student'} (${studentContext.hostel || 'Hostel Campus'}).`;
       domainPrompt = `Student Issue: "${query}"
-Context: Hostel Resident at DVR & Dr. HS MIC College of Technology (Kanchikacherla campus, Boys & Girls Hostels, Blocks A & B).
+Context: Hostel Resident at our autonomous college campus (Boys & Girls Hostels, Blocks A & B).
 Official Campus Hostel Maintenance Procedures:
 - Caretaker & Hostel Warden Office located on the Ground Floor of each hostel block.
 - Electrical and civil maintenance staff conduct daily rounds between 2:00 PM and 5:00 PM.
 - Immediate troubleshooting: Check the sub-distribution breaker and room regulator switch.
 - Emergency / Urgent repairs: Contact the Campus Electrical Helpdesk (internal ext: 204) or resident warden.
 - Escalation: Report to Chief Warden or Estate Office if unresolved after 24 hours.
+IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
 Task: Provide a direct, practical, and comprehensive ANSWER with step-by-step guidance on how to get this issue inspected and fixed. Do NOT simply tell them to create a ticket.`;
-      fallbackAnswer = `### Hostel Room Maintenance Guidance (DVR & Dr. HS MIC College of Technology)
+      fallbackAnswer = `### Hostel Room Maintenance Guidance
 
 Here is how to get your room maintenance issue resolved quickly:
 
@@ -395,14 +420,15 @@ Here is how to get your room maintenance issue resolved quickly:
       title = 'Payment Reconciliation: Transaction Deducted but Portal Shows Unpaid';
       description = `Student reported fee payment deducted from bank account, but student portal status remains unpaid. Query: "${query}".`;
       domainPrompt = `Student Issue: "${query}"
-Context: Student at DVR & Dr. HS MIC College of Technology (Autonomous).
+Context: Student at our autonomous college.
 Official Fee Payment Reconciliation Procedures (Policy FEE-002):
 - Payment Gateway Sync Window: Payments via SBI e-Pay, HDFC gateway, or UPI take 2 to 4 hours (up to 24 hours during bank holidays) to settle and reflect on the student portal.
 - Verification Proof: The 12-digit UTR or Bank Transaction Reference ID is the official proof of payment.
 - Action Steps: If still unpaid after 4 hours, visit the Finance & Accounts Section at the Administrative Block (Ground Floor, Room 104) with bank debit SMS or mini-statement, or email accounts@mictech.ac.in.
 - Late Fee Protection: Transactions initiated before the deadline are exempt from late fee penalties upon UTR verification.
+IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
 Task: Provide a reassuring, clear, and actionable ANSWER explaining the reconciliation process, timelines, and next steps. Do NOT simply tell them to create a ticket.`;
-      fallbackAnswer = `### Fee Payment Reconciliation Guidance (DVR & Dr. HS MIC College of Technology)
+      fallbackAnswer = `### Fee Payment Reconciliation Guidance
 
 If your fee payment was deducted from your bank account but the student portal still indicates unpaid:
 
@@ -420,7 +446,7 @@ If your fee payment was deducted from your bank account but the student portal s
       title = 'Certificate Request: ' + (query.length > 45 ? query.substring(0, 45) + '...' : query);
       description = `Student requested certificate: "${query}".`;
       domainPrompt = `Student Request: "${query}"
-Context: Student at DVR & Dr. HS MIC College of Technology (Autonomous).
+Context: Student at our autonomous college.
 Official Certificate Issuance Procedures (Policy CRT-001):
 - Available Documents: Bonafide Certificate, Study & Conduct Certificate, Transfer Certificate (TC), Migration Certificate, and Official Transcripts.
 - Application Methods:
@@ -428,8 +454,9 @@ Official Certificate Issuance Procedures (Policy CRT-001):
   2. Student Portal: Apply online through the Student Portal under Certificate Requests.
 - Timelines: Bonafide and Conduct certificates take 2 working days. Transcripts and Migration certificates take 3–5 working days.
 - Authentication: All official certificates carry an embedded QR code verification and Controller of Examinations seal.
+IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
 Task: Provide a direct, step-by-step ANSWER on how to obtain the requested certificate, processing times, and counter locations. Do NOT simply tell them to create a ticket.`;
-      fallbackAnswer = `### Certificate Issuance Procedures (DVR & Dr. HS MIC College of Technology)
+      fallbackAnswer = `### Certificate Issuance Procedures
 
 To obtain official college certificates:
 
@@ -450,7 +477,7 @@ To obtain official college certificates:
     } else {
       title = `${classification.category} Request: ` + (query.length > 45 ? query.substring(0, 45) + '...' : query);
       description = query;
-      domainPrompt = `Student Query: "${query}"\nDepartment: ${classification.department}\nCategory: ${classification.category}\nContext: DVR & Dr. HS MIC College of Technology.\nTask: Provide a direct, thorough, and helpful answer explaining official policies, procedures, office locations, and steps. Do NOT simply say to file a ticket.`;
+      domainPrompt = `Student Query: "${query}"\nDepartment: ${classification.department}\nCategory: ${classification.category}\nContext: Our autonomous college.\nIMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.\nTask: Provide a direct, thorough, and helpful answer explaining official policies, procedures, office locations, and steps. Do NOT simply say to file a ticket.`;
       fallbackAnswer = `Your request has been routed to **${classification.department}**. Please visit the department desk at the Administrative Block during office hours (9:00 AM – 5:00 PM) for official processing.`;
     }
 
@@ -459,7 +486,7 @@ To obtain official college certificates:
       geminiDiscrepancyAnswer = await callGemini(domainPrompt, GEMINI_CAMPUS_SYS, 5000);
     } catch (e) {}
 
-    const finalAnswer = geminiDiscrepancyAnswer || fallbackAnswer;
+    const finalAnswer = sanitizeAIAnswer(geminiDiscrepancyAnswer || fallbackAnswer);
 
     return {
       query,
@@ -490,11 +517,12 @@ To obtain official college certificates:
 
     try {
       const policyPrompt = `Student Question: "${query}"
-Institution: DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, affiliated to JNTUK, NAAC A+ accredited, Code MICT).
+Context: Autonomous College (Kanchikacherla, affiliated to JNTUK, NAAC A+ accredited, Code MICT).
 Approved Policy [${policy.id}] "${policy.topic}" (${bestMatch.department}):
 Policy Summary: ${policy.summary}
 Approved Regulations: ${policy.details}
 Actionable Procedure: ${policy.actionable || ''}
+IMPORTANT: In your response, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology"; refer to the institution as "our college" or "the campus".
 Task: Provide a direct, authoritative, comprehensive, and helpful answer to the student. Cite policy reference [${policy.id}] and exact figures (fees, percentages, deadlines) where specified. Do NOT simply tell them to create a ticket.`;
       geminiPolicyAnswer = await callGemini(policyPrompt, GEMINI_CAMPUS_SYS, 4500);
     } catch (e) {}
@@ -506,7 +534,7 @@ Task: Provide a direct, authoritative, comprehensive, and helpful answer to the 
 
     return {
       query,
-      answer,
+      answer: sanitizeAIAnswer(answer),
       verified: true,
       policyId: policy.id,
       policyTopic: policy.topic,
@@ -524,8 +552,9 @@ Task: Provide a direct, authoritative, comprehensive, and helpful answer to the 
   let geminiUnknownAnswer = null;
   try {
     const unknownPrompt = `Student Inquiry: "${query}"
-Institution: DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, Krishna/NTR District, AP).
+Context: Autonomous College (Kanchikacherla, Krishna/NTR District, AP).
 Campus Divisions: Academics, Examination Cell, Accounts/Finance, Hostel Administration, Transport, Student Welfare, Training & Placement, Central Library.
+IMPORTANT: In your response, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology"; refer to the institution as "our college" or "the campus".
 Task: Provide a supportive, comprehensive, and helpful answer to guide the student regarding this campus matter. Direct them to the appropriate office, counter, or faculty advisor with operational hours (9:00 AM – 5:00 PM).`;
     geminiUnknownAnswer = await callGemini(unknownPrompt, GEMINI_CAMPUS_SYS, 4500);
   } catch (e) {}
@@ -534,7 +563,7 @@ Task: Provide a supportive, comprehensive, and helpful answer to guide the stude
 
   return {
     query,
-    answer,
+    answer: sanitizeAIAnswer(answer),
     verified: false,
     policyId: 'SAFE-ESCALATE',
     policyTopic: 'Unverified Campus Query',

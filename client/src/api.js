@@ -427,15 +427,32 @@ async function processClientAssistantQuery(query) {
     }
 
     let geminiLiveAnswer = null;
+function sanitizeAIAnswer(text) {
+  if (!text || typeof text !== 'string') return text;
+  return text
+    .replace(/DVR\s*(?:&|and)\s*Dr\.?\s*HS\s*MIC\s*College\s*of\s*Technology/gi, 'our college')
+    .replace(/DVR\s*(?:&|and)\s*Dr\.?\s*HS\s*MIC\s*College/gi, 'our college')
+    .replace(/DVR\s*(?:&|and)\s*Dr\.?\s*HS\s*MIC/gi, 'our college')
+    .replace(/\s*\(\s*(?:our college|Autonomous[^\)]*Kanchikacherla[^\)]*)\s*\)/gi, '')
+    .replace(/###\s*(.*?)\s*\(\s*our college\s*\)/gi, '### $1')
+    .replace(/###\s*(.*?)\s*\(.*?\)/gi, (match, p1) => {
+      if (/hostel|fee|certificate|attendance|exam/i.test(p1)) return `### ${p1.trim()}`;
+      return match;
+    })
+    .replace(/our college of Technology/gi, 'our college')
+    .replace(/the our college/gi, 'our college')
+    .replace(/our college college/gi, 'our college');
+}
+
     if (!directAnswer) {
       try {
-        const sys = 'You are the official Smart Campus AI Assistant for DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla). Answer the non-college query in 1-2 polite sentences, then remind the student of your official college scope.';
+        const sys = 'You are the official Smart Campus AI Assistant. In your answer, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology"; refer to the institution as "our college" or "the campus". Answer the non-college query in 1-2 polite sentences, then remind the student of your official college scope.';
         geminiLiveAnswer = await callClientGemini(query, sys, 3500);
       } catch (e) {}
     }
 
-    const answer = geminiLiveAnswer || `${directAnswer}📌 **DVR & Dr. HS MIC College Smart Campus Scope Notice**:
-This inquiry is outside the scope of **DVR & Dr. HS MIC College of Technology** campus services and university administration.
+    const rawAnswer = geminiLiveAnswer || `${directAnswer}📌 **Smart Campus Scope Notice**:
+This inquiry is outside the scope of campus services and university administration.
 
 I am the dedicated **Smart Campus AI Assistant** specialized in providing authentic, verified guidance on college policies, academics, facilities, and administration.
 
@@ -450,12 +467,12 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
 - 🚌 **Campus Transport**: 45+ GPS-enabled buses servicing Vijayawada, Guntur, Nandigama, Jaggaiahpeta
 - ℹ️ **College Overview**: UGC Autonomous status, EAMCET Code **MICT**, Principal Dr. T. Vamsee Kiran, Kanchikacherla campus
 
-*Please submit a question related to DVR & Dr. HS MIC College of Technology and I will be delighted to assist you!*`;
+*Please submit a question related to our campus services and I will be delighted to assist you!*`;
 
     return {
       success: true,
       query,
-      answer,
+      answer: sanitizeAIAnswer(rawAnswer),
       verified: false,
       policyId: 'OUT-OF-SCOPE',
       policyTopic: 'Non-College / Out-of-Scope Query',
@@ -479,7 +496,7 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
       return {
         success: true,
         query,
-        answer: `Your attendance of ${percentage}% satisfies DVR & Dr. HS MIC College of Technology's 75% minimum statutory requirement (Academic Regulation 4.2). You are fully eligible to write end-semester examinations without any condonation.\n\nOfficial Policy Reference: [ATT-001] "Minimum Attendance Requirement for Semester Examinations" under jurisdiction of Academics.`,
+        answer: `Your attendance of ${percentage}% satisfies the college's 75% minimum statutory requirement (Academic Regulation 4.2). You are fully eligible to write end-semester examinations without any condonation.\n\nOfficial Policy Reference: [ATT-001] "Minimum Attendance Requirement for Semester Examinations" under jurisdiction of Academics.`,
         verified: true,
         policyId: 'ATT-001',
         policyTopic: 'Minimum Attendance Requirement',
@@ -554,7 +571,11 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
     (cleanQuery.includes('need') && cleanQuery.includes('certificate'))
   );
 
-  const GEMINI_CAMPUS_SYS = 'You are the official Smart Campus AI Assistant for DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, affiliated to JNTUK, NAAC A+ accredited, EAMCET Code MICT, Principal Dr. T. Vamsee Kiran). Provide a direct, authoritative, detailed, and practically useful ANSWER with exact procedures, official regulations, contacts, and next steps. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, accurate information.';
+  const GEMINI_CAMPUS_SYS = `You are the official Smart Campus AI Assistant.
+IMPORTANT STRICT GUIDELINES:
+- In your answer, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology".
+- Refer to the institution naturally and neutrally as "our college", "the college", "the campus", "our autonomous institution", or "campus administration".
+- Provide a direct, authoritative, detailed, and practically useful ANSWER with exact procedures, official regulations, contacts, and next steps. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, accurate information.`;
 
   if (isPersonalDiscrepancy) {
     let domainPrompt = '';
@@ -566,14 +587,16 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
       title = 'Hostel Room Maintenance: ' + (query.length > 50 ? query.substring(0, 50) + '...' : query);
       description = `Reported Room Maintenance Issue: "${query}".`;
       domainPrompt = `Student Issue: "${query}"
-Context: Hostel Resident at DVR & Dr. HS MIC College of Technology (Kanchikacherla campus, Boys & Girls Hostels, Blocks A & B).
+Context: Hostel Resident at our autonomous college campus (Boys & Girls Hostels, Blocks A & B).
 Official Campus Hostel Maintenance Procedures:
 - Caretaker & Hostel Warden Office located on the Ground Floor of each hostel block.
 - Electrical and civil maintenance staff conduct daily room rounds between 2:00 PM and 5:00 PM.
 - Immediate troubleshooting: Check room distribution breaker and fan regulator/switch.
 - Emergency / Urgent repairs: Contact the Campus Electrical Helpdesk (internal ext: 204) or resident warden.
+- Escalation: Report to Chief Warden or Estate Office if unresolved after 24 hours.
+IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
 Task: Provide a direct, practical, and comprehensive ANSWER with step-by-step guidance on how to get this issue inspected and fixed. Do NOT simply tell them to create a ticket.`;
-      fallbackAnswer = `### Hostel Room Maintenance Guidance (DVR & Dr. HS MIC College of Technology)
+      fallbackAnswer = `### Hostel Room Maintenance Guidance
 
 Here is how to get your room maintenance issue resolved quickly:
 
@@ -591,14 +614,15 @@ Here is how to get your room maintenance issue resolved quickly:
       title = 'Payment Reconciliation: Transaction Deducted but Portal Shows Unpaid';
       description = `Student reported fee payment deducted from bank account, but student portal status remains unpaid. Query: "${query}".`;
       domainPrompt = `Student Issue: "${query}"
-Context: Student at DVR & Dr. HS MIC College of Technology (Autonomous).
+Context: Student at our autonomous college.
 Official Fee Payment Reconciliation Procedures (Policy FEE-002):
 - Payment Gateway Sync Window: Payments via SBI e-Pay, HDFC gateway, or UPI take 2 to 4 hours (up to 24 hours during bank holidays) to settle and reflect on the student portal.
 - Verification Proof: The 12-digit UTR or Bank Transaction Reference ID is the official proof of payment.
 - Action Steps: If still unpaid after 4 hours, visit the Finance & Accounts Section at the Administrative Block (Ground Floor, Room 104) with bank debit SMS or mini-statement, or email accounts@mictech.ac.in.
 - Late Fee Protection: Transactions initiated before the deadline are exempt from late fee penalties upon UTR verification.
+IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
 Task: Provide a reassuring, clear, and actionable ANSWER explaining the reconciliation process, timelines, and next steps. Do NOT simply tell them to create a ticket.`;
-      fallbackAnswer = `### Fee Payment Reconciliation Guidance (DVR & Dr. HS MIC College of Technology)
+      fallbackAnswer = `### Fee Payment Reconciliation Guidance
 
 If your fee payment was deducted from your bank account but the student portal still indicates unpaid:
 
@@ -616,7 +640,7 @@ If your fee payment was deducted from your bank account but the student portal s
       title = 'Certificate Request: ' + (query.length > 45 ? query.substring(0, 45) + '...' : query);
       description = `Student requested certificate: "${query}".`;
       domainPrompt = `Student Request: "${query}"
-Context: Student at DVR & Dr. HS MIC College of Technology (Autonomous).
+Context: Student at our autonomous college.
 Official Certificate Issuance Procedures (Policy CRT-001):
 - Available Documents: Bonafide Certificate, Study & Conduct Certificate, Transfer Certificate (TC), Migration Certificate, and Official Transcripts.
 - Application Methods:
@@ -624,8 +648,9 @@ Official Certificate Issuance Procedures (Policy CRT-001):
   2. Student Portal: Apply online through the Student Portal under Certificate Requests.
 - Timelines: Bonafide and Conduct certificates take 2 working days. Transcripts and Migration certificates take 3–5 working days.
 - Authentication: All official certificates carry an embedded QR code verification and Controller of Examinations seal.
+IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
 Task: Provide a direct, step-by-step ANSWER on how to obtain the requested certificate, processing times, and counter locations. Do NOT simply tell them to create a ticket.`;
-      fallbackAnswer = `### Certificate Issuance Procedures (DVR & Dr. HS MIC College of Technology)
+      fallbackAnswer = `### Certificate Issuance Procedures
 
 To obtain official college certificates:
 
@@ -646,7 +671,7 @@ To obtain official college certificates:
     } else {
       title = `${classification.category} Request: ` + (query.length > 45 ? query.substring(0, 45) + '...' : query);
       description = query;
-      domainPrompt = `Student Query: "${query}"\nDepartment: ${classification.department}\nCategory: ${classification.category}\nContext: DVR & Dr. HS MIC College of Technology.\nTask: Provide a direct, thorough, and helpful answer explaining official policies, procedures, office locations, and steps. Do NOT simply say to file a ticket.`;
+      domainPrompt = `Student Query: "${query}"\nDepartment: ${classification.department}\nCategory: ${classification.category}\nContext: Our autonomous college.\nIMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.\nTask: Provide a direct, thorough, and helpful answer explaining official policies, procedures, office locations, and steps. Do NOT simply say to file a ticket.`;
       fallbackAnswer = `Your request has been routed to **${classification.department}**. Please visit the department desk at the Administrative Block during office hours (9:00 AM – 5:00 PM) for official processing.`;
     }
 
@@ -655,7 +680,7 @@ To obtain official college certificates:
       geminiDiscrepancyAns = await callClientGemini(domainPrompt, GEMINI_CAMPUS_SYS, 4500);
     } catch (e) {}
 
-    const finalAnswer = geminiDiscrepancyAns || fallbackAnswer;
+    const finalAnswer = sanitizeAIAnswer(geminiDiscrepancyAns || fallbackAnswer);
 
     return {
       success: true,
@@ -716,11 +741,12 @@ To obtain official college certificates:
 
     try {
       const policyPrompt = `Student Question: "${query}"
-Institution: DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, affiliated to JNTUK, NAAC A+ accredited, Code MICT).
+Context: Autonomous College (Kanchikacherla, affiliated to JNTUK, NAAC A+ accredited, Code MICT).
 Approved Policy [${policy.id}] "${policy.topic}" (${bestMatch.department}):
 Policy Summary: ${policy.summary}
 Approved Regulations: ${policy.details}
 Actionable Procedure: ${policy.actionable || ''}
+IMPORTANT: In your response, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology"; refer to the institution as "our college" or "the campus".
 Task: Provide a direct, authoritative, comprehensive, and helpful answer to the student. Cite policy reference [${policy.id}] and exact figures (fees, percentages, deadlines) where specified. Do NOT simply tell them to create a ticket.`;
       geminiPolicyAnswer = await callClientGemini(policyPrompt, GEMINI_CAMPUS_SYS, 4500);
     } catch (e) {}
@@ -733,7 +759,7 @@ Task: Provide a direct, authoritative, comprehensive, and helpful answer to the 
     return {
       success: true,
       query,
-      answer,
+      answer: sanitizeAIAnswer(answer),
       verified: true,
       policyId: policy.id,
       policyTopic: policy.topic,
@@ -750,18 +776,19 @@ Task: Provide a direct, authoritative, comprehensive, and helpful answer to the 
   let geminiUnknownAnswer = null;
   try {
     const unknownPrompt = `Student Inquiry: "${query}"
-Institution: DVR & Dr. HS MIC College of Technology (Autonomous, Kanchikacherla, Krishna/NTR District, AP).
+Context: Autonomous College (Kanchikacherla, Krishna/NTR District, AP).
 Campus Divisions: Academics, Examination Cell, Accounts/Finance, Hostel Administration, Transport, Student Welfare, Training & Placement, Central Library.
+IMPORTANT: In your response, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology"; refer to the institution as "our college" or "the campus".
 Task: Provide a supportive, comprehensive, and helpful answer to guide the student regarding this campus matter. Direct them to the appropriate office, counter, or faculty advisor with operational hours (9:00 AM – 5:00 PM).`;
     geminiUnknownAnswer = await callClientGemini(unknownPrompt, GEMINI_CAMPUS_SYS, 4500);
   } catch (e) {}
 
-  const answer = `I cannot verify this specific answer in the approved DVR & Dr. HS MIC College of Technology knowledge base. To ensure accurate guidance and avoid unverified policy information, here is the official campus guidance:\n\n` + (geminiUnknownAnswer || "Please visit the Student Welfare & Administration desk at the Administrative Block during working hours (9:00 AM – 5:00 PM) for direct consultation and administrative clarification.");
+  const answer = `I cannot verify this specific answer in the approved university knowledge base. To ensure accurate guidance and avoid unverified policy information, here is the official campus guidance:\n\n` + (geminiUnknownAnswer || "Please visit the Student Welfare & Administration desk at the Administrative Block during working hours (9:00 AM – 5:00 PM) for direct consultation and administrative clarification.");
 
   return {
     success: true,
     query,
-    answer,
+    answer: sanitizeAIAnswer(answer),
     verified: false,
     policyId: 'SAFE-ESCALATE',
     policyTopic: 'Unverified Campus Query',
@@ -1229,6 +1256,7 @@ export const api = {
 
   // AI Assistant
   async askAI(query) {
+    let result;
     try {
       const res = await fetch(`${API_BASE}/ai/ask`, {
         method: 'POST',
@@ -1240,12 +1268,18 @@ export const api = {
       });
       if (res.ok) {
         const data = await res.json();
-        if (data.success) return data;
+        if (data.success) result = data;
       }
     } catch (e) {}
 
-    // Dynamic client RAG + Gemini AI execution
-    return await processClientAssistantQuery(query);
+    if (!result) {
+      result = await processClientAssistantQuery(query);
+    }
+
+    if (result && result.answer) {
+      result.answer = sanitizeAIAnswer(result.answer);
+    }
+    return result;
   },
 
   async classifyQuery(query) {
