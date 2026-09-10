@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, studentId, department, year, hostel } = req.body;
+    const { name, email, password, studentId, department, year, hostel, section, regulation, phone, residenceType, gender } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: 'Name, email, and password are required.' });
@@ -69,10 +69,14 @@ exports.register = async (req, res) => {
       studentId: studentId ? studentId.trim() : `STU-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       department: department || 'General Undergraduate Studies',
       year: year || '1st Year (Semester 1)',
+      section: section || 'Section A',
+      regulation: regulation || 'R23 Autonomous',
+      residenceType: residenceType || 'Day Scholar',
       hostel: hostel || 'Day Scholar',
       cgpa: 8.50,
       attendance: 85.0,
-      phone: '+91 90000 00000',
+      phone: phone || '+91 90000 00000',
+      gender: gender || 'Not specified',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
       createdAt: new Date().toISOString()
     };
