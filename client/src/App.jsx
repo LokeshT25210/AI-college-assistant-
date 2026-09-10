@@ -16,6 +16,7 @@ import AdminRequests from './pages/AdminRequests';
 import AnalyticsInsights from './pages/AnalyticsInsights';
 import Profile from './pages/Profile';
 import Announcements from './pages/Announcements';
+import DatabaseViewer from './pages/DatabaseViewer';
 
 export default function App() {
   const { user, loading, quickSwitchUser } = useAuth();
@@ -198,6 +199,10 @@ export default function App() {
 
           {currentPage === 'announcements' && (
             <Announcements />
+          )}
+
+          {currentPage === 'database' && (
+            <DatabaseViewer />
           )}
         </main>
       </div>

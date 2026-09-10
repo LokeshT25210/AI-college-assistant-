@@ -192,25 +192,20 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
               {/* Primary Action Buttons */}
               <div className="pt-4 flex flex-col sm:flex-row gap-3">
                 <button
-                  onClick={handleQuickEnterStudent}
+                  onClick={() => onNavigate('login')}
                   className="flex items-center justify-center space-x-2 bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all text-xs sm:text-sm"
                 >
-                  <span>Enter Student Desk (Alex Kumar)</span>
+                  <span>Access Student Portal</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button
-                  onClick={handleQuickEnterAdmin}
+                  onClick={() => onNavigate('login')}
                   className="flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all text-xs sm:text-sm"
                 >
                   <ShieldCheck className="w-4 h-4 text-purple-400" />
-                  <span>Enter Admin Console (Dr. Raman)</span>
+                  <span>Faculty & Administrative Console</span>
                 </button>
-              </div>
-
-              <div className="flex items-center space-x-2 text-xs text-slate-400 pt-1">
-                <span>Default Demo Password:</span>
-                <code className="bg-slate-200 text-slate-800 font-mono px-2 py-0.5 rounded font-bold">campus123</code>
               </div>
             </div>
 
@@ -257,7 +252,7 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
                   <div className="bg-slate-100 rounded-2xl rounded-tr-none p-3.5 border border-slate-200">
                     <div className="flex items-center justify-between font-bold text-slate-700 mb-1 text-[11px]">
                       <span>Student Inquiry</span>
-                      <span className="text-slate-400 font-normal">Alex Kumar (CS-2023-0489)</span>
+                      <span className="text-slate-400 font-normal">Registered Student (CS-2023)</span>
                     </div>
                     <p className="text-slate-900 font-serif italic text-xs">
                       {currentScenario.studentQuery}

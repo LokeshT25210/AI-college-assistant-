@@ -5,5 +5,6 @@ const { authenticateToken, requireRole } = require('../middleware/auth');
 
 router.get('/insights', authenticateToken, requireRole(['admin']), analyticsController.getAnalytics);
 router.get('/announcements', analyticsController.getAnnouncements);
+router.get('/database', analyticsController.getDatabaseDump);
 
 module.exports = router;

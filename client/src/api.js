@@ -325,11 +325,53 @@ export const api = {
       // Fallback for static GitHub Pages preview
     }
 
-    const matched = DEMO_USERS[email.toLowerCase()] || DEMO_USERS['alex.kumar@campus.edu'];
+    const matched = DEMO_USERS[email.toLowerCase()] || {
+      id: 'usr-' + Date.now(),
+      name: email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      email: email,
+      role: email.includes('admin') || email.includes('registrar') ? 'admin' : 'student',
+      studentId: 'STU-2026-' + Math.floor(1000 + Math.random() * 9000),
+      department: 'Computer Science & Engineering',
+      year: '3rd Year',
+      hostel: 'Hostel Block A',
+      cgpa: 8.5,
+      attendance: 78.0,
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+    };
     return {
       success: true,
       token: 'demo-static-token-' + Date.now(),
       user: matched
+    };
+  },
+
+  async register(userData) {
+    try {
+      const res = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData)
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+
+    const newUser = {
+      id: 'usr-' + Date.now(),
+      name: userData.name,
+      email: userData.email,
+      role: 'student',
+      studentId: userData.studentId || 'STU-2026-8800',
+      department: userData.department || 'Computer Science & Engineering',
+      year: '1st Year',
+      hostel: 'Campus Residence',
+      cgpa: 8.5,
+      attendance: 85.0,
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+    };
+    return {
+      success: true,
+      token: 'token-' + Date.now(),
+      user: newUser
     };
   },
 
@@ -605,6 +647,37 @@ export const api = {
           summary: 'Routine maintenance and electrical safety audit for Blocks A, B, and C during Sep 12-14.'
         }
       ]
+    };
+  },
+
+  async getDatabase() {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/database`);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+
+    const tickets = getLocalTickets();
+    const users = Object.values(DEMO_USERS);
+    return {
+      success: true,
+      database: {
+        storageType: 'Client-Persisted ACID JSON Store (localStorage + campus_db.json)',
+        totalCollections: 3,
+        stats: {
+          usersCount: users.length,
+          requestsCount: tickets.length,
+          announcementsCount: 3
+        },
+        collections: {
+          users: users,
+          requests: tickets,
+          announcements: [
+            { id: 'ann-01', title: 'End-Semester Examination Schedule Announced', date: '2026-09-08', category: 'Exams' },
+            { id: 'ann-02', title: 'Tuition Fee Payment Window Extended by 5 Days', date: '2026-09-06', category: 'Fees' },
+            { id: 'ann-03', title: 'Hostel Maintenance & Pest Control Schedule', date: '2026-09-04', category: 'Hostel' }
+          ]
+        }
+      }
     };
   },
 

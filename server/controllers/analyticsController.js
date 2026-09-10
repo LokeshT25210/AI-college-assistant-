@@ -28,3 +28,34 @@ exports.getAnnouncements = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Server error loading announcements.' });
   }
 };
+
+exports.getDatabaseDump = async (req, res) => {
+  try {
+    const rawUsers = db.getUsers().map(u => {
+      const { password, ...safe } = u;
+      return safe;
+    });
+    const requests = db.getRequests();
+    const announcements = db.getAnnouncements();
+
+    return res.json({
+      success: true,
+      database: {
+        storageType: 'ACID-Compliant Persistent JSON Store (campus_db.json)',
+        totalCollections: 3,
+        stats: {
+          usersCount: rawUsers.length,
+          requestsCount: requests.length,
+          announcementsCount: announcements.length
+        },
+        collections: {
+          users: rawUsers,
+          requests: requests,
+          announcements: announcements
+        }
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: 'Error retrieving database dump.' });
+  }
+};

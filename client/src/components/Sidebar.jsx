@@ -25,6 +25,7 @@ export default function Sidebar({ currentPage, onNavigate }) {
     { id: 'assistant', label: 'AI Campus Assistant', icon: Bot, highlight: true },
     { id: 'my-requests', label: 'My Requests & Tickets', icon: TicketCheck },
     { id: 'announcements', label: 'Official Circulars', icon: Bell },
+    { id: 'database', label: 'Campus Database', icon: ClipboardList },
     { id: 'profile', label: 'Academic Profile', icon: UserCircle2 },
   ];
 
@@ -32,7 +33,8 @@ export default function Sidebar({ currentPage, onNavigate }) {
     { id: 'admin-dashboard', label: 'Admin Command Center', icon: LayoutDashboard },
     { id: 'admin-requests', label: 'Ticket Management', icon: ClipboardList },
     { id: 'analytics', label: 'Analytics & AI Insights', icon: BarChart3, highlight: true },
-    { id: 'assistant', label: 'AI Assistant (Test)', icon: Bot },
+    { id: 'database', label: 'Database & Records', icon: LayoutDashboard },
+    { id: 'assistant', label: 'AI Assistant', icon: Bot },
     { id: 'announcements', label: 'Campus Notices', icon: Bell },
     { id: 'profile', label: 'Admin Profile', icon: UserCircle2 },
   ];

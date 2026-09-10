@@ -44,6 +44,59 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.register = async (req, res) => {
+  try {
+    const { name, email, password, studentId, department, year, hostel } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Name, email, and password are required.' });
+    }
+
+    const existing = db.findUserByEmail(email);
+    if (existing) {
+      return res.status(409).json({ success: false, message: 'An account with this institutional email already exists.' });
+    }
+
+    const salt = bcrypt.genSaltSync(10);
+    const passwordHash = bcrypt.hashSync(password, salt);
+
+    const newUser = {
+      id: `usr-student-${Date.now().toString().slice(-4)}`,
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password: passwordHash,
+      role: 'student',
+      studentId: studentId ? studentId.trim() : `STU-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      department: department || 'General Undergraduate Studies',
+      year: year || '1st Year (Semester 1)',
+      hostel: hostel || 'Day Scholar',
+      cgpa: 8.50,
+      attendance: 85.0,
+      phone: '+91 90000 00000',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+      createdAt: new Date().toISOString()
+    };
+
+    db.createUser(newUser);
+
+    const token = jwt.sign(
+      { id: newUser.id, email: newUser.email, role: newUser.role, name: newUser.name },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: `Account created successfully for ${newUser.name}.`,
+      token,
+      user: sanitizeUser(newUser)
+    });
+  } catch (err) {
+    console.error('Registration error:', err);
+    return res.status(500).json({ success: false, message: 'Server error during student registration.' });
+  }
+};
+
 exports.getProfile = async (req, res) => {
   return res.json({
     success: true,
