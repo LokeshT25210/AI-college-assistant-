@@ -1,0 +1,31 @@
+{
+  "category": "Certificates",
+  "department": "Student Affairs & Certificates",
+  "responsibleOfficer": "Registrar & Student Records Officer",
+  "policies": [
+    {
+      "id": "CRT-001",
+      "topic": "Bonafide Certificate Issuance",
+      "summary": "Bonafide certificates for bus passes, passport verification, bank loans, and visa applications are issued within 2 business days.",
+      "details": "Students can request an electronic or physical bonafide certificate stating purpose, program, and year of study. E-bonafides with QR code digital signature are delivered directly to the student portal and email.",
+      "keywords": ["bonafide certificate", "bonafide", "study certificate", "bus pass letter", "bank loan letter", "passport verification"],
+      "actionable": "Submit an online certificate request stating purpose and required quantity."
+    },
+    {
+      "id": "CRT-002",
+      "topic": "Official Transcript and Grade Cards",
+      "summary": "Official sealed academic transcripts for higher studies or international universities take 5 to 7 business days.",
+      "details": "Fee is ₹200 per copy. Transcripts include semester grade sheets, credit summaries, and CGPA conversion formulas, signed by the Controller of Examinations. Express courier delivery available upon request.",
+      "keywords": ["transcript", "official transcript", "grade card", "mark sheet duplicate", "wes evaluation"],
+      "actionable": "Apply with student roll number, postal address, and purpose."
+    },
+    {
+      "id": "CRT-003",
+      "topic": "Duplicate Student ID Card and Smart Access Badge",
+      "summary": "Lost ID cards can be reissued after submitting a loss declaration and paying ₹250 replacement fee.",
+      "details": "Old smart card is deactivated within 1 hour to prevent unauthorized access. Temporary pass is provided at the Security Desk while the new smart RFID card is printed within 48 hours.",
+      "keywords": ["id card", "lost id card", "duplicate id", "smart badge", "library card lost"],
+      "actionable": "File a lost ID request to Student Affairs to immediately deactivate the lost RFID tag."
+    }
+  ]
+}

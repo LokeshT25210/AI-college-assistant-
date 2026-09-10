@@ -1,0 +1,31 @@
+{
+  "category": "Hostel",
+  "department": "Hostel Administration",
+  "responsibleOfficer": "Chief Warden & Resident Wardens",
+  "policies": [
+    {
+      "id": "HST-001",
+      "topic": "Room Maintenance and Repair Procedures",
+      "summary": "Hostel room maintenance issues (fans, lights, plumbing, furniture, door locks) are serviced within 24 to 48 hours upon ticket submission.",
+      "details": "Students experiencing broken fans, electrical switchboard issues, water leakage, or faulty fixtures must log a maintenance request specifying Hostel Block, Wing, and Room number. Electrician and plumber rounds occur daily from 9:30 AM to 1:00 PM and 3:00 PM to 6:00 PM. Emergency leaks or spark hazards are attended immediately.",
+      "keywords": ["hostel room fan", "fan is not working", "fan broken", "light not working", "plumbing", "tap leaking", "geyser", "hostel maintenance", "room repair", "warden", "door lock"],
+      "actionable": "Create a Hostel Maintenance ticket with Room number and equipment issue for swift dispatch."
+    },
+    {
+      "id": "HST-002",
+      "topic": "Hostel Curfew and Out-Pass Rules",
+      "summary": "Hostel entry curfew is 9:00 PM on weekdays and 9:30 PM on weekends. Late entry requires warden pre-authorization.",
+      "details": "Weekend home passes must be submitted on the student hostel portal by Thursday 5:00 PM with parent SMS confirmation. Three unexcused late entries lead to disciplinary review and parent notification.",
+      "keywords": ["curfew", "outpass", "night out", "gate timing", "warden permission", "hostel timing"],
+      "actionable": "Apply for digital outpass at least 24 hours prior to travel via the student portal."
+    },
+    {
+      "id": "HST-003",
+      "topic": "Room Allotment and Room Change Requests",
+      "summary": "Room change requests are evaluated only during the first two weeks of the semester on mutual exchange or valid health grounds.",
+      "details": "Both students wishing to swap rooms must submit a joint request to the Chief Warden's office. Single room requests require medical certification and approval from the Student Welfare Committee.",
+      "keywords": ["room change", "room allotment", "hostel transfer", "swap room", "mess change"],
+      "actionable": "Submit mutual consent form signed by both students to the Chief Warden's office."
+    }
+  ]
+}

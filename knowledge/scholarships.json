@@ -1,0 +1,23 @@
+{
+  "category": "Scholarships",
+  "department": "Scholarship & Financial Aid Cell",
+  "responsibleOfficer": "Assistant Registrar (Financial Aid)",
+  "policies": [
+    {
+      "id": "SCH-001",
+      "topic": "Institutional Merit Scholarship Criteria",
+      "summary": "Merit scholarships covering 25% to 100% of tuition fees are awarded to students maintaining a CGPA of 8.5 and above with no backlogs.",
+      "details": "Evaluation happens at the end of each academic year in July. Top 5% of students in each department receive Dean's Merit Scholarship. Minimum attendance of 80% and clean disciplinary record are mandatory eligibility criteria.",
+      "keywords": ["scholarship", "merit scholarship", "fee waiver", "financial aid", "cgpa criteria", "dean scholarship"],
+      "actionable": "Eligible candidates are auto-shortlisted; inquiries on disbursement status can be routed to Financial Aid Cell."
+    },
+    {
+      "id": "SCH-002",
+      "topic": "Government and State Scholarship Portal Verification",
+      "summary": "State/National Scholarship Portal (NSP) applications require institute nodal officer verification within 15 days of online submission.",
+      "details": "Students must submit hard copies of income certificate, community certificate, and fee receipt at Counter #5. Institutional verification is completed within 3 working days of document receipt.",
+      "keywords": ["nsp", "state scholarship", "post matric", "income certificate", "portal verification", "financial aid"],
+      "actionable": "Submit physical attested documents at the Scholarship Cell for portal verification clearance."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "category": "Fees",
+  "department": "Finance & Accounts",
+  "responsibleOfficer": "Finance Officer & Accounts Superintendent",
+  "policies": [
+    {
+      "id": "FEE-001",
+      "topic": "Semester Fee Deadlines and Installment Schedules",
+      "summary": "Semester tuition fees must be paid within 15 calendar days of the semester start date. Late fine of ₹100/day applies thereafter.",
+      "details": "Tuition fees can be paid via net banking, UPI, or credit/debit card through the official payment portal. Installment facility (2 equal parts) is available upon formal request approved by the Finance Officer prior to the semester start.",
+      "keywords": ["fee deadline", "semester fee", "tuition fee", "fee due date", "installment", "late fee", "payment schedule"],
+      "actionable": "Pay via Finance Portal or submit an installment hardship request to Finance & Accounts."
+    },
+    {
+      "id": "FEE-002",
+      "topic": "Payment Gateway Discrepancies and Unpaid Portal Status",
+      "summary": "Payments debited from student bank accounts usually sync within 2 to 4 hours. If portal shows unpaid after debit, an official ticket must be created.",
+      "details": "Due to bank settlement cycles, successful debits may occasionally experience webhook timeout. Students MUST NOT pay twice. Note your Bank UTR / Transaction Reference Number, bank debit SMS timestamp, and account number. The Finance department will manually reconcile the transaction within 24 business hours.",
+      "keywords": ["portal shows unpaid", "paid my fee", "money deducted", "payment completed but portal shows pending", "unpaid", "double payment", "utr number", "transaction failed but money deducted"],
+      "actionable": "Do not pay again. Provide Bank UTR number and transaction receipt in an official ticket to Finance & Accounts for instant reconciliation."
+    },
+    {
+      "id": "FEE-003",
+      "topic": "Fee Refund and Security Deposit Clearance",
+      "summary": "Caution deposit refunds are processed after final semester graduation upon clearance of all departmental no-dues.",
+      "details": "Refunds are credited directly to the registered student bank account within 30 days of submitting the consolidated No-Dues Certificate.",
+      "keywords": ["refund", "caution deposit", "fee return", "security deposit", "excess fee"],
+      "actionable": "Submit bank passbook copy and No-Dues clearance to Finance Counter #3 or raise a ticket."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "category": "Academics",
+  "department": "Academic Registrar",
+  "responsibleOfficer": "Registrar & Academic Council Chairperson",
+  "policies": [
+    {
+      "id": "ACD-001",
+      "topic": "Course Add/Drop and Elective Change Deadline",
+      "summary": "Course add/drop or open elective reallocation is permitted only within the first 10 days of semester commencement.",
+      "details": "Students can adjust their elective selection via ERP subject to classroom seat vacancy and prerequisite clearance. Approvals are processed automatically based on CGPA ranking. After the 10th day, curriculum freeze is strictly enforced.",
+      "keywords": ["course add drop", "change elective", "open elective", "credit requirement", "course registration", "drop subject"],
+      "actionable": "Submit elective change request through the academic portal before the 10-day deadline."
+    },
+    {
+      "id": "ACD-002",
+      "topic": "Internship Credits and Placement NOC Policy",
+      "summary": "Final year and pre-final year students pursuing semester-long industry internships must obtain an official No Objection Certificate (NOC) from the Placement Cell.",
+      "details": "Internship offer letters must specify company name, stipend, duration (minimum 12 weeks), and work location. Course load is replaced with industrial project credits (8 credits) upon faculty mentor approval and monthly milestone reviews.",
+      "keywords": ["placement", "internship", "noc", "placement cell", "offer letter", "campus placement", "internship credit"],
+      "actionable": "Submit offer letter to Placement Cell for verification and issuance of institutional NOC."
+    },
+    {
+      "id": "ACD-003",
+      "topic": "Faculty Advisor and Academic Counseling Protocol",
+      "summary": "Each student is assigned a permanent faculty advisor (FA) for academic planning, mentoring, and grievance escalation.",
+      "details": "FAD meetings occur bi-weekly. Students facing academic difficulty or personal stress can request confidential counseling sessions through the Academic Guidance Cell.",
+      "keywords": ["faculty advisor", "counseling", "academic help", "mentor", "grievance", "advisor meeting"],
+      "actionable": "Book an appointment with your designated faculty advisor via the student portal or raise a request."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "category": "Exams",
+  "department": "Examination Cell",
+  "responsibleOfficer": "Controller of Examinations (CoE)",
+  "policies": [
+    {
+      "id": "EXM-001",
+      "topic": "Hall Ticket Generation and Download Deadlines",
+      "summary": "Hall tickets are released online 7 days before semester exams commence and can be downloaded from the student portal after clearing fee dues.",
+      "details": "To download the hall ticket, students must have nil fee dues, minimum required attendance (75% or approved condonation), and completed course feedback. If the hall ticket download button is disabled, check with Finance or Academic Affairs.",
+      "keywords": ["hall ticket", "admit card", "exam ticket", "exam deadline", "download hall ticket", "examination schedule", "timetable"],
+      "actionable": "Verify no pending fee dues and 75% attendance. If blocked unfairly, create an urgent ticket to Examination Cell."
+    },
+    {
+      "id": "EXM-002",
+      "topic": "Supplementary and Arrear Examination Rules",
+      "summary": "Supplementary examinations are conducted within 30 days after the publication of regular semester results.",
+      "details": "Students with 'F' or 'RA' grades can register for supplementary exams through the exam portal by paying the re-exam fee of ₹500 per subject within 10 days of notification. Maximum of 4 attempts permitted per subject.",
+      "keywords": ["supplementary", "arrear", "re-exam", "failed", "backlog", "arrear exam fee"],
+      "actionable": "Register on the portal within the 10-day window or contact Examination Cell for manual registration."
+    },
+    {
+      "id": "EXM-003",
+      "topic": "Revaluation and Answer Script Photocopy",
+      "summary": "Students may apply for answer script copy and revaluation within 15 days of result declaration.",
+      "details": "Fee for answer script photocopy is ₹300 per subject. Fee for revaluation is ₹750 per subject. If the mark changes by more than 15%, the fee is 50% refunded. Grade upgrades or downgrades are final.",
+      "keywords": ["revaluation", "recheck", "answer script", "paper copy", "mark review", "grade challenge"],
+      "actionable": "Apply via Exam Portal or submit revaluation request form to Controller of Examinations."
+    }
+  ]
+}

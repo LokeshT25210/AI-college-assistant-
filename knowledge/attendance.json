@@ -1,0 +1,31 @@
+{
+  "category": "Attendance",
+  "department": "Academic Affairs",
+  "responsibleOfficer": "Dean of Academic Affairs & Dean of Student Welfare",
+  "policies": [
+    {
+      "id": "ATT-001",
+      "topic": "Minimum Attendance Requirement for Semester Examinations",
+      "summary": "Students must maintain a minimum of 75% attendance in each registered course to be eligible to appear for the end-semester examinations.",
+      "details": "Under university academic regulations (Section 4.2), 75% aggregate attendance is mandatory. Attendance between 65% and 74% may be condoned by the Dean on valid medical grounds or university-approved official duty (OD) upon submission of attested documentation within 7 days of absence. Students with attendance below 65% will be detained (NS grade) and must re-register for the course.",
+      "keywords": ["attendance", "68%", "65%", "74%", "75%", "exam eligibility", "semester exams", "condonation", "medical certificate", "detained", "shortage"],
+      "actionable": "Students between 65% and 74% can submit a medical condonation request accompanied by government hospital certificate to Academic Affairs."
+    },
+    {
+      "id": "ATT-002",
+      "topic": "On-Duty (OD) Attendance Approval",
+      "summary": "On-duty attendance is granted for paper presentations, official university sports events, and approved hackathons.",
+      "details": "OD attendance forms must be recommended by the faculty mentor and approved by the Head of Department (HOD) at least 3 days prior to the event. A maximum of 10 days OD can be claimed per semester.",
+      "keywords": ["on duty", "od", "sports", "hackathon", "symposium", "conference", "leave"],
+      "actionable": "Submit OD approval request with event brochure and invitation letter to the HOD office."
+    },
+    {
+      "id": "ATT-003",
+      "topic": "Biometric and ERP Attendance Discrepancy",
+      "summary": "Attendance marked in class reflects in the ERP portal within 24 hours. Any biometric machine malfunction must be reported within 48 hours.",
+      "details": "If attendance marked by course instructor is not reflecting in the student portal, verify with the course instructor first. If unresolved, escalate to the Academic Cell with course code and class date.",
+      "keywords": ["attendance discrepancy", "not updated", "absent marked", "biometric", "erp attendance"],
+      "actionable": "If course faculty has already verified presence, raise a ticket to Academic Affairs with course code and session date."
+    }
+  ]
+}
