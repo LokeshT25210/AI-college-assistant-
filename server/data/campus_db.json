@@ -4,7 +4,7 @@
       "id": "usr-student-01",
       "name": "Alex Kumar",
       "email": "alex.kumar@campus.edu",
-      "password": "$2a$10$IrgVxyUp50vBK7/XM/7NUuUUnFhcZqGd7SUTefAofpPJxtulhXgSu",
+      "password": "$2a$10$Gr2Kh55NUtanr2XJu1mJteFBQSdJVXiwl47bnbesJa/wdMlnYLm7e",
       "role": "student",
       "studentId": "CS-2023-0489",
       "department": "Computer Science & Engineering",
@@ -20,7 +20,7 @@
       "id": "usr-student-02",
       "name": "Priya Sharma",
       "email": "priya.sharma@campus.edu",
-      "password": "$2a$10$IrgVxyUp50vBK7/XM/7NUuUUnFhcZqGd7SUTefAofpPJxtulhXgSu",
+      "password": "$2a$10$Gr2Kh55NUtanr2XJu1mJteFBQSdJVXiwl47bnbesJa/wdMlnYLm7e",
       "role": "student",
       "studentId": "EC-2023-0112",
       "department": "Electronics & Communication",
@@ -36,7 +36,7 @@
       "id": "usr-admin-01",
       "name": "Dr. S. Raman",
       "email": "admin@campus.edu",
-      "password": "$2a$10$IrgVxyUp50vBK7/XM/7NUuUUnFhcZqGd7SUTefAofpPJxtulhXgSu",
+      "password": "$2a$10$Gr2Kh55NUtanr2XJu1mJteFBQSdJVXiwl47bnbesJa/wdMlnYLm7e",
       "role": "admin",
       "staffId": "REG-0042",
       "designation": "Registrar & Chief Grievance Officer",
@@ -49,7 +49,7 @@
       "id": "usr-admin-02",
       "name": "Prof. Vikram Mehta",
       "email": "finance@campus.edu",
-      "password": "$2a$10$IrgVxyUp50vBK7/XM/7NUuUUnFhcZqGd7SUTefAofpPJxtulhXgSu",
+      "password": "$2a$10$Gr2Kh55NUtanr2XJu1mJteFBQSdJVXiwl47bnbesJa/wdMlnYLm7e",
       "role": "admin",
       "staffId": "FIN-1090",
       "designation": "Finance Officer",
@@ -74,18 +74,18 @@
       "specifications": {},
       "status": "In Progress",
       "urgencyReason": "",
-      "createdAt": "2026-09-10T09:59:52.783Z",
-      "updatedAt": "2026-09-10T09:59:52.786Z",
+      "createdAt": "2026-09-11T03:00:34.059Z",
+      "updatedAt": "2026-09-11T03:00:34.061Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-10T09:59:52.783Z",
+          "timestamp": "2026-09-11T03:00:34.059Z",
           "actor": "Alex Kumar (Student)",
           "note": "Request submitted through Smart Campus Assistant."
         },
         {
           "stage": "In Progress",
-          "timestamp": "2026-09-10T09:59:52.786Z",
+          "timestamp": "2026-09-11T03:00:34.061Z",
           "actor": "Dr. S. Raman (Registrar)",
           "note": "Application received and passed to verifying officer."
         }
@@ -107,12 +107,12 @@
       "specifications": {},
       "status": "Submitted",
       "urgencyReason": "",
-      "createdAt": "2026-09-10T09:59:52.781Z",
-      "updatedAt": "2026-09-10T09:59:52.781Z",
+      "createdAt": "2026-09-11T03:00:34.057Z",
+      "updatedAt": "2026-09-11T03:00:34.057Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-10T09:59:52.781Z",
+          "timestamp": "2026-09-11T03:00:34.057Z",
           "actor": "Alex Kumar (Student)",
           "note": "Request submitted through Smart Campus Assistant."
         }
@@ -134,12 +134,12 @@
       "specifications": {},
       "status": "Submitted",
       "urgencyReason": "",
-      "createdAt": "2026-09-10T09:59:52.776Z",
-      "updatedAt": "2026-09-10T09:59:52.776Z",
+      "createdAt": "2026-09-11T03:00:34.054Z",
+      "updatedAt": "2026-09-11T03:00:34.054Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-10T09:59:52.776Z",
+          "timestamp": "2026-09-11T03:00:34.054Z",
           "actor": "Alex Kumar (Student)",
           "note": "Request submitted through Smart Campus Assistant."
         }
@@ -160,24 +160,24 @@
       "description": "I paid my semester fee of ₹45,000 on Sep 07 via HDFC NetBanking (UTR: HDFC009823101). The amount was deducted from my account, but the fee payment status in the portal still indicates UNPAID.",
       "status": "In Progress",
       "urgencyReason": "Late fine will be triggered if not reconciled before deadline.",
-      "createdAt": "2026-09-08T21:59:39.194Z",
-      "updatedAt": "2026-09-10T05:59:39.196Z",
+      "createdAt": "2026-09-09T15:00:18.526Z",
+      "updatedAt": "2026-09-10T23:00:18.528Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-08T21:59:39.196Z",
+          "timestamp": "2026-09-09T15:00:18.528Z",
           "actor": "Alex Kumar (Student)",
           "note": "Ticket automatically classified as High Priority (Finance) via Smart Campus AI-to-Action engine."
         },
         {
           "stage": "Under Review",
-          "timestamp": "2026-09-09T13:59:39.196Z",
+          "timestamp": "2026-09-10T07:00:18.528Z",
           "actor": "Prof. Vikram Mehta (Finance Officer)",
           "note": "Received UTR HDFC009823101. Forwarded to HDFC Payment Gateway settlement desk for batch reconciliation."
         },
         {
           "stage": "In Progress",
-          "timestamp": "2026-09-10T05:59:39.196Z",
+          "timestamp": "2026-09-10T23:00:18.528Z",
           "actor": "Finance Accounts Desk",
           "note": "Settlement confirmed by bank. Ledger update queued for midnight batch sync."
         }
@@ -198,36 +198,36 @@
       "description": "Room 204, Block B ceiling fan has stopped rotating smoothly and regulator is non-responsive.",
       "status": "Resolved",
       "urgencyReason": "Hostel resident comfort and ventilation.",
-      "createdAt": "2026-09-07T09:59:39.196Z",
-      "updatedAt": "2026-09-09T21:59:39.196Z",
+      "createdAt": "2026-09-08T03:00:18.528Z",
+      "updatedAt": "2026-09-10T15:00:18.528Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-07T09:59:39.196Z",
+          "timestamp": "2026-09-08T03:00:18.528Z",
           "actor": "Alex Kumar (Student)",
           "note": "Created via AI Campus Assistant."
         },
         {
           "stage": "Under Review",
-          "timestamp": "2026-09-07T21:59:39.196Z",
+          "timestamp": "2026-09-08T15:00:18.528Z",
           "actor": "Hostel Warden Block B",
           "note": "Maintenance job scheduled for afternoon electrician rounds."
         },
         {
           "stage": "In Progress",
-          "timestamp": "2026-09-09T03:59:39.196Z",
+          "timestamp": "2026-09-09T21:00:18.528Z",
           "actor": "Campus Electrical Maintenance",
           "note": "Electrician assigned with replacement capacitor and stepped regulator unit."
         },
         {
           "stage": "Resolved",
-          "timestamp": "2026-09-09T21:59:39.196Z",
+          "timestamp": "2026-09-10T15:00:18.528Z",
           "actor": "Hostel Warden Block B",
           "note": "Fan bearing replaced and tested. Resident confirmed working condition."
         }
       ],
       "adminNotes": "Replaced capacitor and fan regulator switch. Signature logged.",
-      "resolvedAt": "2026-09-09T21:59:39.196Z"
+      "resolvedAt": "2026-09-10T15:00:18.528Z"
     },
     {
       "ticketId": "TKT-2026-1011",
@@ -242,30 +242,30 @@
       "description": "Requesting official signed bonafide certificate stating current enrollment in B.Tech ECE for passport renewal.",
       "status": "Resolved",
       "urgencyReason": "Passport office appointment scheduled next Tuesday.",
-      "createdAt": "2026-09-06T09:59:39.196Z",
-      "updatedAt": "2026-09-08T09:59:39.196Z",
+      "createdAt": "2026-09-07T03:00:18.528Z",
+      "updatedAt": "2026-09-09T03:00:18.528Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-06T09:59:39.196Z",
+          "timestamp": "2026-09-07T03:00:18.528Z",
           "actor": "Priya Sharma (Student)",
           "note": "Submitted certificate issuance request."
         },
         {
           "stage": "In Progress",
-          "timestamp": "2026-09-07T09:59:39.196Z",
+          "timestamp": "2026-09-08T03:00:18.528Z",
           "actor": "Student Records Section",
           "note": "Verification of academic record completed."
         },
         {
           "stage": "Resolved",
-          "timestamp": "2026-09-08T09:59:39.196Z",
+          "timestamp": "2026-09-09T03:00:18.528Z",
           "actor": "Dr. S. Raman (Registrar)",
           "note": "Digital bonafide certificate with QR code issued and attached to student portal."
         }
       ],
       "adminNotes": "Digital certificate issued: CERT-BF-2026-4412.",
-      "resolvedAt": "2026-09-08T09:59:39.196Z"
+      "resolvedAt": "2026-09-09T03:00:18.528Z"
     },
     {
       "ticketId": "TKT-2026-1055",
@@ -280,18 +280,18 @@
       "description": "During online exam registration, first payment errored out at UPI gateway but was debited. Second payment succeeded. Need refund of ₹1,500.",
       "status": "Under Review",
       "urgencyReason": "Double debit on student savings account.",
-      "createdAt": "2026-09-09T19:59:39.196Z",
-      "updatedAt": "2026-09-10T03:59:39.196Z",
+      "createdAt": "2026-09-10T13:00:18.528Z",
+      "updatedAt": "2026-09-10T21:00:18.528Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-09T19:59:39.196Z",
+          "timestamp": "2026-09-10T13:00:18.528Z",
           "actor": "Priya Sharma (Student)",
           "note": "Auto-escalated from AI Chat regarding duplicate payment."
         },
         {
           "stage": "Under Review",
-          "timestamp": "2026-09-10T03:59:39.196Z",
+          "timestamp": "2026-09-10T21:00:18.528Z",
           "actor": "Prof. Vikram Mehta (Finance Officer)",
           "note": "Validating duplicate reference with bank payment switch."
         }
@@ -312,12 +312,12 @@
       "description": "Seeking attendance condonation for 6 days absence due to viral fever. Attaching medical certificate and fitness certificate from campus health clinic.",
       "status": "Submitted",
       "urgencyReason": "Attendance margin currently at 68.5% requiring condonation to meet 75% exam cutoff.",
-      "createdAt": "2026-09-10T07:59:39.196Z",
-      "updatedAt": "2026-09-10T07:59:39.196Z",
+      "createdAt": "2026-09-11T01:00:18.528Z",
+      "updatedAt": "2026-09-11T01:00:18.528Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-10T07:59:39.196Z",
+          "timestamp": "2026-09-11T01:00:18.528Z",
           "actor": "Alex Kumar (Student)",
           "note": "Submitted attendance condonation application via assistant escalation."
         }

@@ -39,6 +39,105 @@ const SUGGESTED_QUESTIONS = [
   { text: "How to make a chocolate cake?", category: "Non-College / Out of Scope", tag: "Non-College Handling" }
 ];
 
+function formatInlineText(text) {
+  if (!text) return '';
+  const parts = [];
+  const regex = /(\*\*.*?\*\*|`.*?`)/g;
+  let lastIdx = 0;
+  let match;
+  let key = 0;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIdx) {
+      parts.push(text.substring(lastIdx, match.index));
+    }
+    const token = match[0];
+    if (token.startsWith('**') && token.endsWith('**')) {
+      parts.push(
+        <strong key={key++} className="font-bold text-slate-900 dark:text-white">
+          {token.slice(2, -2)}
+        </strong>
+      );
+    } else if (token.startsWith('`') && token.endsWith('`')) {
+      parts.push(
+        <code key={key++} className="bg-slate-100 dark:bg-slate-700/90 text-blue-700 dark:text-blue-300 px-1 py-0.5 rounded font-mono text-[11px]">
+          {token.slice(1, -1)}
+        </code>
+      );
+    }
+    lastIdx = regex.lastIndex;
+  }
+  if (lastIdx < text.length) {
+    parts.push(text.substring(lastIdx));
+  }
+  return parts.length > 0 ? parts : text;
+}
+
+function FormattedMessageContent({ text }) {
+  if (!text) return null;
+  const lines = text.split('\n');
+
+  return (
+    <div className="space-y-2 leading-relaxed text-slate-800 dark:text-slate-100 font-sans">
+      {lines.map((line, idx) => {
+        const trimmed = line.trim();
+        if (!trimmed) return <div key={idx} className="h-1" />;
+
+        // Subheaders (e.g. ### Header)
+        if (trimmed.startsWith('### ')) {
+          return (
+            <h4 key={idx} className="font-bold text-sm sm:text-base text-blue-900 dark:text-blue-300 pt-1.5 pb-0.5 border-b border-slate-100 dark:border-slate-700/60">
+              {formatInlineText(trimmed.replace('### ', ''))}
+            </h4>
+          );
+        }
+
+        // Callout boxes (Starts with 📌, 💡, ⚠️, ✅)
+        if (trimmed.startsWith('📌') || trimmed.startsWith('💡') || trimmed.startsWith('⚠️')) {
+          return (
+            <div key={idx} className="my-2 p-2.5 rounded-xl bg-blue-50/90 dark:bg-slate-800/90 border border-blue-200/90 dark:border-blue-900/60 text-slate-800 dark:text-blue-200 text-xs shadow-sm">
+              {formatInlineText(trimmed)}
+            </div>
+          );
+        }
+
+        // Numbered list items
+        if (/^\d+\.\s/.test(trimmed)) {
+          return (
+            <div key={idx} className="flex items-start space-x-2 pl-1">
+              <span className="font-bold text-blue-600 dark:text-blue-400 shrink-0 font-mono text-xs">
+                {trimmed.match(/^\d+\./)[0]}
+              </span>
+              <span className="flex-1 text-slate-800 dark:text-slate-100">
+                {formatInlineText(trimmed.replace(/^\d+\.\s*/, ''))}
+              </span>
+            </div>
+          );
+        }
+
+        // Bullet points
+        if (trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.startsWith('• ')) {
+          return (
+            <div key={idx} className="flex items-start space-x-2 pl-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400 mt-1.5 shrink-0" />
+              <span className="flex-1 text-slate-800 dark:text-slate-100">
+                {formatInlineText(trimmed.replace(/^[-*•]\s*/, ''))}
+              </span>
+            </div>
+          );
+        }
+
+        // Regular paragraph line
+        return (
+          <p key={idx} className="text-slate-800 dark:text-slate-100">
+            {formatInlineText(trimmed)}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) {
   const { user } = useAuth();
   const [messages, setMessages] = useState([
@@ -224,35 +323,35 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
             key={msg.id} 
             className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div className={`max-w-2xl rounded-2xl p-4 shadow-sm text-xs sm:text-sm font-sans ${
+            <div className={`max-w-2xl rounded-2xl p-4 shadow-sm text-xs sm:text-sm font-sans transition-all ${
               msg.sender === 'user'
-                ? 'bg-blue-600 text-white rounded-tr-none shadow-blue-500/10'
-                : 'bg-white dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-tl-none space-y-3'
+                ? 'bg-blue-600 text-white rounded-tr-none shadow-md shadow-blue-500/20'
+                : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-tl-none space-y-3 shadow-sm'
             }`}>
               
               {/* Bot Header Tags */}
               {msg.sender === 'assistant' && (
-                <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-slate-100 dark:border-slate-700 text-[11px]">
+                <div className="flex flex-wrap items-center gap-1.5 pb-2 border-b border-slate-100 dark:border-slate-800 text-[11px]">
                   {msg.verified ? (
-                    <span className="inline-flex items-center space-x-1 text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded">
+                    <span className="inline-flex items-center space-x-1 text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-2 py-0.5 rounded">
                       <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       <span>Verified Policy</span>
                     </span>
                   ) : (
-                    <span className="inline-flex items-center space-x-1 text-amber-700 dark:text-amber-300 font-bold bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 px-2 py-0.5 rounded">
+                    <span className="inline-flex items-center space-x-1 text-amber-700 dark:text-amber-300 font-bold bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/80 px-2 py-0.5 rounded">
                       <AlertCircle className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                       <span>Campus Guidance / Action Required</span>
                     </span>
                   )}
 
                   {msg.category && (
-                    <span className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold px-2 py-0.5 rounded border border-slate-200 dark:border-slate-600">
+                    <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
                       {msg.category}
                     </span>
                   )}
 
                   {msg.department && (
-                    <span className="bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold px-2 py-0.5 rounded border border-blue-200 dark:border-blue-800 flex items-center space-x-1">
+                    <span className="bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold px-2 py-0.5 rounded border border-blue-200 dark:border-blue-800/80 flex items-center space-x-1">
                       <Building2 className="w-3 h-3" />
                       <span>{msg.department}</span>
                     </span>
@@ -261,8 +360,8 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
                   {msg.priority && (
                     <span className={`px-2 py-0.5 rounded font-bold ${
                       msg.priority === 'High' || msg.priority === 'Urgent'
-                        ? 'bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
-                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-600'
+                        ? 'bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/80'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                     }`}>
                       {msg.priority} Priority
                     </span>
@@ -271,9 +370,13 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
               )}
 
               {/* Message Content */}
-              <div className="whitespace-pre-line leading-relaxed text-slate-800 dark:text-slate-100">
-                {msg.text}
-              </div>
+              {msg.sender === 'assistant' ? (
+                <FormattedMessageContent text={msg.text} />
+              ) : (
+                <div className="whitespace-pre-line leading-relaxed text-white font-medium">
+                  {msg.text}
+                </div>
+              )}
 
               {/* Policy Reference Banner */}
               {msg.policyId && msg.policyId !== 'SAFE-ESCALATE' && msg.policyId !== 'PROC-ACTION-01' && (
@@ -509,7 +612,7 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
             onChange={(e) => setInputQuery(e.target.value)}
             disabled={isProcessing}
             placeholder="Type your inquiry in plain English (e.g. 'Can I write exams with 68% attendance?' or 'Room 204 fan broken')..."
-            className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 font-sans transition-colors"
+            className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:bg-white dark:focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 font-sans transition-all"
           />
           <button
             type="submit"

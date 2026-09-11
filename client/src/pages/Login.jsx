@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../api';
 import Campus3DScene from '../components/Campus3DScene';
+import StudentCaptcha from '../components/StudentCaptcha';
 import { 
   GraduationCap, 
   Lock, 
@@ -70,20 +71,14 @@ export default function Login({ onNavigate }) {
   const [regulation, setRegulation] = useState('R23 Autonomous');
   const [rememberMe, setRememberMe] = useState(true);
 
-  // Captcha Security Math Challenge
-  const [captchaNum1, setCaptchaNum1] = useState(7);
-  const [captchaNum2, setCaptchaNum2] = useState(4);
-  const [captchaInput, setCaptchaInput] = useState('');
+  // Student Human Verification CAPTCHA state
+  const [loginCaptcha, setLoginCaptcha] = useState('');
+  const [loginCaptchaCode, setLoginCaptchaCode] = useState('');
+  const [loginCaptchaSubmitted, setLoginCaptchaSubmitted] = useState(false);
 
-  const refreshCaptcha = () => {
-    setCaptchaNum1(Math.floor(2 + Math.random() * 8));
-    setCaptchaNum2(Math.floor(2 + Math.random() * 8));
-    setCaptchaInput('');
-  };
-
-  useEffect(() => {
-    refreshCaptcha();
-  }, [authMode]);
+  const [regCaptcha, setRegCaptcha] = useState('');
+  const [regCaptchaCode, setRegCaptchaCode] = useState('');
+  const [regCaptchaSubmitted, setRegCaptchaSubmitted] = useState(false);
 
   // Extended Registration Form Fields
   const [name, setName] = useState('');
@@ -132,18 +127,24 @@ export default function Login({ onNavigate }) {
     setLoading(true);
     setError(null);
 
-    // Verify Captcha
+    // Verify Student Human CAPTCHA for Login
     if (authMode === 'login') {
-      const expectedCaptcha = (captchaNum1 + captchaNum2).toString();
-      if (captchaInput.trim() !== expectedCaptcha) {
+      setLoginCaptchaSubmitted(true);
+      if (!loginCaptcha || loginCaptcha.trim().toUpperCase() !== (loginCaptchaCode || '').toUpperCase()) {
         setLoading(false);
-        setError(`Security verification failed: ${captchaNum1} + ${captchaNum2} is not ${captchaInput || 'blank'}. Please enter the correct sum.`);
-        refreshCaptcha();
+        setError('Student Human Verification Required: Please enter the exact security code shown to prove human student identity.');
         return;
       }
     }
 
+    // Verify Student Human CAPTCHA for Registration
     if (authMode === 'register') {
+      setRegCaptchaSubmitted(true);
+      if (!regCaptcha || regCaptcha.trim().toUpperCase() !== (regCaptchaCode || '').toUpperCase()) {
+        setLoading(false);
+        setError('Student Human Verification Required: Please enter the exact security code shown to prove human student identity.');
+        return;
+      }
       if (regPassword !== confirmPassword) {
         setLoading(false);
         setError('Passwords do not match. Please re-enter your password.');
@@ -205,7 +206,6 @@ export default function Login({ onNavigate }) {
       }
     } else {
       setError(res.message || 'Invalid institutional credentials. Please check your email/roll number and password.');
-      refreshCaptcha();
     }
   };
 
@@ -222,10 +222,10 @@ export default function Login({ onNavigate }) {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-slate-100">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-slate-100 dark:bg-slate-950 transition-colors">
       
       {/* Enterprise Dual-Pane Card with 3D Depth */}
-      <div className="w-full max-w-6xl bg-white border border-slate-200/90 rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[720px] transition-all duration-300">
+      <div className="w-full max-w-6xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[720px] transition-all duration-300">
         
         {/* Left Pane: Interactive 3D Model Stage & Campus Identity (5 cols) */}
         <div className="lg:col-span-5 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white p-6 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800 relative overflow-hidden">
@@ -242,7 +242,7 @@ export default function Login({ onNavigate }) {
               </div>
               <div>
                 <h1 className="text-base sm:text-lg font-bold font-serif tracking-tight text-white leading-tight">
-                  DVR & Dr HS MIC College of Technology
+                  Autonomous Engineering College
                 </h1>
                 <div className="flex items-center space-x-2 mt-0.5">
                   <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider bg-emerald-950/70 border border-emerald-700/60 px-2 py-0.2 rounded">
@@ -532,51 +532,30 @@ export default function Login({ onNavigate }) {
                   </div>
                 </div>
 
-                {/* Autonomous Regulation & Captcha Security Row */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-                      Academic Regulation
-                    </label>
-                    <select
-                      value={regulation}
-                      onChange={(e) => setRegulation(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="R23 Autonomous">R23 Regulations (Autonomous)</option>
-                      <option value="R20 Autonomous">R20 Regulations (Autonomous)</option>
-                      <option value="R19 Autonomous">R19 Regulations (Affiliated)</option>
-                    </select>
-                  </div>
+                {/* Academic Regulation Selector */}
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1">
+                    Academic Regulation
+                  </label>
+                  <select
+                    value={regulation}
+                    onChange={(e) => setRegulation(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="R23 Autonomous">R23 Regulations (Autonomous)</option>
+                    <option value="R20 Autonomous">R20 Regulations (Autonomous)</option>
+                    <option value="R19 Autonomous">R19 Regulations (Affiliated)</option>
+                  </select>
+                </div>
 
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
-                        Security Verification
-                      </label>
-                      <button
-                        type="button"
-                        onClick={refreshCaptcha}
-                        className="text-slate-400 hover:text-blue-600"
-                        title="New calculation challenge"
-                      >
-                        <RefreshCw className="w-3 h-3" />
-                      </button>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="bg-slate-200 text-slate-800 font-mono font-bold px-2.5 py-1.5 rounded-lg text-xs border border-slate-300 select-none">
-                        {captchaNum1} + {captchaNum2} = ?
-                      </div>
-                      <input
-                        type="text"
-                        value={captchaInput}
-                        onChange={(e) => setCaptchaInput(e.target.value)}
-                        placeholder="Result"
-                        required
-                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                  </div>
+                {/* Student Human Verification CAPTCHA */}
+                <div className="pt-1">
+                  <StudentCaptcha
+                    userValue={loginCaptcha}
+                    onChange={setLoginCaptcha}
+                    onCodeGenerated={setLoginCaptchaCode}
+                    isSubmitted={loginCaptchaSubmitted}
+                  />
                 </div>
 
                 {/* Remember Me Checkbox */}
@@ -623,15 +602,15 @@ export default function Login({ onNavigate }) {
               <form onSubmit={handleSubmit} className="space-y-4">
                 
                 {/* 1. Personal Details */}
-                <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
-                  <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 pb-1 border-b border-slate-200">
-                    <UserCheck className="w-3.5 h-3.5 text-blue-600" />
+                <div className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+                  <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 pb-1 border-b border-slate-200 dark:border-slate-700">
+                    <UserCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>Personal & University Identity</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Full Name (as in SSC)
                       </label>
                       <input
@@ -640,12 +619,12 @@ export default function Login({ onNavigate }) {
                         onChange={(e) => setName(e.target.value)}
                         required
                         placeholder="e.g. Rahul Varma"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Permanent Roll No / PIN
                       </label>
                       <input
@@ -654,14 +633,14 @@ export default function Login({ onNavigate }) {
                         onChange={(e) => setStudentId(e.target.value)}
                         required
                         placeholder="e.g. 23H71A0501"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 uppercase tracking-wider font-semibold"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 uppercase tracking-wider font-semibold"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="sm:col-span-2">
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Institutional Email Address
                       </label>
                       <input
@@ -670,18 +649,18 @@ export default function Login({ onNavigate }) {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         placeholder="e.g. 23h71a0501@mictech.ac.in"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Gender
                       </label>
                       <select
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -691,7 +670,7 @@ export default function Login({ onNavigate }) {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                    <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                       Student Mobile / WhatsApp Number
                     </label>
                     <div className="relative">
@@ -701,27 +680,27 @@ export default function Login({ onNavigate }) {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="+91 98765 43210"
-                        className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 font-sans"
+                        className="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-sans"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* 2. Academic Program Details */}
-                <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
-                  <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 pb-1 border-b border-slate-200">
-                    <Building2 className="w-3.5 h-3.5 text-purple-600" />
+                <div className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+                  <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 pb-1 border-b border-slate-200 dark:border-slate-700">
+                    <Building2 className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
                     <span>Academic Program & Department</span>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                    <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                       Branch / Department
                     </label>
                     <select
                       value={department}
                       onChange={(e) => setDepartment(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-blue-500"
                     >
                       {DEPARTMENTS.map((dept) => (
                         <option key={dept} value={dept}>{dept}</option>
@@ -731,13 +710,13 @@ export default function Login({ onNavigate }) {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Year & Semester
                       </label>
                       <select
                         value={academicYear}
                         onChange={(e) => setAcademicYear(e.target.value)}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="B.Tech 1st Year (Semester 1)">1st Year (Sem 1)</option>
                         <option value="B.Tech 1st Year (Semester 2)">1st Year (Sem 2)</option>
@@ -751,13 +730,13 @@ export default function Login({ onNavigate }) {
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Section
                       </label>
                       <select
                         value={section}
                         onChange={(e) => setSection(e.target.value)}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="Section A">Section A</option>
                         <option value="Section B">Section B</option>
@@ -767,13 +746,13 @@ export default function Login({ onNavigate }) {
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Autonomous Regulation
                       </label>
                       <select
                         value={regRegulation}
                         onChange={(e) => setRegRegulation(e.target.value)}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="R23 Autonomous">R23 Autonomous</option>
                         <option value="R20 Autonomous">R20 Autonomous</option>
@@ -783,25 +762,25 @@ export default function Login({ onNavigate }) {
                 </div>
 
                 {/* 3. Residence & Commute */}
-                <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
-                  <div className="flex items-center justify-between pb-1 border-b border-slate-200">
-                    <span className="text-xs font-bold text-slate-700 flex items-center space-x-1.5">
-                      <Bus className="w-3.5 h-3.5 text-emerald-600" />
+                <div className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+                  <div className="flex items-center justify-between pb-1 border-b border-slate-200 dark:border-slate-700">
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center space-x-1.5">
+                      <Bus className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                       <span>Residence & Commute Method</span>
                     </span>
 
-                    <div className="flex items-center space-x-1 p-0.5 bg-slate-200 rounded-lg text-[10px] font-bold">
+                    <div className="flex items-center space-x-1 p-0.5 bg-slate-200 dark:bg-slate-700 rounded-lg text-[10px] font-bold">
                       <button
                         type="button"
                         onClick={() => setResidenceType('Day Scholar')}
-                        className={`px-2 py-0.5 rounded ${residenceType === 'Day Scholar' ? 'bg-white text-emerald-800 shadow-sm' : 'text-slate-600'}`}
+                        className={`px-2 py-0.5 rounded transition-colors ${residenceType === 'Day Scholar' ? 'bg-white dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 shadow-sm' : 'text-slate-600 dark:text-slate-400'}`}
                       >
                         Day Scholar
                       </button>
                       <button
                         type="button"
                         onClick={() => setResidenceType('Hosteler')}
-                        className={`px-2 py-0.5 rounded ${residenceType === 'Hosteler' ? 'bg-white text-blue-800 shadow-sm' : 'text-slate-600'}`}
+                        className={`px-2 py-0.5 rounded transition-colors ${residenceType === 'Hosteler' ? 'bg-white dark:bg-slate-800 text-blue-800 dark:text-blue-300 shadow-sm' : 'text-slate-600 dark:text-slate-400'}`}
                       >
                         Campus Hosteler
                       </button>
@@ -810,13 +789,13 @@ export default function Login({ onNavigate }) {
 
                   {residenceType === 'Day Scholar' ? (
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         College Bus Route (45+ GPS Fleet)
                       </label>
                       <select
                         value={busRoute}
                         onChange={(e) => setBusRoute(e.target.value)}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-blue-500"
                       >
                         {BUS_ROUTES.map((route) => (
                           <option key={route} value={route}>{route}</option>
@@ -825,13 +804,13 @@ export default function Login({ onNavigate }) {
                     </div>
                   ) : (
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Campus Hostel Facility
                       </label>
                       <select
                         value={hostelBlock}
                         onChange={(e) => setHostelBlock(e.target.value)}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="Campus Boys Hostel - Block A">Campus Boys Hostel - Block A</option>
                         <option value="Campus Boys Hostel - Block B">Campus Boys Hostel - Block B</option>
@@ -842,15 +821,15 @@ export default function Login({ onNavigate }) {
                 </div>
 
                 {/* 4. Credentials & Password */}
-                <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
-                  <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 pb-1 border-b border-slate-200">
-                    <KeyRound className="w-3.5 h-3.5 text-amber-600" />
+                <div className="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+                  <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 pb-1 border-b border-slate-200 dark:border-slate-700">
+                    <KeyRound className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                     <span>Security Credentials</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Account Password
                       </label>
                       <input
@@ -859,7 +838,7 @@ export default function Login({ onNavigate }) {
                         onChange={(e) => setRegPassword(e.target.value)}
                         required
                         placeholder="••••••••••••"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                       />
                       {/* Password strength bar */}
                       {regPassword && (
@@ -874,11 +853,11 @@ export default function Login({ onNavigate }) {
                                     : regStrength <= 3
                                     ? 'bg-amber-500'
                                     : 'bg-emerald-500'
-                                  : 'bg-slate-200'
+                                  : 'bg-slate-200 dark:bg-slate-700'
                               }`}
                             />
                           ))}
-                          <span className="text-[9px] text-slate-500 font-mono ml-1">
+                          <span className="text-[9px] text-slate-500 dark:text-slate-400 font-mono ml-1">
                             {regStrength <= 2 ? 'Weak' : regStrength <= 3 ? 'Medium' : 'Strong'}
                           </span>
                         </div>
@@ -887,11 +866,11 @@ export default function Login({ onNavigate }) {
 
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <label className="text-[11px] font-bold text-slate-600 uppercase">
+                        <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase">
                           Confirm Password
                         </label>
                         {confirmPassword && (
-                          <span className={`text-[10px] font-bold ${confirmPassword === regPassword ? 'text-emerald-600' : 'text-red-500'}`}>
+                          <span className={`text-[10px] font-bold ${confirmPassword === regPassword ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
                             {confirmPassword === regPassword ? '✓ Matches' : '✗ Mismatch'}
                           </span>
                         )}
@@ -902,27 +881,37 @@ export default function Login({ onNavigate }) {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                         placeholder="••••••••••••"
-                        className={`w-full px-3 py-2 bg-white border rounded-xl text-xs focus:ring-2 focus:ring-blue-500 ${
+                        className={`w-full px-3 py-2 bg-white dark:bg-slate-800 border rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 ${
                           confirmPassword && confirmPassword !== regPassword
                             ? 'border-red-300 focus:ring-red-500'
-                            : 'border-slate-200'
+                            : 'border-slate-200 dark:border-slate-700'
                         }`}
                       />
                     </div>
                   </div>
                 </div>
 
+                {/* Student Human Verification CAPTCHA for Registration */}
+                <div className="pt-2">
+                  <StudentCaptcha
+                    userValue={regCaptcha}
+                    onChange={setRegCaptcha}
+                    onCodeGenerated={setRegCaptchaCode}
+                    isSubmitted={regCaptchaSubmitted}
+                  />
+                </div>
+
                 {/* Undertaking Checkbox */}
                 <div className="pt-1">
-                  <label className="flex items-start space-x-2 text-[11px] text-slate-600 cursor-pointer">
+                  <label className="flex items-start space-x-2 text-[11px] text-slate-600 dark:text-slate-300 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={agreedToConduct}
                       onChange={(e) => setAgreedToConduct(e.target.checked)}
-                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 mt-0.5"
+                      className="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500 mt-0.5"
                     />
                     <span>
-                      I solemnly affirm that the details provided are genuine, and I agree to abide by the <strong>Autonomous Academic Regulations (75% attendance policy, R20/R23 criteria)</strong> and student code of conduct of DVR & Dr. HS MIC College of Technology.
+                      I solemnly affirm that the details provided are genuine, and I agree to abide by the <strong>Autonomous Academic Regulations (75% attendance policy, R20/R23 criteria)</strong> and student code of conduct of the Autonomous Engineering College.
                     </span>
                   </label>
                 </div>
@@ -946,51 +935,51 @@ export default function Login({ onNavigate }) {
             )}
 
             {/* Institutional Fast-Access Accounts & Evaluation Personas Accordion */}
-            <div className="pt-4 border-t border-slate-200/80">
+            <div className="pt-4 border-t border-slate-200/80 dark:border-slate-800">
               <button
                 type="button"
                 onClick={() => setShowEvaluationPass(!showEvaluationPass)}
-                className="w-full flex items-center justify-between text-xs font-semibold text-slate-500 hover:text-slate-800 py-1"
+                className="w-full flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 py-1"
               >
                 <span className="flex items-center space-x-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                   <span>Official Quick Login & Evaluation Personas</span>
                 </span>
                 {showEvaluationPass ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
               </button>
 
               {showEvaluationPass && (
-                <div className="mt-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs animate-in fade-in">
-                  <p className="text-[11px] text-slate-500">
+                <div className="mt-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2 text-xs animate-in fade-in">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
                     Select an official college profile or statutory evaluation persona to sign in immediately:
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <button
                       type="button"
                       onClick={() => handleQuickPersona('student@mictech.ac.in', 'student-dashboard')}
-                      className="text-left bg-white hover:bg-blue-50 border border-blue-200 p-2.5 rounded-lg transition-colors shadow-sm"
+                      className="text-left bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
                     >
-                      <span className="font-bold text-blue-700 block text-[11px]">Official Student</span>
-                      <span className="text-[10px] text-slate-500 block">DVR & Dr. HS MIC College</span>
-                      <span className="text-[9px] text-emerald-600 font-semibold font-mono">84.0% Attendance &bull; R20</span>
+                      <span className="font-bold text-blue-700 dark:text-blue-400 block text-[11px]">Official Student</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Autonomous College</span>
+                      <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold font-mono">84.0% Attendance &bull; R20</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleQuickPersona('principal@mictech.ac.in', 'admin-dashboard')}
-                      className="text-left bg-white hover:bg-purple-50 border border-purple-200 p-2.5 rounded-lg transition-colors shadow-sm"
+                      className="text-left bg-white dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
                     >
-                      <span className="font-bold text-purple-700 block text-[11px]">Dr. T. Vamsee Kiran</span>
-                      <span className="text-[10px] text-slate-500 block">Principal / Admin Console</span>
-                      <span className="text-[9px] text-purple-600 font-semibold font-mono">Full Authority</span>
+                      <span className="font-bold text-purple-700 dark:text-purple-400 block text-[11px]">Dr. T. Vamsee Kiran</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Principal / Admin Console</span>
+                      <span className="text-[9px] text-purple-600 dark:text-purple-400 font-semibold font-mono">Full Authority</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleQuickPersona('alex.kumar@campus.edu', 'student-dashboard')}
-                      className="text-left bg-white hover:bg-amber-50 border border-amber-200 p-2.5 rounded-lg transition-colors shadow-sm"
+                      className="text-left bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/30 border border-amber-200 dark:border-amber-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
                     >
-                      <span className="font-bold text-amber-800 block text-[11px]">Evaluator Test Case</span>
-                      <span className="text-[10px] text-slate-500 block">Alex Kumar (Test Persona)</span>
-                      <span className="text-[9px] text-amber-600 font-semibold font-mono">68.5% Condonation Test</span>
+                      <span className="font-bold text-amber-800 dark:text-amber-300 block text-[11px]">Evaluator Test Case</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Alex Kumar (Test Persona)</span>
+                      <span className="text-[9px] text-amber-600 dark:text-amber-400 font-semibold font-mono">68.5% Condonation Test</span>
                     </button>
                   </div>
                 </div>
@@ -999,8 +988,8 @@ export default function Login({ onNavigate }) {
 
           </div>
 
-          <p className="text-[11px] text-slate-400 text-center pt-5">
-            DVR & Dr HS MIC College of Technology &copy; 2026 &bull; Autonomous Institution &bull; Central Authentication Authority
+          <p className="text-[11px] text-slate-400 dark:text-slate-500 text-center pt-5">
+            Autonomous Engineering College &copy; 2026 &bull; Autonomous Institution &bull; Central Authentication Authority
           </p>
 
         </div>
@@ -1010,38 +999,38 @@ export default function Login({ onNavigate }) {
       {/* Help & Portal Guide Modal */}
       {showHelpModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold">
                   <GraduationCap className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Institutional Login Guide</h3>
-                  <p className="text-[11px] text-slate-500">DVR & Dr. HS MIC College of Technology</p>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">Institutional Login Guide</h3>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">Autonomous Engineering College of Technology</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowHelpModal(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold p-1"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold p-1"
               >
                 &times;
               </button>
             </div>
 
-            <div className="text-xs text-slate-600 space-y-3">
+            <div className="text-xs text-slate-600 dark:text-slate-300 space-y-3">
               <p>
-                <strong>Student Sign In:</strong> Use your permanent institutional email (e.g., <code className="bg-slate-100 px-1 py-0.5 rounded text-blue-700 font-mono">student@mictech.ac.in</code>) or your 10-digit Hall Ticket PIN (e.g., <code className="bg-slate-100 px-1 py-0.5 rounded text-blue-700 font-mono">21H71A0501</code>).
+                <strong>Student Sign In:</strong> Use your permanent institutional email (e.g., <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-blue-700 dark:text-blue-300 font-mono">student@mictech.ac.in</code>) or your 10-digit Hall Ticket PIN (e.g., <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-blue-700 dark:text-blue-300 font-mono">21H71A0501</code>).
               </p>
               <p>
                 <strong>Password Reset:</strong> For security compliance, password resets require verification from the Examination Cell or the Campus IT Cell at the Administrative Block.
               </p>
-              <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1 text-[11px]">
-                <span className="font-bold text-slate-700 block">Campus IT Helpdesk:</span>
-                <span className="block text-slate-600">Email: support@mictech.ac.in</span>
-                <span className="block text-slate-600">Administrative Block, Ground Floor</span>
-                <span className="block text-slate-600">Office Hours: 9:00 AM – 5:00 PM (Monday to Saturday)</span>
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1 text-[11px]">
+                <span className="font-bold text-slate-700 dark:text-slate-200 block">Campus IT Helpdesk:</span>
+                <span className="block text-slate-600 dark:text-slate-300">Email: support@mictech.ac.in</span>
+                <span className="block text-slate-600 dark:text-slate-300">Administrative Block, Ground Floor</span>
+                <span className="block text-slate-600 dark:text-slate-300">Office Hours: 9:00 AM – 5:00 PM (Monday to Saturday)</span>
               </div>
             </div>
 

@@ -329,11 +329,12 @@ async function processAssistantQuery(query, studentContext = {}) {
     (cleanQuery.includes('need') && cleanQuery.includes('certificate'))
   );
 
-  const GEMINI_CAMPUS_SYS = `You are the official Smart Campus AI Assistant.
-IMPORTANT STRICT GUIDELINES:
-- In your answer, DO NOT mention or say the name "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology".
-- Refer to the institution naturally and neutrally as "our college", "the college", "the campus", "our autonomous institution", or "campus administration".
-- Provide a direct, authoritative, detailed, and practically useful ANSWER with exact procedures, official regulations, contacts, and next steps. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, accurate information.`;
+  const GEMINI_CAMPUS_SYS = `You are the official Smart Campus AI Assistant and Senior Academic Counselor for our autonomous engineering institution.
+CRITICAL INSTRUCTIONS:
+1. STRICT ANONYMIZATION: DO NOT mention the words "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology". Refer to the institution neutrally as "our college", "the campus", or "our autonomous engineering college".
+2. CAMPUS ASSISTANT PERSONA: Behave like an authoritative, helpful, and supportive college administrative counselor. Provide a direct, related, and comprehensive ANSWER with exact official regulations, timelines, fees, and office counter locations.
+3. ACCURATE STATUS DIRECTIVE: If the student requires 100% accurate, personalized status, official stamp, or immediate manual verification, explicitly advise them to approach the respective college administrative section/counter at the Administrative Block during office hours (9:00 AM – 5:00 PM).
+4. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, practical guidance first.`;
 
   // 2. Verified Answer Handling for Attendance
   if (attendanceLogic) {
@@ -347,7 +348,7 @@ Autonomous College Attendance Regulations:
 - 65% to 74% condonation band on valid medical grounds with ₹500 condonation fee and medical certificate approved by Academic Council / Principal.
 - Below 65%: Detained (NS grade), student must repeat course in subsequent semesters.
 IMPORTANT: Do NOT mention the words "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
-Task: Provide a direct, authoritative, and helpful answer. Explain their exact status, condonation procedure if applicable, and next steps. Do NOT merely tell them to file a ticket.`;
+Task: Provide a direct, authoritative, and helpful answer as a college academic advisor. Explain their exact status, condonation procedure if applicable, and next steps. Advise them to approach their HOD/Academic Section for accurate verification.`;
       geminiAttendanceAnswer = await callGemini(attPrompt, GEMINI_CAMPUS_SYS, 4500);
     } catch (e) {}
 
@@ -355,6 +356,8 @@ Task: Provide a direct, authoritative, and helpful answer. Explain their exact s
     if (geminiAttendanceAnswer) {
       responseText += `\n\n${geminiAttendanceAnswer}`;
     }
+
+    responseText += `\n\n📌 **Official Advisory**: For 100% accurate verification of your official attendance logs and condonation eligibility, please approach your department HOD or the Academic Affairs Section at the Administrative Block during office hours (9:00 AM – 5:00 PM).`;
 
     if (bestMatch && !responseText.includes(bestMatch.policy.id)) {
       responseText += `\n\nOfficial Policy Reference: [${bestMatch.policy.id}] "${bestMatch.policy.topic}" under jurisdiction of ${bestMatch.department}.`;
@@ -401,7 +404,7 @@ Official Campus Hostel Maintenance Procedures:
 - Emergency / Urgent repairs: Contact the Campus Electrical Helpdesk (internal ext: 204) or resident warden.
 - Escalation: Report to Chief Warden or Estate Office if unresolved after 24 hours.
 IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
-Task: Provide a direct, practical, and comprehensive ANSWER with step-by-step guidance on how to get this issue inspected and fixed. Do NOT simply tell them to create a ticket.`;
+Task: Provide a direct, practical, and comprehensive ANSWER as the college assistant with step-by-step guidance on how to get this issue inspected and fixed. If they need accurate update or immediate fix, tell them to approach the caretaker office.`;
       fallbackAnswer = `### Hostel Room Maintenance Guidance
 
 Here is how to get your room maintenance issue resolved quickly:
@@ -415,7 +418,10 @@ Here is how to get your room maintenance issue resolved quickly:
    - For urgent electrical repairs, contact the Campus Electrical Maintenance helpdesk at internal extension **204** or inform the resident warden.
 
 3. **Safety Notice**:
-   - Please do not attempt to dismantle switchboards, fan regulators, or wiring yourself.`;
+   - Please do not attempt to dismantle switchboards, fan regulators, or wiring yourself.
+
+4. **Official Department Guidance**:
+   - 💡 **For 100% accurate status and physical inspection**: Please **approach the Hostel Caretaker / Warden Office** on the Ground Floor directly during office hours, or submit a formal tracked ticket below.`;
     } else if (classification.category === 'Fees') {
       title = 'Payment Reconciliation: Transaction Deducted but Portal Shows Unpaid';
       description = `Student reported fee payment deducted from bank account, but student portal status remains unpaid. Query: "${query}".`;
@@ -427,7 +433,7 @@ Official Fee Payment Reconciliation Procedures (Policy FEE-002):
 - Action Steps: If still unpaid after 4 hours, visit the Finance & Accounts Section at the Administrative Block (Ground Floor, Room 104) with bank debit SMS or mini-statement, or email accounts@mictech.ac.in.
 - Late Fee Protection: Transactions initiated before the deadline are exempt from late fee penalties upon UTR verification.
 IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
-Task: Provide a reassuring, clear, and actionable ANSWER explaining the reconciliation process, timelines, and next steps. Do NOT simply tell them to create a ticket.`;
+Task: Provide a reassuring, clear, and actionable ANSWER as the college finance advisor explaining the reconciliation process, timelines, and next steps. Advise them to approach the Accounts Section for accurate status.`;
       fallbackAnswer = `### Fee Payment Reconciliation Guidance
 
 If your fee payment was deducted from your bank account but the student portal still indicates unpaid:
@@ -441,7 +447,10 @@ If your fee payment was deducted from your bank account but the student portal s
 
 3. **Accounts Section Verification**:
    - If the portal remains unpaid after 4 hours, visit the **Finance & Accounts Section** at the **Administrative Block (Ground Floor, Room 104)** during office hours (9:30 AM – 4:00 PM) or email \`accounts@mictech.ac.in\` with your Roll Number and UTR.
-   - Once verified against the bank settlement statement, the accounts desk manually reconciles your ledger. Late fees are waived for payments initiated prior to the deadline.`;
+   - Once verified against the bank settlement statement, the accounts desk manually reconciles your ledger. Late fees are waived for payments initiated prior to the deadline.
+
+4. **Official Department Guidance**:
+   - 💡 **For 100% accurate status and immediate ledger update**: Please **approach the Finance & Accounts Section (Room 104)** with your bank UTR receipt, or submit an official reconciliation ticket below.`;
     } else if (classification.category === 'Certificates') {
       title = 'Certificate Request: ' + (query.length > 45 ? query.substring(0, 45) + '...' : query);
       description = `Student requested certificate: "${query}".`;
@@ -455,7 +464,7 @@ Official Certificate Issuance Procedures (Policy CRT-001):
 - Timelines: Bonafide and Conduct certificates take 2 working days. Transcripts and Migration certificates take 3–5 working days.
 - Authentication: All official certificates carry an embedded QR code verification and Controller of Examinations seal.
 IMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.
-Task: Provide a direct, step-by-step ANSWER on how to obtain the requested certificate, processing times, and counter locations. Do NOT simply tell them to create a ticket.`;
+Task: Provide a direct, step-by-step ANSWER on how to obtain the requested certificate, processing times, and counter locations. Advise them to approach the Student Records counter if urgent.`;
       fallbackAnswer = `### Certificate Issuance Procedures
 
 To obtain official college certificates:
@@ -473,12 +482,15 @@ To obtain official college certificates:
 3. **Processing Timelines**:
    - Bonafide & Conduct Certificates: **2 working days**.
    - Transcripts & Migration Certificates: **3 to 5 working days**.
-   - All issued certificates feature digital QR code verification and institutional seal.`;
+   - All issued certificates feature digital QR code verification and institutional seal.
+
+4. **Official Department Guidance**:
+   - 💡 **For accurate processing status or urgent collection**: Please **approach the Student Records Counter** at the Administrative Block Ground Floor during office hours (9:00 AM – 5:00 PM).`;
     } else {
       title = `${classification.category} Request: ` + (query.length > 45 ? query.substring(0, 45) + '...' : query);
       description = query;
-      domainPrompt = `Student Query: "${query}"\nDepartment: ${classification.department}\nCategory: ${classification.category}\nContext: Our autonomous college.\nIMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.\nTask: Provide a direct, thorough, and helpful answer explaining official policies, procedures, office locations, and steps. Do NOT simply say to file a ticket.`;
-      fallbackAnswer = `Your request has been routed to **${classification.department}**. Please visit the department desk at the Administrative Block during office hours (9:00 AM – 5:00 PM) for official processing.`;
+      domainPrompt = `Student Query: "${query}"\nDepartment: ${classification.department}\nCategory: ${classification.category}\nContext: Our autonomous college.\nIMPORTANT: Do NOT write "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology" in your response; use "our college" or "the campus" instead.\nTask: Provide a direct, thorough, and helpful answer explaining official policies, procedures, office locations, and steps. Remind student to approach the department desk for accurate verification.`;
+      fallbackAnswer = `Your inquiry regarding **${classification.category}** has been analyzed.\n\n📌 **Official Campus Notice**: For 100% accurate information, document verification, or personalized queries, please **approach the ${classification.department} desk** at the Administrative Block during working hours (9:00 AM – 5:00 PM).`;
     }
 
     let geminiDiscrepancyAnswer = null;
