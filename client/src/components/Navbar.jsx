@@ -113,50 +113,147 @@ export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
                     <p className="text-[11px] text-blue-400 mt-0.5">{user.department}</p>
                   </div>
 
-                  {/* 1-Click Role Switcher for Examiner */}
+                  {/* 1-Click Role Switcher for Examiner & Live Demo */}
                   <div className="px-3 py-2 border-b border-slate-800 bg-slate-800/40">
-                    <p className="text-[11px] font-semibold text-amber-300 flex items-center space-x-1 mb-1.5">
-                      <RefreshCw className="w-3 h-3 animate-spin text-amber-400" />
-                      <span>Examiner 1-Click Persona Switcher:</span>
+                    <p className="text-[11px] font-semibold text-amber-300 flex items-center justify-between mb-1.5">
+                      <span className="flex items-center space-x-1">
+                        <RefreshCw className="w-3 h-3 animate-spin text-amber-400" />
+                        <span>Instant Persona Switcher:</span>
+                      </span>
+                      <span className="text-[9px] font-mono bg-amber-950 text-amber-300 border border-amber-800 px-1 rounded">16 in DB</span>
                     </p>
-                    <div className="space-y-1">
+                    <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
+                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider pt-0.5 pb-0.5">Students</div>
                       <button
                         onClick={() => handleSwitch('alex.kumar@campus.edu')}
-                        className={`w-full text-left px-2.5 py-1.5 rounded text-xs flex items-center justify-between transition-colors ${
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
                           user.email === 'alex.kumar@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
                         }`}
                       >
-                        <div className="flex items-center space-x-1.5">
-                          <UserCheck className="w-3.5 h-3.5 text-blue-400" />
-                          <span>Alex Kumar (Student)</span>
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <UserCheck className="w-3 h-3 text-blue-400 shrink-0" />
+                          <span className="truncate">Alex Kumar</span>
                         </div>
-                        <span className="text-[10px] text-slate-400">68% Attn</span>
+                        <span className="text-[9px] text-amber-400 font-mono shrink-0">68.5% Condonation</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSwitch('student@mictech.ac.in')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === 'student@mictech.ac.in' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <UserCheck className="w-3 h-3 text-emerald-400 shrink-0" />
+                          <span className="truncate">K. Sai Rahul</span>
+                        </div>
+                        <span className="text-[9px] text-emerald-400 font-mono shrink-0">91.5% Scholar</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSwitch('priya.sharma@campus.edu')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === 'priya.sharma@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <UserCheck className="w-3 h-3 text-blue-400 shrink-0" />
+                          <span className="truncate">Priya Sharma</span>
+                        </div>
+                        <span className="text-[9px] text-emerald-400 font-mono shrink-0">84.0% Good</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSwitch('karthik.varma@campus.edu')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === 'karthik.varma@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <UserCheck className="w-3 h-3 text-red-400 shrink-0" />
+                          <span className="truncate">M. Karthik Varma</span>
+                        </div>
+                        <span className="text-[9px] text-red-400 font-mono shrink-0">58.0% Detained</span>
+                      </button>
+
+                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider pt-1 pb-0.5">Faculty & Administration</div>
+                      
+                      <button
+                        onClick={() => handleSwitch('principal@mictech.ac.in')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === 'principal@mictech.ac.in' ? 'bg-purple-600/30 text-purple-300 border border-purple-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <ShieldCheck className="w-3 h-3 text-purple-400 shrink-0" />
+                          <span className="truncate">Dr. T. Vamsee Kiran</span>
+                        </div>
+                        <span className="text-[9px] text-purple-400 shrink-0">Principal</span>
                       </button>
 
                       <button
                         onClick={() => handleSwitch('admin@campus.edu')}
-                        className={`w-full text-left px-2.5 py-1.5 rounded text-xs flex items-center justify-between transition-colors ${
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
                           user.email === 'admin@campus.edu' ? 'bg-purple-600/30 text-purple-300 border border-purple-500/50' : 'hover:bg-slate-800 text-slate-300'
                         }`}
                       >
-                        <div className="flex items-center space-x-1.5">
-                          <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
-                          <span>Dr. S. Raman (Registrar)</span>
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <ShieldCheck className="w-3 h-3 text-purple-400 shrink-0" />
+                          <span className="truncate">Dr. S. Raman</span>
                         </div>
-                        <span className="text-[10px] text-slate-400">Admin</span>
+                        <span className="text-[9px] text-slate-400 shrink-0">Registrar</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSwitch('admin@mictech.ac.in')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === 'admin@mictech.ac.in' ? 'bg-amber-600/30 text-amber-300 border border-amber-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <ShieldCheck className="w-3 h-3 text-amber-400 shrink-0" />
+                          <span className="truncate">Dr. K. Srinivas</span>
+                        </div>
+                        <span className="text-[9px] text-amber-400 shrink-0">Exam CoE</span>
                       </button>
 
                       <button
                         onClick={() => handleSwitch('finance@campus.edu')}
-                        className={`w-full text-left px-2.5 py-1.5 rounded text-xs flex items-center justify-between transition-colors ${
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
                           user.email === 'finance@campus.edu' ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/50' : 'hover:bg-slate-800 text-slate-300'
                         }`}
                       >
-                        <div className="flex items-center space-x-1.5">
-                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                          <span>Prof. V. Mehta (Finance Head)</span>
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
+                          <span className="truncate">Prof. V. Mehta</span>
                         </div>
-                        <span className="text-[10px] text-slate-400">Finance</span>
+                        <span className="text-[9px] text-emerald-400 shrink-0">Finance</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSwitch('cse.hod@mictech.ac.in')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === 'cse.hod@mictech.ac.in' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <ShieldCheck className="w-3 h-3 text-blue-400 shrink-0" />
+                          <span className="truncate">Dr. P. Sunitha</span>
+                        </div>
+                        <span className="text-[9px] text-blue-400 shrink-0">CSE HOD</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSwitch('hostel.warden@mictech.ac.in')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === 'hostel.warden@mictech.ac.in' ? 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <ShieldCheck className="w-3 h-3 text-indigo-400 shrink-0" />
+                          <span className="truncate">Capt. R. Rajesh</span>
+                        </div>
+                        <span className="text-[9px] text-indigo-400 shrink-0">Warden</span>
                       </button>
                     </div>
                   </div>

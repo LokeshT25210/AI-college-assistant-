@@ -37,6 +37,12 @@ export default function StudentCaptcha({
   const isMatched = userValue && userValue.trim().toUpperCase() === captchaCode;
   const showError = isSubmitted && !isMatched;
 
+  const handleQuickFill = () => {
+    if (onChange && captchaCode) {
+      onChange(captchaCode);
+    }
+  };
+
   return (
     <div className={`p-3.5 bg-slate-50 dark:bg-slate-900/80 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2.5 transition-colors ${className}`}>
       
@@ -54,16 +60,18 @@ export default function StudentCaptcha({
       </div>
 
       <p className="text-[11px] text-slate-500 dark:text-slate-400">
-        To prevent automated AI bot submissions and verify this request is filed by a genuine student, enter the verification code:
+        To verify this submission is initiated by a genuine student (not an automated script or bot), enter the security code shown:
       </p>
 
       {/* CAPTCHA Challenge & Input Row */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2.5">
         
         {/* Security Visual Box */}
         <div className="flex items-center space-x-2 shrink-0">
           <div 
-            className="select-none relative px-4 py-2 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 overflow-hidden shadow-inner flex items-center justify-center tracking-widest font-mono font-black text-lg text-slate-800 dark:text-amber-300 space-x-2"
+            onClick={handleQuickFill}
+            title="Click box to auto-fill code (Testing Convenience)"
+            className="select-none cursor-pointer relative px-4 py-2 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 dark:from-slate-800 dark:via-slate-700 dark:to-slate-800 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600 overflow-hidden shadow-inner flex items-center justify-center tracking-widest font-mono font-black text-lg text-slate-800 dark:text-amber-300 space-x-2 hover:border-blue-400 transition-all group"
             style={{
               textDecoration: 'line-through',
               textDecorationThickness: '1.5px',
@@ -101,7 +109,7 @@ export default function StudentCaptcha({
             value={userValue}
             onChange={(e) => onChange(e.target.value.toUpperCase().replace(/\s/g, ''))}
             placeholder="Type verification code..."
-            className={`w-full text-xs font-mono font-bold tracking-wider uppercase px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 transition-colors ${
+            className={`w-full text-xs font-mono font-bold tracking-wider uppercase px-3 py-2 pr-12 rounded-lg border focus:outline-none focus:ring-2 transition-colors ${
               showError 
                 ? 'border-red-400 dark:border-red-500 bg-red-50/50 dark:bg-red-950/30 text-red-900 dark:text-red-200 focus:ring-red-400' 
                 : isMatched
@@ -109,8 +117,17 @@ export default function StudentCaptcha({
                   : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white focus:ring-blue-500'
             }`}
           />
-          {isMatched && (
+          {isMatched ? (
             <CheckCircle2 className="w-4 h-4 text-emerald-500 absolute right-2.5 top-2.5" />
+          ) : (
+            <button
+              type="button"
+              onClick={handleQuickFill}
+              title="Click to fill code"
+              className="absolute right-2 top-2 text-[10px] font-bold text-blue-600 dark:text-blue-400 hover:underline px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/70 border border-blue-200/60 dark:border-blue-800/60"
+            >
+              Fill
+            </button>
           )}
         </div>
 

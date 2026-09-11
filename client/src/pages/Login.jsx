@@ -321,7 +321,7 @@ export default function Login({ onNavigate }) {
         </div>
 
         {/* Right Pane: Sign-In / Registration Desk (7 cols) */}
-        <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between bg-white overflow-y-auto max-h-[880px] lg:max-h-none">
+        <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between bg-white dark:bg-slate-900 overflow-y-auto max-h-[880px] lg:max-h-none transition-colors">
           
           <div className="space-y-5">
             
@@ -329,63 +329,74 @@ export default function Login({ onNavigate }) {
             <div className="flex items-center justify-between">
               <button
                 onClick={() => onNavigate('landing')}
-                className="text-xs font-bold text-slate-500 hover:text-blue-600 transition-colors flex items-center space-x-1.5"
+                className="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center space-x-1.5"
               >
                 <span>&larr; Return to Campus Home</span>
               </button>
               <div className="flex items-center space-x-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                   SSO Portal v4.5
                 </span>
-                <span className="text-[10px] font-mono text-slate-400">R20/R23</span>
+                <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500">R20/R23</span>
               </div>
             </div>
 
-            {/* Title & Mode Switcher */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-              <div>
-                <h3 className="text-xl sm:text-2xl font-bold font-serif text-slate-900">
-                  {authMode === 'login' ? 'Institutional Gateway' : 'New Student Registration'}
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  {authMode === 'login' 
-                    ? 'Authenticate using your verified college credentials or roll number.' 
-                    : 'Create your permanent autonomous college record with department enrollment.'}
-                </p>
-              </div>
+            {/* Title & Description */}
+            <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
+              <h3 className="text-xl sm:text-2xl font-bold font-serif text-slate-900 dark:text-white">
+                {authMode === 'login' ? 'Institutional Gateway' : 'New Student Registration'}
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                {authMode === 'login' 
+                  ? 'Authenticate using your verified college credentials or roll number.' 
+                  : 'Create your permanent autonomous college record with department enrollment.'}
+              </p>
+            </div>
 
+            {/* Prominent Mode Switcher: Official Sign In / Login vs New Registration / Sign Up */}
+            <div className="grid grid-cols-2 p-1.5 bg-slate-100 dark:bg-slate-800/80 rounded-xl font-bold text-xs border border-slate-200 dark:border-slate-700 gap-1.5 shadow-inner">
               <button
                 type="button"
                 onClick={() => {
-                  setAuthMode(authMode === 'login' ? 'register' : 'login');
+                  setAuthMode('login');
                   setError(null);
                 }}
-                className="text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 transition-all shrink-0 flex items-center space-x-1"
+                className={`py-2.5 px-3 rounded-lg flex items-center justify-center space-x-2 transition-all ${
+                  authMode === 'login'
+                    ? 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700 font-extrabold'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
               >
-                {authMode === 'login' ? (
-                  <>
-                    <UserPlus className="w-3.5 h-3.5" />
-                    <span>Create Student Account</span>
-                  </>
-                ) : (
-                  <>
-                    <UserCheck className="w-3.5 h-3.5" />
-                    <span>Existing Student Sign In</span>
-                  </>
-                )}
+                <UserCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span>Official Sign In / Login</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthMode('register');
+                  setError(null);
+                }}
+                className={`py-2.5 px-3 rounded-lg flex items-center justify-center space-x-2 transition-all ${
+                  authMode === 'register'
+                    ? 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700 font-extrabold'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <UserPlus className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span>Student Sign Up / Register</span>
               </button>
             </div>
 
             {/* Persona Segment Tabs (Student, Faculty, Exam Cell, Parent) - Only in Login mode */}
             {authMode === 'login' && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 p-1 bg-slate-100 rounded-xl text-xs font-bold border border-slate-200 gap-1">
+              <div className="grid grid-cols-2 sm:grid-cols-4 p-1 bg-slate-100 dark:bg-slate-800/60 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 gap-1">
                 <button
                   type="button"
                   onClick={() => handleTabChange('student')}
                   className={`py-2 px-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all text-xs ${
                     roleTab === 'student'
-                      ? 'bg-white text-blue-700 shadow-sm border border-slate-200'
-                      : 'text-slate-500 hover:text-slate-800'
+                      ? 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 shadow-sm border border-slate-200 dark:border-slate-700'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
                 >
                   <UserCheck className="w-3.5 h-3.5" />
@@ -397,8 +408,8 @@ export default function Login({ onNavigate }) {
                   onClick={() => handleTabChange('admin')}
                   className={`py-2 px-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all text-xs ${
                     roleTab === 'admin'
-                      ? 'bg-white text-purple-700 shadow-sm border border-slate-200'
-                      : 'text-slate-500 hover:text-slate-800'
+                      ? 'bg-white dark:bg-slate-900 text-purple-700 dark:text-purple-400 shadow-sm border border-slate-200 dark:border-slate-700'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
                 >
                   <Building2 className="w-3.5 h-3.5" />
@@ -410,8 +421,8 @@ export default function Login({ onNavigate }) {
                   onClick={() => handleTabChange('exam')}
                   className={`py-2 px-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all text-xs ${
                     roleTab === 'exam'
-                      ? 'bg-white text-amber-700 shadow-sm border border-slate-200'
-                      : 'text-slate-500 hover:text-slate-800'
+                      ? 'bg-white dark:bg-slate-900 text-amber-700 dark:text-amber-400 shadow-sm border border-slate-200 dark:border-slate-700'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
                 >
                   <Award className="w-3.5 h-3.5" />
@@ -423,8 +434,8 @@ export default function Login({ onNavigate }) {
                   onClick={() => handleTabChange('parent')}
                   className={`py-2 px-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all text-xs ${
                     roleTab === 'parent'
-                      ? 'bg-white text-emerald-700 shadow-sm border border-slate-200'
-                      : 'text-slate-500 hover:text-slate-800'
+                      ? 'bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm border border-slate-200 dark:border-slate-700'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
                 >
                   <Users className="w-3.5 h-3.5" />
@@ -448,22 +459,22 @@ export default function Login({ onNavigate }) {
                 {/* Identifier Method Toggle: Email vs Student Roll Number */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                       Sign In Credential
                     </label>
                     <div className="flex items-center space-x-2 text-[11px]">
                       <button
                         type="button"
                         onClick={() => setLoginMethod('email')}
-                        className={`font-semibold ${loginMethod === 'email' ? 'text-blue-600 underline' : 'text-slate-400 hover:text-slate-600'}`}
+                        className={`font-semibold ${loginMethod === 'email' ? 'text-blue-600 dark:text-blue-400 underline' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
                       >
                         Institutional Email
                       </button>
-                      <span className="text-slate-300">|</span>
+                      <span className="text-slate-300 dark:text-slate-600">|</span>
                       <button
                         type="button"
                         onClick={() => setLoginMethod('roll')}
-                        className={`font-semibold ${loginMethod === 'roll' ? 'text-blue-600 underline' : 'text-slate-400 hover:text-slate-600'}`}
+                        className={`font-semibold ${loginMethod === 'roll' ? 'text-blue-600 dark:text-blue-400 underline' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
                       >
                         Roll / Hall Ticket No.
                       </button>
@@ -472,26 +483,26 @@ export default function Login({ onNavigate }) {
 
                   {loginMethod === 'email' ? (
                     <div className="relative">
-                      <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                      <Mail className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         placeholder={roleTab === 'admin' ? "principal@mictech.ac.in" : "student@mictech.ac.in"}
-                        className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all"
+                        className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all"
                       />
                     </div>
                   ) : (
                     <div className="relative">
-                      <Hash className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                      <Hash className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
                       <input
                         type="text"
                         value={rollNumber}
                         onChange={(e) => setRollNumber(e.target.value)}
                         required
                         placeholder="e.g. 21H71A0501 or 22H71A05A4"
-                        className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all uppercase tracking-wider"
+                        className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all uppercase tracking-wider"
                       />
                     </div>
                   )}
@@ -500,31 +511,31 @@ export default function Login({ onNavigate }) {
                 {/* Password Field with Show/Hide Toggle */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                       Account Password
                     </label>
                     <button
                       type="button"
                       onClick={() => setShowHelpModal(true)}
-                      className="text-[11px] text-blue-600 font-semibold hover:underline"
+                      className="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline"
                     >
                       Forgot Password / Reset PIN?
                     </button>
                   </div>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                    <Lock className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
                     <input
                       type={showPassword ? "text" : "password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       placeholder="••••••••••••"
-                      className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all"
+                      className="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 p-0.5"
+                      className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-0.5"
                       title={showPassword ? "Hide password" : "Show password"}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -559,13 +570,13 @@ export default function Login({ onNavigate }) {
                 </div>
 
                 {/* Remember Me Checkbox */}
-                <div className="flex items-center justify-between text-xs text-slate-600 pt-1">
+                <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 pt-1">
                   <label className="flex items-center space-x-2 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
-                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                      className="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500"
                     />
                     <span>Keep me signed in for 30 days on this device</span>
                   </label>
@@ -949,39 +960,114 @@ export default function Login({ onNavigate }) {
               </button>
 
               {showEvaluationPass && (
-                <div className="mt-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2 text-xs animate-in fade-in">
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                    Select an official college profile or statutory evaluation persona to sign in immediately:
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handleQuickPersona('student@mictech.ac.in', 'student-dashboard')}
-                      className="text-left bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                    >
-                      <span className="font-bold text-blue-700 dark:text-blue-400 block text-[11px]">Official Student</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Autonomous College</span>
-                      <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold font-mono">84.0% Attendance &bull; R20</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleQuickPersona('principal@mictech.ac.in', 'admin-dashboard')}
-                      className="text-left bg-white dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                    >
-                      <span className="font-bold text-purple-700 dark:text-purple-400 block text-[11px]">Dr. T. Vamsee Kiran</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Principal / Admin Console</span>
-                      <span className="text-[9px] text-purple-600 dark:text-purple-400 font-semibold font-mono">Full Authority</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleQuickPersona('alex.kumar@campus.edu', 'student-dashboard')}
-                      className="text-left bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/30 border border-amber-200 dark:border-amber-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                    >
-                      <span className="font-bold text-amber-800 dark:text-amber-300 block text-[11px]">Evaluator Test Case</span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Alex Kumar (Test Persona)</span>
-                      <span className="text-[9px] text-amber-600 dark:text-amber-400 font-semibold font-mono">68.5% Condonation Test</span>
-                    </button>
+                <div className="mt-2.5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3 text-xs animate-in fade-in">
+                  
+                  {/* Students Section */}
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1.5">
+                      1-Click Student Personas (Evaluator Scenarios & Attendance Tiers):
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('student@mictech.ac.in', 'student-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-blue-700 dark:text-blue-400 block text-[11px]">Priya Sharma (Std)</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">3rd Yr CSE &bull; Regular</span>
+                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold font-mono">84.0% Attendance &bull; R20</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('alex.kumar@campus.edu', 'student-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/30 border border-amber-200 dark:border-amber-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-amber-800 dark:text-amber-300 block text-[11px]">Alex Kumar (Condonation)</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">3rd Yr CSE &bull; 65-75% Tier</span>
+                        <span className="text-[9px] text-amber-600 dark:text-amber-400 font-semibold font-mono">68.5% Condonation Test</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('21h71a0501@mictech.ac.in', 'student-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-emerald-700 dark:text-emerald-300 block text-[11px]">K. Sai Rahul (Scholar)</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">4th Yr CSE &bull; Exam Topper</span>
+                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold font-mono">91.5% Attendance &bull; R20</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('22h71a0408@mictech.ac.in', 'student-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/30 border border-red-200 dark:border-red-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-red-700 dark:text-red-400 block text-[11px]">M. Karthik (Detention Alert)</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">3rd Yr ECE &bull; &lt;65% Critical</span>
+                        <span className="text-[9px] text-red-600 dark:text-red-400 font-semibold font-mono">58.0% Detention Warning</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('23h71a1205@mictech.ac.in', 'student-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-purple-700 dark:text-purple-400 block text-[11px]">Ananya Reddy (Medical)</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">2nd Yr IT &bull; Exemption Case</span>
+                        <span className="text-[9px] text-purple-600 dark:text-purple-400 font-semibold font-mono">72.0% Medical Condonation</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('sneha.patel@campus.edu', 'student-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-cyan-50 dark:hover:bg-cyan-900/30 border border-cyan-200 dark:border-cyan-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-cyan-700 dark:text-cyan-400 block text-[11px]">Sneha Patel (Placements)</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">4th Yr IT &bull; Placement Lead</span>
+                        <span className="text-[9px] text-cyan-600 dark:text-cyan-400 font-semibold font-mono">86.5% Attendance &bull; R20</span>
+                      </button>
+                    </div>
                   </div>
+
+                  {/* Faculty & Campus Leadership Section */}
+                  <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1.5">
+                      1-Click Administrative & Faculty Consoles:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('principal@mictech.ac.in', 'admin-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-purple-700 dark:text-purple-400 block text-[11px]">Dr. T. Vamsee Kiran</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Principal / Executive Head</span>
+                        <span className="text-[9px] text-purple-600 dark:text-purple-400 font-semibold font-mono">Full Campus Governance</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('coe@mictech.ac.in', 'admin-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/30 border border-amber-200 dark:border-amber-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-amber-700 dark:text-amber-400 block text-[11px]">Dr. K. Srinivas</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Controller of Examinations</span>
+                        <span className="text-[9px] text-amber-600 dark:text-amber-400 font-semibold font-mono">Hall Tickets & Condonations</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleQuickPersona('hod.cse@mictech.ac.in', 'admin-dashboard')}
+                        className="text-left bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
+                      >
+                        <span className="font-bold text-blue-700 dark:text-blue-400 block text-[11px]">Dr. P. Sunitha</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Professor & HOD, CSE</span>
+                        <span className="text-[9px] text-blue-600 dark:text-blue-400 font-semibold font-mono">Department Grievances</span>
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               )}
             </div>

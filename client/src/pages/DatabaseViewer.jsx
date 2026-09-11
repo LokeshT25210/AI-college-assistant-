@@ -119,42 +119,42 @@ export default function DatabaseViewer() {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-center space-x-3.5">
-          <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm flex items-center space-x-3.5">
+          <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold">
             <Users className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase text-slate-400 block">Users Collection</span>
-            <span className="text-xl font-extrabold text-slate-900 block">{stats.usersCount} Registered</span>
-            <span className="text-[10px] text-slate-500">Students, Faculty & Staff</span>
+            <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500 block">Users Collection</span>
+            <span className="text-xl font-extrabold text-slate-900 dark:text-white block">{stats.usersCount} Registered</span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400">Students, Faculty & Staff</span>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-center space-x-3.5">
-          <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm flex items-center space-x-3.5">
+          <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 flex items-center justify-center font-bold">
             <TicketCheck className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase text-slate-400 block">Requests Collection</span>
-            <span className="text-xl font-extrabold text-slate-900 block">{stats.requestsCount} Grievances</span>
-            <span className="text-[10px] text-slate-500">Audit Timelines & Statuses</span>
+            <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500 block">Requests Collection</span>
+            <span className="text-xl font-extrabold text-slate-900 dark:text-white block">{stats.requestsCount} Grievances</span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400">Audit Timelines & Statuses</span>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-center space-x-3.5">
-          <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm flex items-center space-x-3.5">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold">
             <HardDrive className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase text-slate-400 block">Architecture</span>
-            <span className="text-sm font-extrabold text-slate-900 block">Document Store</span>
-            <span className="text-[10px] text-emerald-700 font-semibold">MongoDB / JSON Mirror</span>
+            <span className="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500 block">Architecture</span>
+            <span className="text-sm font-extrabold text-slate-900 dark:text-white block">Document Store</span>
+            <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold">MongoDB / JSON Mirror</span>
           </div>
         </div>
       </div>
 
       {/* Tabs & Search */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           
           {/* Tabs */}
@@ -162,7 +162,9 @@ export default function DatabaseViewer() {
             <button
               onClick={() => setActiveTab('users')}
               className={`px-4 py-2 rounded-xl transition-all flex items-center space-x-1.5 ${
-                activeTab === 'users' ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                activeTab === 'users' 
+                  ? 'bg-slate-900 dark:bg-blue-600 text-white shadow-sm' 
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <Users className="w-3.5 h-3.5" />
@@ -172,7 +174,9 @@ export default function DatabaseViewer() {
             <button
               onClick={() => setActiveTab('requests')}
               className={`px-4 py-2 rounded-xl transition-all flex items-center space-x-1.5 ${
-                activeTab === 'requests' ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                activeTab === 'requests' 
+                  ? 'bg-slate-900 dark:bg-blue-600 text-white shadow-sm' 
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <TicketCheck className="w-3.5 h-3.5" />
@@ -182,7 +186,9 @@ export default function DatabaseViewer() {
             <button
               onClick={() => setActiveTab('raw')}
               className={`px-4 py-2 rounded-xl transition-all flex items-center space-x-1.5 ${
-                activeTab === 'raw' ? 'bg-slate-900 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                activeTab === 'raw' 
+                  ? 'bg-slate-900 dark:bg-blue-600 text-white shadow-sm' 
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <FileJson className="w-3.5 h-3.5" />
@@ -199,7 +205,7 @@ export default function DatabaseViewer() {
                 placeholder="Search collection records..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:bg-white"
+                className="w-full pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg text-xs focus:bg-white dark:focus:bg-slate-800"
               />
             </div>
           )}
@@ -207,102 +213,110 @@ export default function DatabaseViewer() {
 
         {/* Tab 1: Users Collection Table */}
         {activeTab === 'users' && (
-          <div className="border border-slate-200 rounded-xl overflow-hidden text-xs">
-            <table className="w-full text-left">
-              <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 text-[11px] uppercase">
-                <tr>
-                  <th className="py-2.5 px-3">User ID</th>
-                  <th className="py-2.5 px-3">Full Name</th>
-                  <th className="py-2.5 px-3">Email Address</th>
-                  <th className="py-2.5 px-3">Role</th>
-                  <th className="py-2.5 px-3">Identifier / Roll No</th>
-                  <th className="py-2.5 px-3">Department</th>
-                  <th className="py-2.5 px-3 text-right">Attendance %</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredUsers.map((u, i) => (
-                  <tr key={i} className="hover:bg-slate-50 transition-colors">
-                    <td className="py-2.5 px-3 font-mono text-[11px] text-slate-500">{u.id}</td>
-                    <td className="py-2.5 px-3 font-bold text-slate-900">{u.name}</td>
-                    <td className="py-2.5 px-3 text-blue-700 font-mono text-[11px]">{u.email}</td>
-                    <td className="py-2.5 px-3">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                        u.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-emerald-100 text-emerald-800'
-                      }`}>
-                        {u.role}
-                      </span>
-                    </td>
-                    <td className="py-2.5 px-3 font-mono text-[11px]">{u.studentId || u.staffId || 'N/A'}</td>
-                    <td className="py-2.5 px-3 text-slate-600">{u.department}</td>
-                    <td className="py-2.5 px-3 text-right font-bold text-slate-800">
-                      {u.attendance ? `${u.attendance}%` : 'N/A'}
-                    </td>
+          <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden text-xs">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead className="bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase">
+                  <tr>
+                    <th className="py-2.5 px-3">User ID</th>
+                    <th className="py-2.5 px-3">Full Name</th>
+                    <th className="py-2.5 px-3">Email Address</th>
+                    <th className="py-2.5 px-3">Role</th>
+                    <th className="py-2.5 px-3">Identifier / Roll No</th>
+                    <th className="py-2.5 px-3">Department</th>
+                    <th className="py-2.5 px-3 text-right">Attendance %</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {filteredUsers.map((u, i) => (
+                    <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                      <td className="py-2.5 px-3 font-mono text-[11px] text-slate-500 dark:text-slate-400">{u.id}</td>
+                      <td className="py-2.5 px-3 font-bold text-slate-900 dark:text-white">{u.name}</td>
+                      <td className="py-2.5 px-3 text-blue-700 dark:text-blue-400 font-mono text-[11px]">{u.email}</td>
+                      <td className="py-2.5 px-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          u.role === 'admin' 
+                            ? 'bg-purple-100 dark:bg-purple-950/70 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800' 
+                            : 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+                        }`}>
+                          {u.role}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-mono text-[11px] text-slate-700 dark:text-slate-300">{u.studentId || u.staffId || 'N/A'}</td>
+                      <td className="py-2.5 px-3 text-slate-600 dark:text-slate-400">{u.department}</td>
+                      <td className="py-2.5 px-3 text-right font-bold text-slate-800 dark:text-slate-200">
+                        {u.attendance ? `${u.attendance}%` : 'N/A'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
         {/* Tab 2: Grievance Tickets Collection */}
         {activeTab === 'requests' && (
-          <div className="border border-slate-200 rounded-xl overflow-hidden text-xs">
-            <table className="w-full text-left">
-              <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 text-[11px] uppercase">
-                <tr>
-                  <th className="py-2.5 px-3">Ticket ID</th>
-                  <th className="py-2.5 px-3">Student Name</th>
-                  <th className="py-2.5 px-3">Subject / Issue</th>
-                  <th className="py-2.5 px-3">Department</th>
-                  <th className="py-2.5 px-3">Priority</th>
-                  <th className="py-2.5 px-3">Status</th>
-                  <th className="py-2.5 px-3 text-right">Audit Steps</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredRequests.map((r, i) => (
-                  <tr key={i} className="hover:bg-slate-50 transition-colors">
-                    <td className="py-2.5 px-3 font-mono font-bold text-blue-700">{r.ticketId}</td>
-                    <td className="py-2.5 px-3 font-bold text-slate-900">{r.studentName}</td>
-                    <td className="py-2.5 px-3 text-slate-700 font-medium max-w-xs truncate">{r.title}</td>
-                    <td className="py-2.5 px-3 text-slate-600">{r.department}</td>
-                    <td className="py-2.5 px-3">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                        r.priority === 'High' ? 'bg-red-100 text-red-800' : 'bg-slate-100 text-slate-700'
-                      }`}>
-                        {r.priority}
-                      </span>
-                    </td>
-                    <td className="py-2.5 px-3">
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">
-                        {r.status}
-                      </span>
-                    </td>
-                    <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-600">
-                      {r.timeline?.length || 1} logs
-                    </td>
+          <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden text-xs">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead className="bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200 font-bold border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase">
+                  <tr>
+                    <th className="py-2.5 px-3">Ticket ID</th>
+                    <th className="py-2.5 px-3">Student Name</th>
+                    <th className="py-2.5 px-3">Subject / Issue</th>
+                    <th className="py-2.5 px-3">Department</th>
+                    <th className="py-2.5 px-3">Priority</th>
+                    <th className="py-2.5 px-3">Status</th>
+                    <th className="py-2.5 px-3 text-right">Audit Steps</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {filteredRequests.map((r, i) => (
+                    <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                      <td className="py-2.5 px-3 font-mono font-bold text-blue-700 dark:text-blue-400">{r.ticketId}</td>
+                      <td className="py-2.5 px-3 font-bold text-slate-900 dark:text-white">{r.studentName}</td>
+                      <td className="py-2.5 px-3 text-slate-700 dark:text-slate-300 font-medium max-w-xs truncate">{r.title}</td>
+                      <td className="py-2.5 px-3 text-slate-600 dark:text-slate-400">{r.department}</td>
+                      <td className="py-2.5 px-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          r.priority === 'High' 
+                            ? 'bg-red-100 dark:bg-red-950/70 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800' 
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                        }`}>
+                          {r.priority}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                          {r.status}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-600 dark:text-slate-400">
+                        {r.timeline?.length || 1} logs
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
         {/* Tab 3: Raw JSON Database Dump */}
         {activeTab === 'raw' && (
           <div className="space-y-3">
-            <div className="flex items-center justify-between text-xs text-slate-500">
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span>Direct JSON serialization of the persistent university data file:</span>
               <button
                 onClick={handleDownloadBackup}
-                className="text-blue-600 font-bold hover:underline flex items-center space-x-1"
+                className="text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center space-x-1"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download .json file</span>
               </button>
             </div>
-            <pre className="bg-slate-900 text-emerald-300 p-4 rounded-xl text-[11px] font-mono overflow-x-auto max-h-[500px] leading-relaxed border border-slate-800">
+            <pre className="bg-slate-900 dark:bg-black/90 text-emerald-300 p-4 rounded-xl text-[11px] font-mono overflow-x-auto max-h-[500px] leading-relaxed border border-slate-800">
               {JSON.stringify(collections, null, 2)}
             </pre>
           </div>
@@ -311,12 +325,12 @@ export default function DatabaseViewer() {
       </div>
 
       {/* Architecture Note */}
-      <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-xs text-blue-900 space-y-1">
+      <div className="bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 rounded-2xl p-4 text-xs text-blue-900 dark:text-blue-200 space-y-1">
         <p className="font-bold flex items-center space-x-1.5">
-          <ShieldCheck className="w-4 h-4 text-blue-700" />
+          <ShieldCheck className="w-4 h-4 text-blue-700 dark:text-blue-400" />
           <span>Persistence & Storage Architecture Note</span>
         </p>
-        <p className="text-slate-600 leading-relaxed">
+        <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
           The database is stored locally as a transactional JSON file in <code>server/data/campus_db.json</code> with atomic write locks, preventing data corruption and requiring zero third-party cloud subscription. The schema follows document-oriented MongoDB conventions (collections for <code>users</code>, <code>requests</code>, and <code>announcements</code>), making it 100% compatible with MongoDB Atlas or SQLite when configured.
         </p>
       </div>
