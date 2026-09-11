@@ -59,6 +59,14 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const loginWithToken = (token, user) => {
+    const activeToken = token || 'session-' + Date.now();
+    localStorage.setItem('campus_token', activeToken);
+    localStorage.setItem('campus_current_user_v3', JSON.stringify(user));
+    setToken(activeToken);
+    setUser(user);
+  };
+
   const logout = () => {
     localStorage.removeItem('campus_token');
     localStorage.removeItem('campus_current_user_v3');
@@ -69,7 +77,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, loginWithToken, logout }}>
       {children}
     </AuthContext.Provider>
   );

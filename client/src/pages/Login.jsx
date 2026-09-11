@@ -58,7 +58,7 @@ const BUS_ROUTES = [
 ];
 
 export default function Login({ onNavigate }) {
-  const { login } = useAuth();
+  const { login, loginWithToken } = useAuth();
   const [roleTab, setRoleTab] = useState('student'); // 'student', 'admin', 'exam', 'parent'
   const [authMode, setAuthMode] = useState('login'); // 'login' or 'register'
   
@@ -194,7 +194,7 @@ export default function Login({ onNavigate }) {
         });
         setLoading(false);
         if (res.success) {
-          await login(email, regPassword);
+          loginWithToken(res.token, res.user);
           onNavigate('student-dashboard');
         } else {
           setError(res.message || 'Registration failed.');
@@ -217,7 +217,7 @@ export default function Login({ onNavigate }) {
     setLoading(false);
 
     if (res.success) {
-      if (res.user.role === 'admin' || roleTab === 'admin' || roleTab === 'exam') {
+      if (res.user.role === 'admin' || roleTab === 'admin') {
         onNavigate('admin-dashboard');
       } else {
         onNavigate('student-dashboard');
@@ -395,9 +395,9 @@ export default function Login({ onNavigate }) {
               </button>
             </div>
 
-            {/* Persona Segment Tabs (Student, Faculty, Exam Cell, Parent) - Only in Login mode */}
+            {/* Persona Segment Tabs (Student, Faculty & Admin) - Only in Login mode */}
             {authMode === 'login' && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 p-1 bg-slate-100 dark:bg-slate-800/60 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 gap-1">
+              <div className="grid grid-cols-2 p-1 bg-slate-100 dark:bg-slate-800/60 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 gap-1">
                 <button
                   type="button"
                   onClick={() => handleTabChange('student')}
@@ -423,34 +423,9 @@ export default function Login({ onNavigate }) {
                   <Building2 className="w-3.5 h-3.5" />
                   <span>Faculty & Admin</span>
                 </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleTabChange('exam')}
-                  className={`py-2 px-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all text-xs ${
-                    roleTab === 'exam'
-                      ? 'bg-white dark:bg-slate-900 text-amber-700 dark:text-amber-400 shadow-sm border border-slate-200 dark:border-slate-700'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-                  }`}
-                >
-                  <Award className="w-3.5 h-3.5" />
-                  <span>Exam Cell</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleTabChange('parent')}
-                  className={`py-2 px-2 rounded-lg flex items-center justify-center space-x-1.5 transition-all text-xs ${
-                    roleTab === 'parent'
-                      ? 'bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm border border-slate-200 dark:border-slate-700'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-                  }`}
-                >
-                  <Users className="w-3.5 h-3.5" />
-                  <span>Parent / Ward</span>
-                </button>
               </div>
             )}
+
 
             {/* Error Banner */}
             {error && (
@@ -637,8 +612,6 @@ export default function Login({ onNavigate }) {
                   className={`w-full py-3 rounded-xl text-white text-xs font-bold transition-all flex items-center justify-center space-x-2 shadow-md hover:shadow-lg ${
                     roleTab === 'admin'
                       ? 'bg-purple-700 hover:bg-purple-800 shadow-purple-500/20'
-                      : roleTab === 'exam'
-                      ? 'bg-amber-700 hover:bg-amber-800 shadow-amber-500/20'
                       : 'bg-blue-600 hover:bg-blue-700 shadow-blue-500/20'
                   }`}
                 >
@@ -647,7 +620,7 @@ export default function Login({ onNavigate }) {
                   ) : (
                     <>
                       <span>
-                        Enter {roleTab === 'student' ? 'Student Portal' : roleTab === 'admin' ? 'Faculty & Admin Console' : roleTab === 'exam' ? 'Examination Console' : 'Parent Gateway'}
+                        Enter {roleTab === 'admin' ? 'Faculty & Admin Console' : 'Student Portal'}
                       </span>
                       <ArrowRight className="w-4 h-4" />
                     </>
