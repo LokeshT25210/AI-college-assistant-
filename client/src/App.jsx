@@ -20,12 +20,12 @@ import DatabaseViewer from './pages/DatabaseViewer';
 
 export default function App() {
   const { user, loading } = useAuth();
-  const [currentPage, setCurrentPage] = useState('landing');
+  const [currentPage, setCurrentPage] = useState('login');
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [assistantQuery, setAssistantQuery] = useState('');
   const [isExaminerGuideOpen, setIsExaminerGuideOpen] = useState(false);
 
-  // If user just logged in and we're on landing or login, navigate to appropriate dashboard
+  // If user just logged in and we're on landing or login, navigate to appropriate main dashboard
   React.useEffect(() => {
     if (user && (currentPage === 'landing' || currentPage === 'login')) {
       if (user.role === 'admin') {
@@ -93,25 +93,25 @@ export default function App() {
     }
   };
 
-  // If not logged in and on landing or login
-  if (!user && currentPage === 'landing') {
-    return (
-      <>
-        <LandingPage 
-          onNavigate={handleNavigate} 
-          onOpenExaminerGuide={() => setIsExaminerGuideOpen(true)} 
-        />
-        <ExaminerGuideModal 
-          isOpen={isExaminerGuideOpen} 
-          onClose={() => setIsExaminerGuideOpen(false)}
-          onSelectDemoScenario={handleSelectDemoScenario}
-          onNavigate={handleNavigate}
-        />
-      </>
-    );
-  }
+  // If not logged in: ALWAYS display Login unless user explicitly requested landing
+  if (!user) {
+    if (currentPage === 'landing') {
+      return (
+        <>
+          <LandingPage 
+            onNavigate={handleNavigate} 
+            onOpenExaminerGuide={() => setIsExaminerGuideOpen(true)} 
+          />
+          <ExaminerGuideModal 
+            isOpen={isExaminerGuideOpen} 
+            onClose={() => setIsExaminerGuideOpen(false)}
+            onSelectDemoScenario={handleSelectDemoScenario}
+            onNavigate={handleNavigate}
+          />
+        </>
+      );
+    }
 
-  if (!user && currentPage === 'login') {
     return (
       <>
         <Navbar 

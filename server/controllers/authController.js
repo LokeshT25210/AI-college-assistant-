@@ -85,21 +85,29 @@ exports.register = async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
 
+    const cleanEmail = email.trim().toLowerCase();
+    const isCollegeDomain = cleanEmail.endsWith('@mictech.ac.in') || cleanEmail.endsWith('@campus.edu');
+    const isCollegeRoll = Boolean(studentId && (/^[0-9]{2}[A-Za-z0-9]{8}$/i.test(studentId.trim()) || /^[A-Za-z]{2}-[0-9]{4}-[0-9]{4}$/i.test(studentId.trim())));
+    const isEnrolled = isCollegeDomain || isCollegeRoll;
+    const affiliation = isEnrolled ? 'Enrolled College Student' : 'External Guest / Prospective Student';
+
     const newUser = {
-      id: `usr-student-${Date.now().toString().slice(-4)}`,
+      id: `usr-${isEnrolled ? 'student' : 'guest'}-${Date.now().toString().slice(-4)}`,
       name: name.trim(),
-      email: email.trim().toLowerCase(),
+      email: cleanEmail,
       password: passwordHash,
       role: 'student',
-      studentId: studentId ? studentId.trim() : `STU-2026-${Math.floor(1000 + Math.random() * 9000)}`,
-      department: department || 'General Undergraduate Studies',
-      year: year || '1st Year (Semester 1)',
-      section: section || 'Section A',
-      regulation: regulation || 'R23 Autonomous',
+      isEnrolled,
+      affiliation,
+      studentId: studentId && studentId.trim() ? studentId.trim().toUpperCase() : (isEnrolled ? `23MICT-CS-${Math.floor(100 + Math.random() * 900)}` : `GUEST-${Math.floor(1000 + Math.random() * 9000)}`),
+      department: department || (isEnrolled ? 'Computer Science & Engineering' : 'Prospective / Admissions Applicant'),
+      year: year || (isEnrolled ? '1st Year (Semester 1)' : 'Admissions 2026 Session'),
+      section: section || (isEnrolled ? 'Section A' : 'Applicant Pool'),
+      regulation: regulation || (isEnrolled ? 'R23 Autonomous' : 'General Campus Guidelines'),
       residenceType: residenceType || 'Day Scholar',
       hostel: hostel || 'Day Scholar',
-      cgpa: 8.50,
-      attendance: 85.0,
+      cgpa: isEnrolled ? 8.50 : null,
+      attendance: isEnrolled ? 85.0 : null,
       phone: phone || '+91 90000 00000',
       gender: gender || 'Not specified',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',

@@ -93,9 +93,10 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
     if (onSelectTicket) onSelectTicket(newTicket.ticketId);
   };
 
-  const attendanceVal = user?.attendance !== undefined ? user.attendance : 82.0;
-  const isCondonationReq = attendanceVal >= 65 && attendanceVal < 75;
-  const isDetained = attendanceVal < 65;
+  const isEnrolled = user?.isEnrolled !== false && user?.attendance !== null && user?.affiliation !== 'External Guest / Prospective Student';
+  const attendanceVal = user?.attendance !== undefined && user?.attendance !== null ? user.attendance : null;
+  const isCondonationReq = isEnrolled && attendanceVal !== null && attendanceVal >= 65 && attendanceVal < 75;
+  const isDetained = isEnrolled && attendanceVal !== null && attendanceVal < 65;
 
   // Find active in-progress or most recent ticket for the live stepper
   const activeTicket = recentRequests.find(r => r.status !== 'Resolved') || recentRequests[0];
@@ -118,13 +119,17 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="flex flex-wrap items-center gap-2 text-blue-300 text-xs font-semibold mb-2">
-              <span className="flex items-center space-x-1 bg-blue-900/60 text-blue-200 px-2.5 py-0.5 rounded-full border border-blue-700/50">
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-                <span>Autonomous Engineering College Student Portal</span>
+              <span className={`flex items-center space-x-1 px-2.5 py-0.5 rounded-full border ${
+                !isEnrolled 
+                  ? 'bg-amber-950/80 text-amber-300 border-amber-700/50' 
+                  : 'bg-blue-900/60 text-blue-200 border-blue-700/50'
+              }`}>
+                <ShieldCheck className={`w-3.5 h-3.5 ${!isEnrolled ? 'text-amber-400' : 'text-blue-400'}`} />
+                <span>{user?.affiliation || (isEnrolled ? 'Autonomous Engineering College Student Portal' : 'External Guest / Prospective Student')}</span>
               </span>
               <span>&bull;</span>
               <span className="bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded border border-amber-400/30 font-mono text-[11px]">
-                {user?.regulation || 'R23 Autonomous'}
+                {user?.regulation || (isEnrolled ? 'R23 Autonomous' : 'General Campus Guidelines')}
               </span>
               <span>&bull;</span>
               <span className="text-slate-300">Academic Year 2026-27</span>
@@ -206,18 +211,19 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
               <div>
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Attendance Standing</span>
                 <div className="flex items-baseline space-x-1.5 mt-0.5">
-                  <span className={`text-xl font-extrabold ${isCondonationReq ? 'text-amber-400' : isDetained ? 'text-rose-400' : 'text-emerald-400'}`}>
-                    {attendanceVal}%
+                  <span className={`text-xl font-extrabold ${!isEnrolled ? 'text-blue-300' : isCondonationReq ? 'text-amber-400' : isDetained ? 'text-rose-400' : 'text-emerald-400'}`}>
+                    {isEnrolled ? `${attendanceVal}%` : 'N/A'}
                   </span>
-                  <span className="text-[10px] text-slate-400">/ 100%</span>
+                  {isEnrolled && <span className="text-[10px] text-slate-400">/ 100%</span>}
                 </div>
               </div>
               <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase ${
+                !isEnrolled ? 'bg-blue-950 text-blue-300 border border-blue-700/50' :
                 isCondonationReq ? 'bg-amber-950 text-amber-300 border border-amber-700/50' : 
                 isDetained ? 'bg-rose-950 text-rose-300 border border-rose-700/50' : 
                 'bg-emerald-950 text-emerald-300 border border-emerald-700/50'
               }`}>
-                {isCondonationReq ? 'Condonation Req.' : isDetained ? 'Detention Risk' : 'Eligible'}
+                {!isEnrolled ? 'Guest / Non-Enrolled' : isCondonationReq ? 'Condonation Req.' : isDetained ? 'Detention Risk' : 'Eligible'}
               </span>
             </div>
 
@@ -225,15 +231,17 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
             <div className="w-full bg-slate-700/60 rounded-full h-1.5 my-2 overflow-hidden">
               <div 
                 className={`h-full rounded-full transition-all duration-500 ${
-                  isCondonationReq ? 'bg-amber-400' : isDetained ? 'bg-rose-500' : 'bg-emerald-400'
+                  !isEnrolled ? 'bg-blue-500' : isCondonationReq ? 'bg-amber-400' : isDetained ? 'bg-rose-500' : 'bg-emerald-400'
                 }`}
-                style={{ width: `${Math.min(attendanceVal, 100)}%` }}
+                style={{ width: `${isEnrolled ? Math.min(attendanceVal || 0, 100) : 100}%` }}
               />
             </div>
 
             <div className="pt-1 border-t border-slate-700/50 flex items-center justify-between">
-              <span className="text-[10px] text-slate-400">Section 4.2 Rules</span>
-              {isCondonationReq ? (
+              <span className="text-[10px] text-slate-400">{isEnrolled ? 'Section 4.2 Rules' : 'Internal Records'}</span>
+              {!isEnrolled ? (
+                <span className="text-[10px] text-blue-300">Enrollment Required</span>
+              ) : isCondonationReq ? (
                 <button
                   onClick={() => handleOpenCreateModal('attendance')}
                   className="text-[10px] font-bold text-amber-300 hover:text-amber-200 underline"
@@ -250,22 +258,22 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
           <div className="bg-slate-800/70 border border-slate-700/80 rounded-xl p-3.5 flex flex-col justify-between hover:border-slate-600 transition-all">
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-[10px] uppercase font-bold text-slate-400 block">Cumulative CGPA</span>
+                <span className="text-[10px] uppercase font-bold text-slate-400 block">{isEnrolled ? 'Cumulative CGPA' : 'Admissions Standing'}</span>
                 <div className="flex items-baseline space-x-1.5 mt-0.5">
                   <span className="text-xl font-extrabold text-blue-400">
-                    {user?.cgpa !== undefined ? user.cgpa : 8.25}
+                    {isEnrolled ? (user?.cgpa !== undefined && user?.cgpa !== null ? user.cgpa : 8.25) : 'Admissions 2026'}
                   </span>
-                  <span className="text-[10px] text-slate-400">/ 10.0</span>
+                  {isEnrolled && <span className="text-[10px] text-slate-400">/ 10.0</span>}
                 </div>
               </div>
               <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-700/50">
-                {user?.cgpa >= 8.5 ? 'Top 5%' : user?.cgpa >= 8.0 ? 'First Class' : 'Good Standing'}
+                {isEnrolled ? (user?.cgpa >= 8.5 ? 'Top 5%' : user?.cgpa >= 8.0 ? 'First Class' : 'Good Standing') : 'Applicant Pool'}
               </span>
             </div>
 
             <div className="mt-2.5 pt-2 border-t border-slate-700/50 flex items-center justify-between text-[10px] text-slate-400">
-              <span>Regulation: {user?.regulation?.split(' ')[0] || 'R23'}</span>
-              <span className="text-emerald-400 font-semibold">Distinction</span>
+              <span>{isEnrolled ? `Regulation: ${user?.regulation?.split(' ')[0] || 'R23'}` : 'Code: MICT (Auto)'}</span>
+              <span className="text-emerald-400 font-semibold">{isEnrolled ? 'Distinction' : 'Open Eligibility'}</span>
             </div>
           </div>
 
@@ -373,6 +381,30 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
           </div>
         </div>
       </div>
+
+      {/* External / Prospective Student Governance Notice Banner */}
+      {!isEnrolled && (
+        <div className="bg-gradient-to-r from-blue-900/90 to-indigo-950/90 border border-blue-500/50 rounded-2xl p-4 sm:p-5 text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-in fade-in">
+          <div className="space-y-1">
+            <div className="flex items-center space-x-2">
+              <span className="bg-amber-400 text-slate-950 font-extrabold text-[10px] px-2 py-0.5 rounded uppercase tracking-wider">
+                External / Prospective Student Mode
+              </span>
+              <span className="text-xs text-blue-200 font-semibold">Credential Classification Active</span>
+            </div>
+            <p className="text-xs text-slate-200 leading-relaxed max-w-3xl">
+              You are authenticated as an <strong>External Guest / Prospective Student</strong>. You have unrestricted access to our <strong>Smart Campus AI Assistant</strong> for admissions guidelines, fee schedules, syllabus information, transport routes, and general inquiries. Internal student services (biometric attendance logs, semester hall ticket generation, and medical condonation filings) are reserved for enrolled students verified by the Academic Section.
+            </p>
+          </div>
+          <button
+            onClick={() => onAskAssistant('What are the admission requirements, fee structures, and courses offered?')}
+            className="shrink-0 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-md flex items-center space-x-1.5"
+          >
+            <Sparkles className="w-4 h-4 text-slate-950" />
+            <span>Explore Admissions with AI</span>
+          </button>
+        </div>
+      )}
 
       {/* 4. Live Active Ticket Stepper Banner (User Specific) */}
       {activeTicket ? (

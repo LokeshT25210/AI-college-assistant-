@@ -452,9 +452,23 @@ export default function Login({ onNavigate }) {
 
             {/* Error Banner */}
             {error && (
-              <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center space-x-2 animate-in fade-in">
-                <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
-                <span className="font-medium">{error}</span>
+              <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-xs flex items-start justify-between gap-2 animate-in fade-in">
+                <div className="flex items-start space-x-2">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-red-500 mt-0.5" />
+                  <span className="font-medium leading-relaxed">{error}</span>
+                </div>
+                {(error.toLowerCase().includes('not found') || error.toLowerCase().includes('external') || error.toLowerCase().includes('register')) && authMode === 'login' && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthMode('register');
+                      setError(null);
+                    }}
+                    className="shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg transition-colors"
+                  >
+                    Register Now
+                  </button>
+                )}
               </div>
             )}
 
