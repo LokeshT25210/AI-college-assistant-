@@ -38,8 +38,8 @@ app.get('/api/health', (req, res) => {
 });
 
 // Reset endpoint for testing & live demos
-app.post('/api/system/reset-demo', (req, res) => {
-  db.reset();
+app.post('/api/system/reset-demo', async (req, res) => {
+  await db.reset();
   res.json({ success: true, message: 'Database reset to initial campus demo state.' });
 });
 

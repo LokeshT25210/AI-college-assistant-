@@ -29,11 +29,11 @@ async function runAllTests() {
   console.log('======================================================\n');
 
   // Reset DB for clean test run
-  db.reset();
+  await db.reset();
 
-  const studentUser = db.findUserByEmail('alex.kumar@campus.edu');
-  const otherStudent = db.findUserByEmail('priya.sharma@campus.edu');
-  const adminUser = db.findUserByEmail('admin@campus.edu');
+  const studentUser = await db.findUserByEmail('alex.kumar@campus.edu');
+  const otherStudent = await db.findUserByEmail('priya.sharma@campus.edu');
+  const adminUser = await db.findUserByEmail('admin@campus.edu');
 
   // Test 1: Attendance question -> Attendance answer
   try {
@@ -109,7 +109,7 @@ async function runAllTests() {
 
   // Test 7: Duplicate request handling
   try {
-    const ticket1 = db.createRequest({
+    const ticket1 = await db.createRequest({
       studentId: studentUser.id,
       studentName: studentUser.name,
       studentRollNo: studentUser.studentId,
@@ -122,7 +122,7 @@ async function runAllTests() {
     });
 
     // Check duplicate detection logic
-    const existing = db.getRequests({ studentId: studentUser.id });
+    const existing = await db.getRequests({ studentId: studentUser.id });
     const isDuplicate = existing.some(r => 
       r.ticketId !== ticket1.ticketId &&
       r.title.toLowerCase().trim() === 'water tap leaking in washroom' &&
@@ -149,7 +149,7 @@ async function runAllTests() {
   // Test 8: Unauthorized user cannot access another student's requests
   try {
     // Alex's ticket
-    const alexTicket = db.createRequest({
+    const alexTicket = await db.createRequest({
       studentId: studentUser.id,
       studentName: studentUser.name,
       studentRollNo: studentUser.studentId,
@@ -200,7 +200,7 @@ async function runAllTests() {
 
   // Test 11: Admin status update appears correctly for the student
   try {
-    const sampleTicket = db.createRequest({
+    const sampleTicket = await db.createRequest({
       studentId: studentUser.id,
       studentName: studentUser.name,
       studentRollNo: studentUser.studentId,
@@ -213,13 +213,13 @@ async function runAllTests() {
     });
 
     // Admin updates status to 'In Progress' and leaves official remark
-    db.updateRequest(sampleTicket.ticketId, {
+    await db.updateRequest(sampleTicket.ticketId, {
       status: 'In Progress',
       responseNote: 'Application received and passed to verifying officer.'
     }, 'Dr. S. Raman (Registrar)');
 
     // Student retrieves ticket
-    const updated = db.getRequestById(sampleTicket.ticketId);
+    const updated = await db.getRequestById(sampleTicket.ticketId);
     const lastTimeline = updated.timeline[updated.timeline.length - 1];
 
     if (updated.status === 'In Progress' && lastTimeline.stage === 'In Progress' && lastTimeline.note.includes('verifying officer')) {

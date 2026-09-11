@@ -301,6 +301,7 @@ I am the dedicated **Smart Campus AI Assistant** specialized in providing authen
  * Strictly grounded, verifies against approved KB, produces AI-to-Action workflow.
  */
 async function processAssistantQuery(query, studentContext = {}) {
+  studentContext = studentContext || {};
   const classification = classifyQuery(query);
 
   // 0. Handle completely unrelated / out-of-scope queries

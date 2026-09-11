@@ -16,7 +16,7 @@ exports.createRequest = async (req, res) => {
     }
 
     // Duplicate detection safeguard: check if user recently submitted exact same title within 5 minutes
-    const existing = db.getRequests({ studentId: req.user.id });
+    const existing = await db.getRequests({ studentId: req.user.id });
     const duplicate = existing.find(r => 
       r.title.toLowerCase().trim() === title.toLowerCase().trim() &&
       r.category.toLowerCase() === category.toLowerCase() &&
@@ -31,7 +31,7 @@ exports.createRequest = async (req, res) => {
       });
     }
 
-    const newTicket = db.createRequest({
+    const newTicket = await db.createRequest({
       studentId: req.user.id,
       studentName: req.user.name,
       studentRollNo: req.user.studentId || req.user.staffId || 'N/A',
@@ -60,7 +60,7 @@ exports.createRequest = async (req, res) => {
 exports.getMyRequests = async (req, res) => {
   try {
     const { status, category } = req.query;
-    let list = db.getRequests({ studentId: req.user.id });
+    let list = await db.getRequests({ studentId: req.user.id });
 
     if (status && status !== 'all') {
       list = list.filter(r => r.status.toLowerCase() === status.toLowerCase());
@@ -83,7 +83,7 @@ exports.getMyRequests = async (req, res) => {
 exports.getAllRequests = async (req, res) => {
   try {
     const { status, department, category, priority, search } = req.query;
-    let list = db.getRequests();
+    let list = await db.getRequests();
 
     if (status && status !== 'all') {
       list = list.filter(r => r.status.toLowerCase() === status.toLowerCase());
@@ -121,7 +121,7 @@ exports.getAllRequests = async (req, res) => {
 exports.getRequestDetails = async (req, res) => {
   try {
     const { ticketId } = req.params;
-    const ticket = db.getRequestById(ticketId);
+    const ticket = await db.getRequestById(ticketId);
 
     if (!ticket) {
       return res.status(404).json({ success: false, message: `Ticket ${ticketId} not found.` });
@@ -160,7 +160,7 @@ exports.updateRequestStatus = async (req, res) => {
 
     const actorName = `${req.user.name} (${req.user.designation || 'Administrator'})`;
 
-    const updated = db.updateRequest(ticketId, {
+    const updated = await db.updateRequest(ticketId, {
       status,
       responseNote,
       priority,
@@ -182,3 +182,4 @@ exports.updateRequestStatus = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Server error updating ticket status.' });
   }
 };
+

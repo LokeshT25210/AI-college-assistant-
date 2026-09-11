@@ -3,7 +3,7 @@ const { generateCampusInsights } = require('../services/insightService');
 
 exports.getAnalytics = async (req, res) => {
   try {
-    const requests = db.getRequests();
+    const requests = await db.getRequests();
     const insights = generateCampusInsights(requests);
 
     return res.json({
@@ -19,7 +19,7 @@ exports.getAnalytics = async (req, res) => {
 
 exports.getAnnouncements = async (req, res) => {
   try {
-    const list = db.getAnnouncements();
+    const list = await db.getAnnouncements();
     return res.json({
       success: true,
       announcements: list
@@ -31,17 +31,18 @@ exports.getAnnouncements = async (req, res) => {
 
 exports.getDatabaseDump = async (req, res) => {
   try {
-    const rawUsers = db.getUsers().map(u => {
+    const users = await db.getUsers();
+    const rawUsers = users.map(u => {
       const { password, ...safe } = u;
       return safe;
     });
-    const requests = db.getRequests();
-    const announcements = db.getAnnouncements();
+    const requests = await db.getRequests();
+    const announcements = await db.getAnnouncements();
 
     return res.json({
       success: true,
       database: {
-        storageType: 'ACID-Compliant Persistent JSON Store (campus_db.json)',
+        storageType: 'MongoDB Atlas Cloud Database (Mongoose)',
         totalCollections: 3,
         stats: {
           usersCount: rawUsers.length,
@@ -59,3 +60,4 @@ exports.getDatabaseDump = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Error retrieving database dump.' });
   }
 };
+

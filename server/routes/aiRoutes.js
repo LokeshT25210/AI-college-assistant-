@@ -13,9 +13,9 @@ function optionalAuth(req, res, next) {
   const { JWT_SECRET } = require('../middleware/auth');
   const db = require('../db/database');
 
-  jwt.verify(token, JWT_SECRET, (err, decodedUser) => {
+  jwt.verify(token, JWT_SECRET, async (err, decodedUser) => {
     if (!err && decodedUser) {
-      req.user = db.findUserById(decodedUser.id);
+      req.user = await db.findUserById(decodedUser.id);
     }
     next();
   });
