@@ -42,6 +42,24 @@ app.post('/api/system/reset-demo', (req, res) => {
   res.json({ success: true, message: 'Database reset to initial campus demo state.' });
 });
 
+// Serve frontend static assets from client/dist
+const clientDistPath = path.join(__dirname, '../client/dist');
+const fs = require('fs');
+app.use(express.static(clientDistPath));
+
+// Fallback all non-API GET requests to client/dist/index.html (Single Page App)
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  const indexPath = path.join(clientDistPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    next();
+  }
+});
+
 // Centralized error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled Server Error:', err);
