@@ -4,31 +4,39 @@ import { api } from '../api';
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('campus_token') || null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem('campus_current_user_v3') || localStorage.getItem('campus_current_user');
+      return stored ? JSON.parse(stored) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+  const [loading, setLoading] = useState(!user);
 
-  // Initialize session
+  // Validate session on mount once
   useEffect(() => {
     async function initAuth() {
-      if (token) {
+      const savedToken = localStorage.getItem('campus_token');
+      if (savedToken) {
         try {
           const res = await api.getProfile();
           if (res.success && res.user) {
             setUser(res.user);
-          } else {
-            // Token expired or invalid
+            localStorage.setItem('campus_current_user_v3', JSON.stringify(res.user));
+          } else if (!user) {
             logout();
           }
         } catch (err) {
           console.error('Session validation error:', err);
-          logout();
+          if (!user) logout();
         }
       }
       setLoading(false);
     }
     initAuth();
-  }, [token]);
+  }, []);
 
   const login = async (email, password) => {
     try {
@@ -36,9 +44,11 @@ export function AuthProvider({ children }) {
         return { success: false, message: 'Password is required' };
       }
       const res = await api.login(email, password);
-      if (res.success && res.token) {
-        localStorage.setItem('campus_token', res.token);
-        setToken(res.token);
+      if (res.success && res.user) {
+        const activeToken = res.token || 'session-' + Date.now();
+        localStorage.setItem('campus_token', activeToken);
+        localStorage.setItem('campus_current_user_v3', JSON.stringify(res.user));
+        setToken(activeToken);
         setUser(res.user);
         return { success: true, user: res.user };
       } else {
@@ -53,6 +63,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('campus_token');
     localStorage.removeItem('campus_current_user_v3');
     localStorage.removeItem('campus_current_user');
+    sessionStorage.removeItem('campus_current_page');
     setToken(null);
     setUser(null);
   };

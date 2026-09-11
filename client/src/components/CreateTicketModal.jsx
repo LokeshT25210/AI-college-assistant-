@@ -235,26 +235,26 @@ export default function CreateTicketModal({ isOpen, onClose, initialCategory = '
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-3xl overflow-hidden animate-fadeIn">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-3xl overflow-hidden animate-fadeIn my-auto">
         
         {/* Header */}
-        <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-5 sm:p-6 relative">
+        <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-4 sm:p-6 relative">
           <button
             onClick={handleCloseAndReset}
-            className="absolute top-5 right-5 text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 p-1.5 rounded-lg transition-colors"
+            className="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 p-1.5 rounded-lg transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
 
-          <div className="flex items-center space-x-2 text-blue-300 text-xs font-semibold mb-1">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Autonomous Grievance & Service Redressal System</span>
+          <div className="flex flex-wrap items-center gap-1.5 text-blue-300 text-[11px] sm:text-xs font-semibold mb-1 pr-8">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>Autonomous Grievance System</span>
             <span>&bull;</span>
             <span className="font-mono text-amber-300">{user?.studentId || 'CS-2023-0489'}</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-bold font-serif">
+          <h2 className="text-lg sm:text-2xl font-bold font-serif">
             Raise Structured Administrative Ticket
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">

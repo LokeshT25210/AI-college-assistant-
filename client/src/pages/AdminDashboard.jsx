@@ -71,7 +71,7 @@ export default function AdminDashboard({ onSelectTicket, onNavigate }) {
       <div className="absolute top-1/3 -right-16 w-96 h-96 bg-indigo-500/15 dark:bg-blue-600/20 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* Executive Command Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 sm:p-7 shadow-lg border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-4 sm:p-7 shadow-lg border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center space-x-4">
           <ThreeDTelemetryOrb size={74} className="hidden sm:inline-block drop-shadow-xl shrink-0" />
           <div>
@@ -208,16 +208,16 @@ export default function AdminDashboard({ onSelectTicket, onNavigate }) {
 
           <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm text-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-slate-100 text-slate-600 font-semibold border-b border-slate-200">
+              <table className="w-full text-left min-w-[640px]">
+                <thead className="bg-slate-100 text-slate-600 font-semibold border-b border-slate-200 text-[11px] uppercase tracking-wider">
                   <tr>
-                    <th className="py-2.5 px-3">Ticket ID</th>
-                    <th className="py-2.5 px-3">Student</th>
+                    <th className="py-2.5 px-3 whitespace-nowrap">Ticket ID</th>
+                    <th className="py-2.5 px-3 whitespace-nowrap">Student</th>
                     <th className="py-2.5 px-3">Subject / Issue</th>
-                    <th className="py-2.5 px-3">Department</th>
-                    <th className="py-2.5 px-3">Priority</th>
-                    <th className="py-2.5 px-3">Status</th>
-                    <th className="py-2.5 px-3 text-right">Action</th>
+                    <th className="py-2.5 px-3 whitespace-nowrap">Department</th>
+                    <th className="py-2.5 px-3 whitespace-nowrap">Priority</th>
+                    <th className="py-2.5 px-3 whitespace-nowrap">Status</th>
+                    <th className="py-2.5 px-3 text-right whitespace-nowrap">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">

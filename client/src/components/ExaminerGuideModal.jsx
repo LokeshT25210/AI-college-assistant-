@@ -58,28 +58,28 @@ export default function ExaminerGuideModal({ isOpen, onClose, onSelectDemoScenar
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 w-full max-w-4xl max-h-[92dvh] flex flex-col overflow-hidden">
         
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-5 flex items-center justify-between border-b border-slate-800">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-              <Award className="w-6 h-6" />
+        <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-3.5 sm:p-5 flex items-start sm:items-center justify-between border-b border-slate-800 shrink-0">
+          <div className="flex items-start sm:items-center space-x-2.5 sm:space-x-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0 mt-0.5 sm:mt-0">
+              <Award className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <h3 className="font-bold text-lg text-white">Examiner Scoring & Live Evaluation Suite</h3>
-                <span className="bg-amber-400/20 text-amber-300 text-xs px-2 py-0.5 rounded-full border border-amber-400/30 font-semibold">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <h3 className="font-bold text-sm sm:text-lg text-white">Examiner Scoring & Evaluation Suite</h3>
+                <span className="bg-amber-400/20 text-amber-300 text-[10px] sm:text-xs px-2 py-0.5 rounded-full border border-amber-400/30 font-semibold">
                   100 / 100 Criteria
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-2 mt-1">
-                <span className="inline-flex items-center text-[11px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
-                  <Sparkles className="w-3 h-3 mr-1 text-emerald-400" />
-                  Google Gemini 3.5 Flash Lite Active (Key: AQ.Ab8...9QGA)
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1">
+                <span className="inline-flex items-center text-[10px] sm:text-[11px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                  <Sparkles className="w-3 h-3 mr-1 text-emerald-400 shrink-0" />
+                  <span>Gemini 3.5 Active</span>
                 </span>
-                <span className="text-[11px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30">
+                <span className="text-[10px] sm:text-[11px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30">
                   21/21 Automated Tests Passing (100%)
                 </span>
               </div>
@@ -88,14 +88,14 @@ export default function ExaminerGuideModal({ isOpen, onClose, onSelectDemoScenar
 
           <button 
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors ml-2 shrink-0 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
           
           {/* Quick 1-Click Examiner Demo Scenarios */}
           <div>

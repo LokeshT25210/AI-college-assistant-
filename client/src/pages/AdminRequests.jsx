@@ -189,17 +189,17 @@ export default function AdminRequests({ onSelectTicket }) {
           <div className="p-12 text-center text-slate-400">Loading requests repository...</div>
         ) : filtered.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="w-full text-left">
+            <table className="w-full text-left min-w-[720px]">
               <thead className="bg-slate-100 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[11px]">
                 <tr>
-                  <th className="py-3 px-4">Ticket ID</th>
-                  <th className="py-3 px-4">Student</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Ticket ID</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Student</th>
                   <th className="py-3 px-4">Subject Narrative</th>
-                  <th className="py-3 px-4">Department</th>
-                  <th className="py-3 px-4">Priority</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4">Created</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Department</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Priority</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Status</th>
+                  <th className="py-3 px-4 whitespace-nowrap">Created</th>
+                  <th className="py-3 px-4 text-right whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { 
   GraduationCap, 
   ShieldCheck, 
@@ -57,11 +58,23 @@ const PROTOCOL_SCENARIOS = [
 ];
 
 export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('attendance');
 
-  const handleLaunchPortal = () => {
-    onNavigate('login');
+  const handleLaunchPortal = (preferredRole) => {
+    if (user) {
+      if (preferredRole === 'admin') {
+        onNavigate('admin-dashboard');
+      } else {
+        onNavigate(user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard');
+      }
+    } else {
+      onNavigate('login');
+    }
   };
+
+  const handleQuickEnterStudent = () => handleLaunchPortal('student');
+  const handleQuickEnterAdmin = () => handleLaunchPortal('admin');
 
   const currentScenario = PROTOCOL_SCENARIOS.find(s => s.id === activeTab) || PROTOCOL_SCENARIOS[0];
 
@@ -69,7 +82,7 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-blue-500/20 selection:text-blue-700">
       
       {/* Institutional Gazette Top-Strip */}
-      <div className="bg-slate-900 text-slate-300 text-xs border-b border-slate-800">
+      <div className="bg-slate-900 text-slate-300 text-xs border-b border-slate-800 hidden sm:block">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center space-x-3 text-[11px]">
             <span className="font-serif italic text-amber-300">Veritas et Excellentia</span>
@@ -88,8 +101,8 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
               <span>Examiner Evaluation Rubric (100 pts)</span>
             </button>
             <span className="text-slate-600">|</span>
-            <button onClick={() => onNavigate('login')} className="hover:text-white font-semibold">
-              Portal Login
+            <button type="button" onClick={() => handleLaunchPortal()} className="hover:text-white font-semibold cursor-pointer">
+              {user ? `Signed In: ${user.name}` : 'Portal Login'}
             </button>
           </div>
         </div>
@@ -97,36 +110,44 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
 
       {/* Main University Masthead Header */}
       <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-xs transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => onNavigate('landing')}>
-            <ThreeDCampusBadge size={46} className="shrink-0 drop-shadow-md" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+          <div className="flex items-center space-x-2 sm:space-x-3 cursor-pointer select-none" onClick={() => onNavigate('landing')}>
+            <ThreeDCampusBadge size={36} className="shrink-0 sm:hidden drop-shadow-md" />
+            <ThreeDCampusBadge size={46} className="shrink-0 hidden sm:block drop-shadow-md" />
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg sm:text-xl font-serif text-slate-900 dark:text-white tracking-tight">Autonomous Engineering College</span>
-                <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700 uppercase tracking-wider">
+                <span className="font-bold text-sm sm:text-xl font-serif text-slate-900 dark:text-white tracking-tight">
+                  <span className="sm:hidden">AEC CAMPUS</span>
+                  <span className="hidden sm:inline">Autonomous Engineering College</span>
+                </span>
+                <span className="hidden md:inline-block bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700 uppercase tracking-wider">
                   Autonomous &bull; NAAC A+
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-sans">
+              <p className="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-sans">
                 Office of Academic Affairs & Student Grievance Governance
               </p>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <button
+              type="button"
               onClick={onOpenExaminerGuide}
-              className="hidden sm:flex items-center space-x-1.5 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs"
+              className="flex items-center space-x-1.5 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all shadow-xs cursor-pointer"
             >
-              <Award className="w-4 h-4 text-amber-700 dark:text-amber-400" />
-              <span>Examiner Guide & Demo Scenarios</span>
+              <Award className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+              <span className="hidden sm:inline">Examiner Guide</span>
+              <span className="sm:hidden">Rubric</span>
             </button>
 
             <button
-              onClick={() => onNavigate('login')}
-              className="bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center space-x-1.5"
+              type="button"
+              onClick={() => handleLaunchPortal()}
+              className="bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center space-x-1.5 cursor-pointer"
             >
-              <span>Single Sign-On / Portal</span>
+              <span className="hidden sm:inline">{user ? 'Open Student Portal' : 'Single Sign-On / Portal'}</span>
+              <span className="sm:hidden">{user ? 'Dashboard' : 'Portal'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -183,19 +204,21 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
               {/* Primary Action Buttons */}
               <div className="pt-4 flex flex-col sm:flex-row gap-3">
                 <button
-                  onClick={() => onNavigate('login')}
-                  className="flex items-center justify-center space-x-2 bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all text-xs sm:text-sm"
+                  type="button"
+                  onClick={() => handleLaunchPortal('student')}
+                  className="flex items-center justify-center space-x-2 bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all text-xs sm:text-sm cursor-pointer"
                 >
-                  <span>Access Student Portal</span>
+                  <span>{user ? 'Open Student Dashboard' : 'Access Student Portal'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button
-                  onClick={() => onNavigate('login')}
-                  className="flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all text-xs sm:text-sm"
+                  type="button"
+                  onClick={() => handleLaunchPortal('admin')}
+                  className="flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all text-xs sm:text-sm cursor-pointer"
                 >
                   <ShieldCheck className="w-4 h-4 text-purple-400" />
-                  <span>Faculty & Administrative Console</span>
+                  <span>{user ? (user.role === 'admin' ? 'Open Admin Console' : 'Switch to Admin / Faculty') : 'Faculty & Administrative Console'}</span>
                 </button>
               </div>
             </div>

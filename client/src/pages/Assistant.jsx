@@ -289,21 +289,23 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-6.5rem)] bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+    <div className="flex flex-col h-[calc(100dvh-11.5rem)] md:h-[calc(100vh-6.5rem)] bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
       
       {/* Assistant Header */}
-      <div className="bg-slate-900 dark:bg-slate-950 text-white px-5 py-3.5 flex items-center justify-between border-b border-slate-800">
-        <div className="flex items-center space-x-3">
-          <ThreeDAssistantCore size={44} isThinking={isProcessing} className="shrink-0" />
+      <div className="bg-slate-900 dark:bg-slate-950 text-white px-3 sm:px-5 py-2.5 sm:py-3.5 flex items-center justify-between border-b border-slate-800 shrink-0">
+        <div className="flex items-center space-x-2.5 sm:space-x-3">
+          <ThreeDAssistantCore size={36} isThinking={isProcessing} className="shrink-0 sm:hidden" />
+          <ThreeDAssistantCore size={44} isThinking={isProcessing} className="shrink-0 hidden sm:block" />
           <div>
-            <div className="flex items-center space-x-2">
-              <h2 className="text-sm font-bold text-white">Smart Campus AI Assistant</h2>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-900/80 text-emerald-300 border border-emerald-700/60 flex items-center space-x-1">
+            <div className="flex items-center space-x-1.5 sm:space-x-2">
+              <h2 className="text-xs sm:text-sm font-bold text-white">Smart Campus AI Assistant</h2>
+              <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-900/80 text-emerald-300 border border-emerald-700/60 flex items-center space-x-1 shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Google Gemini 3.5 Flash Lite Active</span>
+                <span className="hidden sm:inline">Google Gemini 3.5 Flash Lite Active</span>
+                <span className="sm:hidden">Gemini AI</span>
               </span>
             </div>
-            <p className="text-[11px] text-slate-400">
+            <p className="hidden sm:block text-[11px] text-slate-400">
               Autonomous College Knowledge Base &bull; Key: <span className="font-mono text-emerald-400">AQ.Ab8...9QGA</span> &bull; 3D Real-Time Cognitive Engine
             </p>
           </div>

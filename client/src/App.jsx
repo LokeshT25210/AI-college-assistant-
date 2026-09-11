@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import ExaminerGuideModal from './components/ExaminerGuideModal';
+import { 
+  LayoutDashboard, 
+  Bot, 
+  TicketCheck, 
+  ClipboardList, 
+  BarChart3, 
+  Bell, 
+  Menu, 
+  Sparkles 
+} from 'lucide-react';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -18,20 +28,79 @@ import Profile from './pages/Profile';
 import Announcements from './pages/Announcements';
 import DatabaseViewer from './pages/DatabaseViewer';
 
+const VALID_PAGES = [
+  'landing',
+  'login',
+  'student-dashboard',
+  'admin-dashboard',
+  'assistant',
+  'my-requests',
+  'admin-requests',
+  'request-details',
+  'analytics',
+  'profile',
+  'announcements',
+  'database'
+];
+
+function getHashRoute() {
+  if (typeof window === 'undefined') return null;
+  const hash = (window.location.hash || '').replace(/^#\/?/, '').trim().toLowerCase();
+  if (VALID_PAGES.includes(hash)) return hash;
+  const stored = sessionStorage.getItem('campus_current_page');
+  if (stored && VALID_PAGES.includes(stored)) return stored;
+  return null;
+}
+
 export default function App() {
   const { user, loading } = useAuth();
-  const [currentPage, setCurrentPage] = useState('login');
+  const [currentPage, setCurrentPage] = useState(() => {
+    const hash = getHashRoute();
+    if (hash) return hash;
+    return user ? (user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard') : 'login';
+  });
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [assistantQuery, setAssistantQuery] = useState('');
   const [isExaminerGuideOpen, setIsExaminerGuideOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // If user just logged in and we're on landing or login, navigate to appropriate main dashboard
-  React.useEffect(() => {
-    if (user && (currentPage === 'landing' || currentPage === 'login')) {
-      if (user.role === 'admin') {
-        setCurrentPage('admin-dashboard');
-      } else {
-        setCurrentPage('student-dashboard');
+  // Sync state whenever URL hash changes (browser Back/Forward or manual hash change)
+  useEffect(() => {
+    const syncRouteFromHash = () => {
+      const hash = (window.location.hash || '').replace(/^#\/?/, '').trim().toLowerCase();
+      if (VALID_PAGES.includes(hash) && hash !== currentPage) {
+        if (hash === 'login' && user) {
+          const dest = user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard';
+          setCurrentPage(dest);
+          window.location.hash = dest;
+          sessionStorage.setItem('campus_current_page', dest);
+        } else {
+          setCurrentPage(hash);
+          sessionStorage.setItem('campus_current_page', hash);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    };
+
+    window.addEventListener('hashchange', syncRouteFromHash);
+    window.addEventListener('popstate', syncRouteFromHash);
+    return () => {
+      window.removeEventListener('hashchange', syncRouteFromHash);
+      window.removeEventListener('popstate', syncRouteFromHash);
+    };
+  }, [currentPage, user]);
+
+  // Handle user authentication transitions
+  useEffect(() => {
+    if (user) {
+      if (currentPage === 'login') {
+        const dest = user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard';
+        handleNavigate(dest);
+      }
+    } else {
+      const protectedPages = ['student-dashboard', 'admin-dashboard', 'my-requests', 'admin-requests', 'analytics', 'profile'];
+      if (protectedPages.includes(currentPage)) {
+        handleNavigate('login');
       }
     }
   }, [user]);
@@ -48,22 +117,36 @@ export default function App() {
   }
 
   const handleNavigate = (page) => {
-    if (page === 'home') {
-      setCurrentPage(user ? (user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard') : 'landing');
-    } else {
-      setCurrentPage(page);
+    let target = page;
+    if (page === 'home' || page === 'campus-home') {
+      target = 'landing';
+    } else if (page === 'dashboard') {
+      target = user ? (user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard') : 'login';
+    } else if (page === 'login' && user) {
+      target = user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard';
     }
+
+    setCurrentPage(target);
+    sessionStorage.setItem('campus_current_page', target);
+    setMobileMenuOpen(false);
+
+    try {
+      if ((window.location.hash || '').replace(/^#\/?/, '') !== target) {
+        window.location.hash = target;
+      }
+    } catch (e) {}
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectTicket = (ticketId) => {
     setSelectedTicketId(ticketId);
-    setCurrentPage('request-details');
+    handleNavigate('request-details');
   };
 
   const handleAskAssistant = (query) => {
     setAssistantQuery(query);
-    setCurrentPage('assistant');
+    handleNavigate('assistant');
   };
 
   const handleSelectDemoScenario = (scenarioType) => {
@@ -91,31 +174,46 @@ export default function App() {
       setAssistantQuery(query);
     }
     if (!user) {
-      setCurrentPage('login');
+      handleNavigate('login');
     } else {
-      setCurrentPage('assistant');
+      handleNavigate('assistant');
     }
   };
 
-  // If not logged in: ALWAYS display Login unless user explicitly requested landing
-  if (!user) {
-    if (currentPage === 'landing') {
-      return (
-        <>
-          <LandingPage 
-            onNavigate={handleNavigate} 
-            onOpenExaminerGuide={() => setIsExaminerGuideOpen(true)} 
-          />
-          <ExaminerGuideModal 
-            isOpen={isExaminerGuideOpen} 
-            onClose={() => setIsExaminerGuideOpen(false)}
-            onSelectDemoScenario={handleSelectDemoScenario}
-            onNavigate={handleNavigate}
-          />
-        </>
-      );
-    }
+  // 1. Landing Page: Rendered full-screen cleanly whether user is logged in or not
+  if (currentPage === 'landing') {
+    return (
+      <>
+        {user && (
+          <div className="bg-slate-900 text-white px-4 py-2.5 text-xs flex items-center justify-between border-b border-slate-800 sticky top-0 z-50 shadow-md">
+            <span className="font-semibold text-blue-200">
+              ✓ Logged in as {user.name} ({user.role === 'admin' ? 'Campus Admin' : 'Enrolled Student'})
+            </span>
+            <button
+              type="button"
+              onClick={() => handleNavigate(user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard')}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3.5 py-1.5 rounded-lg text-xs transition-all shadow-sm cursor-pointer"
+            >
+              Return to Active Dashboard &rarr;
+            </button>
+          </div>
+        )}
+        <LandingPage 
+          onNavigate={handleNavigate} 
+          onOpenExaminerGuide={() => setIsExaminerGuideOpen(true)} 
+        />
+        <ExaminerGuideModal 
+          isOpen={isExaminerGuideOpen} 
+          onClose={() => setIsExaminerGuideOpen(false)}
+          onSelectDemoScenario={handleSelectDemoScenario}
+          onNavigate={handleNavigate}
+        />
+      </>
+    );
+  }
 
+  // 2. Unauthenticated Login Gateway
+  if (!user) {
     return (
       <>
         <Navbar 
@@ -146,18 +244,22 @@ export default function App() {
       <Navbar 
         onOpenExaminerGuide={() => setIsExaminerGuideOpen(true)}
         onNavigate={handleNavigate}
+        onToggleMobileMenu={() => setMobileMenuOpen(prev => !prev)}
+        mobileMenuOpen={mobileMenuOpen}
       />
 
       {/* Main Workspace Layout */}
       <div className="flex-1 flex max-w-7xl w-full mx-auto">
-        {/* Left Sidebar */}
+        {/* Left Sidebar (Desktop Static + Mobile Drawer) */}
         <Sidebar 
           currentPage={currentPage}
           onNavigate={handleNavigate}
+          mobileOpen={mobileMenuOpen}
+          onCloseMobile={() => setMobileMenuOpen(false)}
         />
 
         {/* Content Viewport */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0 overflow-y-auto">
+        <main className="flex-1 p-3 sm:p-6 lg:p-8 min-w-0 overflow-y-auto pb-24 md:pb-8">
           {currentPage === 'student-dashboard' && (
             <StudentDashboard 
               onNavigate={handleNavigate}
@@ -220,34 +322,8 @@ export default function App() {
             <DatabaseViewer />
           )}
 
-          {currentPage === 'landing' && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg border border-blue-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white shadow-sm">
-                    ✓
-                  </div>
-                  <div>
-                    <span className="font-bold text-sm block">Logged in as {user?.name} ({user?.role === 'admin' ? 'Campus Admin' : 'Enrolled Student'})</span>
-                    <span className="text-xs text-blue-200">Browsing Public Campus Information Portal & Statutory Gazettes.</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleNavigate(user?.role === 'admin' ? 'admin-dashboard' : 'student-dashboard')}
-                  className="bg-white hover:bg-blue-50 text-blue-950 font-bold px-4 py-2 rounded-xl text-xs transition-colors shadow-sm self-start sm:self-auto shrink-0"
-                >
-                  Return to Dashboard &rarr;
-                </button>
-              </div>
-              <LandingPage 
-                onNavigate={handleNavigate} 
-                onOpenExaminerGuide={() => setIsExaminerGuideOpen(true)} 
-              />
-            </div>
-          )}
-
           {/* Default Fallback for unmatched routes */}
-          {!['student-dashboard', 'admin-dashboard', 'assistant', 'my-requests', 'admin-requests', 'request-details', 'analytics', 'profile', 'announcements', 'database', 'landing'].includes(currentPage) && (
+          {!['student-dashboard', 'admin-dashboard', 'assistant', 'my-requests', 'admin-requests', 'request-details', 'analytics', 'profile', 'announcements', 'database'].includes(currentPage) && (
             user?.role === 'admin' ? (
               <AdminDashboard 
                 onSelectTicket={handleSelectTicket}
@@ -263,6 +339,132 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation Bar (Native App Feel on Phones) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 md:hidden flex items-center justify-around px-2 py-1.5 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_16px_rgba(0,0,0,0.5)]">
+        {user.role === 'admin' ? (
+          <>
+            <button
+              type="button"
+              onClick={() => handleNavigate('admin-dashboard')}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold transition-colors cursor-pointer ${
+                currentPage === 'admin-dashboard'
+                  ? 'text-blue-600 dark:text-blue-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <LayoutDashboard className="w-5 h-5 mb-0.5" />
+              <span>Command</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavigate('admin-requests')}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold transition-colors cursor-pointer ${
+                currentPage === 'admin-requests'
+                  ? 'text-blue-600 dark:text-blue-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <ClipboardList className="w-5 h-5 mb-0.5" />
+              <span>Tickets</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavigate('analytics')}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold transition-colors cursor-pointer ${
+                currentPage === 'analytics'
+                  ? 'text-blue-600 dark:text-blue-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <BarChart3 className="w-5 h-5 mb-0.5" />
+              <span>Analytics</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavigate('assistant')}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold transition-colors cursor-pointer ${
+                currentPage === 'assistant'
+                  ? 'text-blue-600 dark:text-blue-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <Bot className="w-5 h-5 mb-0.5" />
+              <span>Copilot</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+            >
+              <Menu className="w-5 h-5 mb-0.5" />
+              <span>Menu</span>
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={() => handleNavigate('student-dashboard')}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold transition-colors cursor-pointer ${
+                currentPage === 'student-dashboard'
+                  ? 'text-blue-600 dark:text-blue-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <LayoutDashboard className="w-5 h-5 mb-0.5" />
+              <span>Home</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavigate('assistant')}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold transition-colors relative cursor-pointer ${
+                currentPage === 'assistant'
+                  ? 'text-blue-600 dark:text-blue-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <div className="relative">
+                <Bot className="w-5 h-5 mb-0.5" />
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-blue-500" />
+              </div>
+              <span>AI Copilot</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavigate('my-requests')}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold transition-colors cursor-pointer ${
+                currentPage === 'my-requests'
+                  ? 'text-blue-600 dark:text-blue-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <TicketCheck className="w-5 h-5 mb-0.5" />
+              <span>Tickets</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNavigate('announcements')}
+              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold transition-colors cursor-pointer ${
+                currentPage === 'announcements'
+                  ? 'text-blue-600 dark:text-blue-400 font-bold'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <Bell className="w-5 h-5 mb-0.5" />
+              <span>Notices</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-[10px] font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+            >
+              <Menu className="w-5 h-5 mb-0.5" />
+              <span>Menu</span>
+            </button>
+          </>
+        )}
+      </nav>
 
       {/* Examiner Rubric & Scoring Companion Modal */}
       <ExaminerGuideModal 
