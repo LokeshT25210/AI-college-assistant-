@@ -11,7 +11,8 @@ import {
   RefreshCw,
   Award,
   Bot,
-  ExternalLink
+  ExternalLink,
+  ArrowRight
 } from 'lucide-react';
 
 const SCORING_RUBRIC = [
@@ -48,11 +49,11 @@ const BENCHMARK_DATASET = [
   { text: "What is required before downloading semester hall tickets?", category: "Exams", department: "Exams", priority: "Medium", action: "fee_clearance_policy" },
   { text: "What CGPA is required for institutional merit scholarship?", category: "Scholarships", department: "Scholarships", priority: "Medium", action: "merit_criteria_answer" },
   { text: "Does college bus go to Vijayawada and Guntur?", category: "Transport", department: "Campus Transport", priority: "Low", action: "route_information" },
-  { text: "Who is the principal of DVR & Dr. HS MIC College of Technology?", category: "College Information", department: "Principal's Office", priority: "Low", action: "institutional_authority" }
+  { text: "Who is the principal of Autonomous Engineering College?", category: "College Information", department: "Principal's Office", priority: "Low", action: "institutional_authority" }
 ];
 
 export default function ExaminerGuideModal({ isOpen, onClose, onSelectDemoScenario, onNavigate }) {
-  const { quickSwitchUser, user } = useAuth();
+  const { user } = useAuth();
 
   if (!isOpen) return null;
 
@@ -265,46 +266,54 @@ export default function ExaminerGuideModal({ isOpen, onClose, onSelectDemoScenar
             </div>
           </div>
 
-          {/* Persona Switcher for Examiner */}
+          {/* Authorized Evaluation Credentials */}
           <div className="bg-slate-100/80 rounded-xl p-4 border border-slate-200">
-            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-              Persona Switcher for Section 16 Demo Flow
+            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center justify-between">
+              <span>Section 16: Authorized Evaluation Credentials</span>
+              <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded">Strict Password Protected</span>
             </h4>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={async () => {
-                  await quickSwitchUser('alex.kumar@campus.edu');
-                  onNavigate('student-dashboard');
-                  onClose();
-                }}
-                className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 shadow-sm"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span>Student: Alex Kumar</span>
-              </button>
+            <p className="text-xs text-slate-600 mb-3">
+              In accordance with credential privacy and access control guidelines, all user accounts are strictly password-protected. Use the verified credentials below to evaluate role-specific workflows:
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+              <div className="bg-white p-3 rounded-lg border border-slate-200 text-xs">
+                <div className="flex items-center space-x-1.5 font-bold text-slate-800 mb-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <span>Student Persona: Alex Kumar</span>
+                </div>
+                <div className="text-[11px] text-slate-500 font-mono space-y-0.5">
+                  <div>Email: <span className="text-slate-800 font-semibold">alex.kumar@campus.edu</span></div>
+                  <div>Password: <span className="text-slate-800 font-semibold">campus123</span></div>
+                  <div className="text-amber-600 text-[10px] pt-1">Scenario: 68.5% Attendance (Condonation)</div>
+                </div>
+              </div>
 
-              <button
-                onClick={async () => {
-                  await quickSwitchUser('admin@campus.edu');
-                  onNavigate('admin-dashboard');
-                  onClose();
-                }}
-                className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 shadow-sm"
-              >
-                <span className="w-2 h-2 rounded-full bg-purple-500" />
-                <span>Admin: Dr. S. Raman (Registrar)</span>
-              </button>
+              <div className="bg-white p-3 rounded-lg border border-slate-200 text-xs">
+                <div className="flex items-center space-x-1.5 font-bold text-slate-800 mb-1">
+                  <span className="w-2 h-2 rounded-full bg-purple-500" />
+                  <span>Admin Persona: Dr. S. Raman</span>
+                </div>
+                <div className="text-[11px] text-slate-500 font-mono space-y-0.5">
+                  <div>Email: <span className="text-slate-800 font-semibold">admin@campus.edu</span></div>
+                  <div>Password: <span className="text-slate-800 font-semibold">campus123</span></div>
+                  <div className="text-purple-600 text-[10px] pt-1">Role: Registrar / Ticket Resolution SLA</div>
+                </div>
+              </div>
+            </div>
 
+            <div className="flex items-center justify-between pt-1">
+              <span className="text-[11px] text-slate-500">
+                {user ? `Currently signed in as: ${user.name} (${user.role})` : 'Please sign in with valid credentials'}
+              </span>
               <button
-                onClick={async () => {
-                  await quickSwitchUser('admin@campus.edu');
-                  onNavigate('analytics');
+                onClick={() => {
+                  onNavigate(user ? (user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard') : 'login');
                   onClose();
                 }}
-                className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 shadow-sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 shadow-sm transition-colors"
               >
-                <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
-                <span>View AI Operational Insights</span>
+                <span>{user ? 'Go to Active Dashboard' : 'Go to Portal Login'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>

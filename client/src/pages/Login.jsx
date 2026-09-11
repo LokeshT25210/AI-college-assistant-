@@ -58,7 +58,7 @@ const BUS_ROUTES = [
 ];
 
 export default function Login({ onNavigate }) {
-  const { login, quickSwitchUser } = useAuth();
+  const { login } = useAuth();
   const [roleTab, setRoleTab] = useState('student'); // 'student', 'admin', 'exam', 'parent'
   const [authMode, setAuthMode] = useState('login'); // 'login' or 'register'
   
@@ -98,7 +98,6 @@ export default function Login({ onNavigate }) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showEvaluationPass, setShowEvaluationPass] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
 
   const handleTabChange = (tab) => {
@@ -225,18 +224,6 @@ export default function Login({ onNavigate }) {
       }
     } else {
       setError(res.message || 'Invalid institutional credentials. Please check your email/roll number and password.');
-    }
-  };
-
-  const handleQuickPersona = async (userEmail, targetPage) => {
-    setLoading(true);
-    setError(null);
-    const res = await quickSwitchUser(userEmail);
-    setLoading(false);
-    if (res.success) {
-      onNavigate(targetPage);
-    } else {
-      setError(res.message);
     }
   };
 
@@ -1132,131 +1119,21 @@ export default function Login({ onNavigate }) {
               </form>
             )}
 
-            {/* Institutional Fast-Access Accounts & Evaluation Personas Accordion */}
+            {/* Institutional Credential Security Notice */}
             <div className="pt-4 border-t border-slate-200/80 dark:border-slate-800">
-              <button
-                type="button"
-                onClick={() => setShowEvaluationPass(!showEvaluationPass)}
-                className="w-full flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 py-1"
-              >
-                <span className="flex items-center space-x-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-                  <span>Official Quick Login & Evaluation Personas</span>
-                </span>
-                {showEvaluationPass ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-              </button>
-
-              {showEvaluationPass && (
-                <div className="mt-2.5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-3 text-xs animate-in fade-in">
-                  
-                  {/* Students Section */}
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1.5">
-                      1-Click Student Personas (Evaluator Scenarios & Attendance Tiers):
-                    </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('student@mictech.ac.in', 'student-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-blue-700 dark:text-blue-400 block text-[11px]">Priya Sharma (Std)</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">3rd Yr CSE &bull; Regular</span>
-                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold font-mono">84.0% Attendance &bull; R20</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('alex.kumar@campus.edu', 'student-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/30 border border-amber-200 dark:border-amber-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-amber-800 dark:text-amber-300 block text-[11px]">Alex Kumar (Condonation)</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">3rd Yr CSE &bull; 65-75% Tier</span>
-                        <span className="text-[9px] text-amber-600 dark:text-amber-400 font-semibold font-mono">68.5% Condonation Test</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('21h71a0501@mictech.ac.in', 'student-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-emerald-700 dark:text-emerald-300 block text-[11px]">K. Sai Rahul (Scholar)</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">4th Yr CSE &bull; Exam Topper</span>
-                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold font-mono">91.5% Attendance &bull; R20</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('22h71a0408@mictech.ac.in', 'student-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/30 border border-red-200 dark:border-red-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-red-700 dark:text-red-400 block text-[11px]">M. Karthik (Detention Alert)</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">3rd Yr ECE &bull; &lt;65% Critical</span>
-                        <span className="text-[9px] text-red-600 dark:text-red-400 font-semibold font-mono">58.0% Detention Warning</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('23h71a1205@mictech.ac.in', 'student-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-purple-700 dark:text-purple-400 block text-[11px]">Ananya Reddy (Medical)</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">2nd Yr IT &bull; Exemption Case</span>
-                        <span className="text-[9px] text-purple-600 dark:text-purple-400 font-semibold font-mono">72.0% Medical Condonation</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('sneha.patel@campus.edu', 'student-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-cyan-50 dark:hover:bg-cyan-900/30 border border-cyan-200 dark:border-cyan-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-cyan-700 dark:text-cyan-400 block text-[11px]">Sneha Patel (Placements)</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">4th Yr IT &bull; Placement Lead</span>
-                        <span className="text-[9px] text-cyan-600 dark:text-cyan-400 font-semibold font-mono">86.5% Attendance &bull; R20</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Faculty & Campus Leadership Section */}
-                  <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1.5">
-                      1-Click Administrative & Faculty Consoles:
-                    </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('principal@mictech.ac.in', 'admin-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 border border-purple-200 dark:border-purple-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-purple-700 dark:text-purple-400 block text-[11px]">Dr. T. Vamsee Kiran</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Principal / Executive Head</span>
-                        <span className="text-[9px] text-purple-600 dark:text-purple-400 font-semibold font-mono">Full Campus Governance</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('coe@mictech.ac.in', 'admin-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-amber-900/30 border border-amber-200 dark:border-amber-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-amber-700 dark:text-amber-400 block text-[11px]">Dr. K. Srinivas</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Controller of Examinations</span>
-                        <span className="text-[9px] text-amber-600 dark:text-amber-400 font-semibold font-mono">Hall Tickets & Condonations</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleQuickPersona('hod.cse@mictech.ac.in', 'admin-dashboard')}
-                        className="text-left bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 p-2.5 rounded-lg transition-colors shadow-sm"
-                      >
-                        <span className="font-bold text-blue-700 dark:text-blue-400 block text-[11px]">Dr. P. Sunitha</span>
-                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block">Professor & HOD, CSE</span>
-                        <span className="text-[9px] text-blue-600 dark:text-blue-400 font-semibold font-mono">Department Grievances</span>
-                      </button>
-                    </div>
-                  </div>
-
+              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 text-xs">
+                <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-300">
+                  <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                  <span className="font-medium text-[11px]">Strict Credential Isolation & Password Security Active</span>
                 </div>
-              )}
+                <button
+                  type="button"
+                  onClick={() => setShowHelpModal(true)}
+                  className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+                >
+                  Portal Help
+                </button>
+              </div>
             </div>
 
           </div>

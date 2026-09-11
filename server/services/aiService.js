@@ -148,7 +148,11 @@ async function callGemini(prompt, systemInstruction = '', timeoutMs = 5000) {
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
       const payload = {
-        contents: [{ parts: [{ text: prompt }] }]
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          maxOutputTokens: 350,
+          temperature: 0.2
+        }
       };
       if (systemInstruction) {
         payload.systemInstruction = { parts: [{ text: systemInstruction }] };
@@ -334,7 +338,8 @@ CRITICAL INSTRUCTIONS:
 1. STRICT ANONYMIZATION: DO NOT mention the words "DVR & Dr. HS MIC College" or "DVR and Dr HS MIC College of Technology". Refer to the institution neutrally as "our college", "the campus", or "our autonomous engineering college".
 2. CAMPUS ASSISTANT PERSONA: Behave like an authoritative, helpful, and supportive college administrative counselor. Provide a direct, related, and comprehensive ANSWER with exact official regulations, timelines, fees, and office counter locations.
 3. ACCURATE STATUS DIRECTIVE: If the student requires 100% accurate, personalized status, official stamp, or immediate manual verification, explicitly advise them to approach the respective college administrative section/counter at the Administrative Block during office hours (9:00 AM – 5:00 PM).
-4. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, practical guidance first.`;
+4. Do NOT merely tell the student to file a ticket. Always answer their question directly with complete, practical guidance first.
+5. STRICT TOKEN EFFICIENCY: Provide crisp, concise, high-value answers strictly under 220 words. Avoid excessive filler or repetitive phrasing.`;
 
   // 2. Verified Answer Handling for Attendance
   if (attendanceLogic) {

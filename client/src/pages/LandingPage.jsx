@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { 
   GraduationCap, 
   ShieldCheck, 
@@ -57,17 +56,10 @@ const PROTOCOL_SCENARIOS = [
 ];
 
 export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
-  const { quickSwitchUser } = useAuth();
   const [activeTab, setActiveTab] = useState('attendance');
 
-  const handleQuickEnterStudent = async () => {
-    await quickSwitchUser('alex.kumar@campus.edu');
-    onNavigate('student-dashboard');
-  };
-
-  const handleQuickEnterAdmin = async () => {
-    await quickSwitchUser('admin@campus.edu');
-    onNavigate('admin-dashboard');
+  const handleLaunchPortal = () => {
+    onNavigate('login');
   };
 
   const currentScenario = PROTOCOL_SCENARIOS.find(s => s.id === activeTab) || PROTOCOL_SCENARIOS[0];
@@ -292,7 +284,7 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
                 <div className="bg-slate-50 px-5 py-3 border-t border-slate-200 flex items-center justify-between text-xs">
                   <span className="text-slate-500 font-medium">Ready to test in full portal?</span>
                   <button
-                    onClick={handleQuickEnterStudent}
+                    onClick={handleLaunchPortal}
                     className="text-blue-700 font-bold hover:underline flex items-center space-x-1"
                   >
                     <span>Launch Student Assistant</span>

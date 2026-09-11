@@ -10,23 +10,14 @@ import {
   Sparkles, 
   Bell, 
   HelpCircle,
-  RefreshCw,
-  Sun,
+  Sun, 
   Moon
 } from 'lucide-react';
 
 export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
-  const { user, quickSwitchUser, logout } = useAuth();
+  const { user, logout } = useAuth();
   const { theme, toggleTheme, isDark } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [switching, setSwitching] = useState(false);
-
-  const handleSwitch = async (email) => {
-    setSwitching(true);
-    setDropdownOpen(false);
-    await quickSwitchUser(email);
-    setSwitching(false);
-  };
 
   return (
     <header className="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md">
@@ -113,162 +104,10 @@ export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
                     <p className="text-[11px] text-blue-400 mt-0.5">{user.department}</p>
                   </div>
 
-                  {/* 1-Click Role Switcher for Examiner & Live Demo */}
-                  <div className="px-3 py-2 border-b border-slate-800 bg-slate-800/40">
-                    <p className="text-[11px] font-semibold text-amber-300 flex items-center justify-between mb-1.5">
-                      <span className="flex items-center space-x-1">
-                        <RefreshCw className="w-3 h-3 animate-spin text-amber-400" />
-                        <span>Instant Persona Switcher:</span>
-                      </span>
-                      <span className="text-[9px] font-mono bg-amber-950 text-amber-300 border border-amber-800 px-1 rounded">16 in DB</span>
-                    </p>
-                    <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
-                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider pt-0.5 pb-0.5">Students</div>
-                      <button
-                        onClick={() => handleSwitch('alex.kumar@campus.edu')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'alex.kumar@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <UserCheck className="w-3 h-3 text-blue-400 shrink-0" />
-                          <span className="truncate">Alex Kumar</span>
-                        </div>
-                        <span className="text-[9px] text-amber-400 font-mono shrink-0">68.5% Condonation</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('student@mictech.ac.in')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'student@mictech.ac.in' || user.email === 'priya.sharma@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <UserCheck className="w-3 h-3 text-blue-400 shrink-0" />
-                          <span className="truncate">Priya Sharma</span>
-                        </div>
-                        <span className="text-[9px] text-emerald-400 font-mono shrink-0">84.0% Good</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('21h71a0501@mictech.ac.in')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === '21h71a0501@mictech.ac.in' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <UserCheck className="w-3 h-3 text-emerald-400 shrink-0" />
-                          <span className="truncate">K. Sai Rahul</span>
-                        </div>
-                        <span className="text-[9px] text-emerald-400 font-mono shrink-0">91.5% Scholar</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('22h71a0408@mictech.ac.in')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === '22h71a0408@mictech.ac.in' || user.email === 'karthik.varma@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <UserCheck className="w-3 h-3 text-red-400 shrink-0" />
-                          <span className="truncate">M. Karthik Varma</span>
-                        </div>
-                        <span className="text-[9px] text-red-400 font-mono shrink-0">58.0% Detained</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('23h71a1205@mictech.ac.in')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === '23h71a1205@mictech.ac.in' || user.email === 'ananya.reddy@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <UserCheck className="w-3 h-3 text-purple-400 shrink-0" />
-                          <span className="truncate">Ananya Reddy</span>
-                        </div>
-                        <span className="text-[9px] text-purple-400 font-mono shrink-0">72.0% Medical</span>
-                      </button>
-
-                      <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider pt-1 pb-0.5">Faculty & Administration</div>
-                      
-                      <button
-                        onClick={() => handleSwitch('principal@mictech.ac.in')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'principal@mictech.ac.in' ? 'bg-purple-600/30 text-purple-300 border border-purple-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <ShieldCheck className="w-3 h-3 text-purple-400 shrink-0" />
-                          <span className="truncate">Dr. T. Vamsee Kiran</span>
-                        </div>
-                        <span className="text-[9px] text-purple-400 shrink-0">Principal</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('admin@campus.edu')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'admin@campus.edu' ? 'bg-purple-600/30 text-purple-300 border border-purple-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <ShieldCheck className="w-3 h-3 text-purple-400 shrink-0" />
-                          <span className="truncate">Dr. S. Raman</span>
-                        </div>
-                        <span className="text-[9px] text-slate-400 shrink-0">Registrar</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('admin@mictech.ac.in')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'admin@mictech.ac.in' ? 'bg-amber-600/30 text-amber-300 border border-amber-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <ShieldCheck className="w-3 h-3 text-amber-400 shrink-0" />
-                          <span className="truncate">Dr. K. Srinivas</span>
-                        </div>
-                        <span className="text-[9px] text-amber-400 shrink-0">Exam CoE</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('finance@campus.edu')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'finance@campus.edu' ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
-                          <span className="truncate">Prof. V. Mehta</span>
-                        </div>
-                        <span className="text-[9px] text-emerald-400 shrink-0">Finance</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('cse.hod@mictech.ac.in')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'cse.hod@mictech.ac.in' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <ShieldCheck className="w-3 h-3 text-blue-400 shrink-0" />
-                          <span className="truncate">Dr. P. Sunitha</span>
-                        </div>
-                        <span className="text-[9px] text-blue-400 shrink-0">CSE HOD</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('hostel.warden@mictech.ac.in')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'hostel.warden@mictech.ac.in' ? 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <ShieldCheck className="w-3 h-3 text-indigo-400 shrink-0" />
-                          <span className="truncate">Capt. R. Rajesh</span>
-                        </div>
-                        <span className="text-[9px] text-indigo-400 shrink-0">Warden</span>
-                      </button>
-                    </div>
+                  {/* Account Security Badge */}
+                  <div className="px-4 py-2 border-b border-slate-800 bg-slate-800/40 text-[11px] text-slate-400 flex items-center space-x-2">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>Secure Authenticated Session</span>
                   </div>
 
                   <div className="pt-1">

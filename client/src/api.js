@@ -1397,16 +1397,20 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: cleanEmail, password })
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.user) {
-          localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
-          if (data.token) localStorage.setItem('campus_token', data.token);
-          return data;
-        }
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success && data.user) {
+        localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
+        if (data.token) localStorage.setItem('campus_token', data.token);
+        return data;
+      } else {
+        // Explicitly return credential failure from backend
+        return {
+          success: false,
+          message: data.message || 'Invalid credentials. Password incorrect.'
+        };
       }
     } catch (e) {
-      // Fallback for static GitHub Pages preview
+      // Fallback only when network fetch fails (e.g. static GitHub Pages offline preview)
     }
 
     const localUsers = getLocalUsers();
@@ -1429,30 +1433,19 @@ export const api = {
     }
 
     if (!matched) {
-      const isStaff = cleanEmail.includes('admin') || cleanEmail.includes('faculty') || cleanEmail.includes('principal') || cleanEmail.includes('registrar');
-      const cleanName = cleanEmail.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-      const rollMatch = cleanEmail.includes('@') ? cleanEmail.split('@')[0].toUpperCase() : cleanEmail.toUpperCase();
-      matched = {
-        id: 'usr-' + Date.now(),
-        name: cleanName || (isStaff ? 'Campus Faculty Officer' : 'Student Scholar'),
-        email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@campus.edu`,
-        role: isStaff ? 'admin' : 'student',
-        studentId: isStaff ? undefined : rollMatch,
-        staffId: isStaff ? ('STF-' + Math.floor(100 + Math.random() * 900)) : undefined,
-        department: 'Computer Science & Engineering',
-        year: isStaff ? undefined : 'B.Tech 3rd Year (Semester 5)',
-        regulation: 'R23 Autonomous',
-        residenceType: 'Day Scholar',
-        busRoute: 'Route 01 - Vijayawada (Benz Circle)',
-        cgpa: isStaff ? undefined : 8.20,
-        attendance: isStaff ? undefined : 82.0,
-        phone: '+91 98765 00000',
-        avatar: isStaff 
-          ? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80'
-          : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+      return {
+        success: false,
+        message: 'Invalid credentials. User account not found.'
       };
-      localUsers[matched.email] = matched;
-      saveLocalUsers(localUsers);
+    }
+
+    // Strictly verify password in demo/offline mode
+    const isPasswordMatch = password === 'campus123' || password === 'password123' || (matched.password && matched.password === password);
+    if (!isPasswordMatch) {
+      return {
+        success: false,
+        message: 'Invalid password. Please check your credentials.'
+      };
     }
 
     const token = (matched.role === 'admin' ? 'admin-token-' : 'student-token-') + Date.now();

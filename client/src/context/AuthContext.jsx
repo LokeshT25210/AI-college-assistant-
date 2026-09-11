@@ -30,8 +30,11 @@ export function AuthProvider({ children }) {
     initAuth();
   }, [token]);
 
-  const login = async (email, password = 'campus123') => {
+  const login = async (email, password) => {
     try {
+      if (!password) {
+        return { success: false, message: 'Password is required' };
+      }
       const res = await api.login(email, password);
       if (res.success && res.token) {
         localStorage.setItem('campus_token', res.token);
@@ -46,10 +49,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const quickSwitchUser = async (email) => {
-    return await login(email, 'campus123');
-  };
-
   const logout = () => {
     localStorage.removeItem('campus_token');
     localStorage.removeItem('campus_current_user_v3');
@@ -59,7 +58,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, quickSwitchUser, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

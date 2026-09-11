@@ -19,7 +19,7 @@ import Announcements from './pages/Announcements';
 import DatabaseViewer from './pages/DatabaseViewer';
 
 export default function App() {
-  const { user, loading, quickSwitchUser } = useAuth();
+  const { user, loading } = useAuth();
   const [currentPage, setCurrentPage] = useState('landing');
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [assistantQuery, setAssistantQuery] = useState('');
@@ -62,35 +62,34 @@ export default function App() {
     setCurrentPage('assistant');
   };
 
-  const handleSelectDemoScenario = async (scenarioType) => {
+  const handleSelectDemoScenario = (scenarioType) => {
+    let query = '';
     switch (scenarioType) {
       case 'attendance':
-        await quickSwitchUser('alex.kumar@campus.edu');
-        setAssistantQuery('My attendance is 68 percent can I write exams');
-        setCurrentPage('assistant');
+        query = 'My attendance is 68 percent can I write exams';
         break;
       case 'hostel':
-        await quickSwitchUser('alex.kumar@campus.edu');
-        setAssistantQuery('My hostel fan is not working');
-        setCurrentPage('assistant');
+        query = 'My hostel fan is not working';
         break;
       case 'fee':
-        await quickSwitchUser('alex.kumar@campus.edu');
-        setAssistantQuery('I paid my semester fee but portal says unpaid');
-        setCurrentPage('assistant');
+        query = 'I paid my semester fee but portal says unpaid';
         break;
       case 'hallucination':
-        await quickSwitchUser('alex.kumar@campus.edu');
-        setAssistantQuery('Can I bring a live elephant into the physics laboratory?');
-        setCurrentPage('assistant');
+        query = 'Can I bring a live elephant into the physics laboratory?';
         break;
       default:
         if (typeof scenarioType === 'string' && scenarioType.trim()) {
-          await quickSwitchUser('alex.kumar@campus.edu');
-          setAssistantQuery(scenarioType);
-          setCurrentPage('assistant');
+          query = scenarioType;
         }
         break;
+    }
+    if (query) {
+      setAssistantQuery(query);
+    }
+    if (!user) {
+      setCurrentPage('login');
+    } else {
+      setCurrentPage('assistant');
     }
   };
 
