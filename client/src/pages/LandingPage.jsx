@@ -24,6 +24,7 @@ import {
   Flame,
   Award
 } from 'lucide-react';
+import ThreeDCampusBadge from '../components/ThreeDCampusBadge';
 
 const PROTOCOL_SCENARIOS = [
   {
@@ -65,7 +66,7 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
   const currentScenario = PROTOCOL_SCENARIOS.find(s => s.id === activeTab) || PROTOCOL_SCENARIOS[0];
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] text-slate-900 flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-blue-500/20 selection:text-blue-700">
       
       {/* Institutional Gazette Top-Strip */}
       <div className="bg-slate-900 text-slate-300 text-xs border-b border-slate-800">
@@ -75,7 +76,7 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
             <span>&bull;</span>
             <span className="text-slate-400">AUTONOMOUS ENGINEERING COLLEGE &bull; UGC Autonomous &bull; NAAC A+</span>
             <span className="hidden md:inline">&bull;</span>
-            <span className="hidden md:inline text-emerald-400">Fall Semester 2026 &bull; Regular Session</span>
+            <span className="hidden md:inline text-emerald-400">Academic Year 2026-27 &bull; Regular Session</span>
           </div>
 
           <div className="flex items-center space-x-4 text-[11px]">
@@ -95,20 +96,18 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
       </div>
 
       {/* Main University Masthead Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-xs transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => onNavigate('landing')}>
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-900 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
-              <GraduationCap className="w-7 h-7" />
-            </div>
+            <ThreeDCampusBadge size={46} className="shrink-0 drop-shadow-md" />
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg sm:text-xl font-serif text-slate-900 tracking-tight">Autonomous Engineering College</span>
-                <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-300 uppercase tracking-wider">
+                <span className="font-bold text-lg sm:text-xl font-serif text-slate-900 dark:text-white tracking-tight">Autonomous Engineering College</span>
+                <span className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700 uppercase tracking-wider">
                   Autonomous &bull; NAAC A+
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-sans">
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-sans">
                 Office of Academic Affairs & Student Grievance Governance
               </p>
             </div>
@@ -117,9 +116,9 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
           <div className="flex items-center space-x-3">
             <button
               onClick={onOpenExaminerGuide}
-              className="hidden sm:flex items-center space-x-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs"
+              className="hidden sm:flex items-center space-x-1.5 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-xs"
             >
-              <Award className="w-4 h-4 text-amber-700" />
+              <Award className="w-4 h-4 text-amber-700 dark:text-amber-400" />
               <span>Examiner Guide & Demo Scenarios</span>
             </button>
 
@@ -127,7 +126,7 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
               onClick={() => onNavigate('login')}
               className="bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center space-x-1.5"
             >
-              <span>Single Sign-On</span>
+              <span>Single Sign-On / Portal</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

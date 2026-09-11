@@ -11,7 +11,8 @@ import {
   ShieldAlert, 
   HelpCircle,
   Sparkles,
-  ClipboardList
+  ClipboardList,
+  Home
 } from 'lucide-react';
 
 export default function Sidebar({ currentPage, onNavigate }) {
@@ -27,6 +28,7 @@ export default function Sidebar({ currentPage, onNavigate }) {
     { id: 'announcements', label: 'Official Circulars', icon: Bell },
     { id: 'database', label: 'Campus Database', icon: ClipboardList },
     { id: 'profile', label: 'Academic Profile', icon: UserCircle2 },
+    { id: 'landing', label: 'Return to Campus Home', icon: Home },
   ];
 
   const adminLinks = [
@@ -37,6 +39,7 @@ export default function Sidebar({ currentPage, onNavigate }) {
     { id: 'assistant', label: 'AI Assistant', icon: Bot },
     { id: 'announcements', label: 'Campus Notices', icon: Bell },
     { id: 'profile', label: 'Admin Profile', icon: UserCircle2 },
+    { id: 'landing', label: 'Return to Campus Home', icon: Home },
   ];
 
   const links = isAdmin ? adminLinks : studentLinks;

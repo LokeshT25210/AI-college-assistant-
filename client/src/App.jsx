@@ -48,7 +48,11 @@ export default function App() {
   }
 
   const handleNavigate = (page) => {
-    setCurrentPage(page);
+    if (page === 'home') {
+      setCurrentPage(user ? (user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard') : 'landing');
+    } else {
+      setCurrentPage(page);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -130,7 +134,14 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 relative overflow-x-hidden selection:bg-blue-500/20 selection:text-blue-700">
+      
+      {/* High-Tech Dynamic Ambient Aura & Engineering Grid Background */}
+      <div className="fixed inset-0 pointer-events-none -z-10 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-60" />
+      <div className="fixed -top-40 -left-40 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" />
+      <div className="fixed top-1/3 -right-40 w-96 h-96 bg-indigo-500/10 dark:bg-purple-600/15 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="fixed -bottom-40 left-1/3 w-96 h-96 bg-cyan-500/10 dark:bg-cyan-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+
       {/* Institutional Top Navbar */}
       <Navbar 
         onOpenExaminerGuide={() => setIsExaminerGuideOpen(true)}
@@ -207,6 +218,48 @@ export default function App() {
 
           {currentPage === 'database' && (
             <DatabaseViewer />
+          )}
+
+          {currentPage === 'landing' && (
+            <div className="space-y-4">
+              <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg border border-blue-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white shadow-sm">
+                    ✓
+                  </div>
+                  <div>
+                    <span className="font-bold text-sm block">Logged in as {user?.name} ({user?.role === 'admin' ? 'Campus Admin' : 'Enrolled Student'})</span>
+                    <span className="text-xs text-blue-200">Browsing Public Campus Information Portal & Statutory Gazettes.</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleNavigate(user?.role === 'admin' ? 'admin-dashboard' : 'student-dashboard')}
+                  className="bg-white hover:bg-blue-50 text-blue-950 font-bold px-4 py-2 rounded-xl text-xs transition-colors shadow-sm self-start sm:self-auto shrink-0"
+                >
+                  Return to Dashboard &rarr;
+                </button>
+              </div>
+              <LandingPage 
+                onNavigate={handleNavigate} 
+                onOpenExaminerGuide={() => setIsExaminerGuideOpen(true)} 
+              />
+            </div>
+          )}
+
+          {/* Default Fallback for unmatched routes */}
+          {!['student-dashboard', 'admin-dashboard', 'assistant', 'my-requests', 'admin-requests', 'request-details', 'analytics', 'profile', 'announcements', 'database', 'landing'].includes(currentPage) && (
+            user?.role === 'admin' ? (
+              <AdminDashboard 
+                onSelectTicket={handleSelectTicket}
+                onNavigate={handleNavigate}
+              />
+            ) : (
+              <StudentDashboard 
+                onNavigate={handleNavigate}
+                onAskAssistant={handleAskAssistant}
+                onSelectTicket={handleSelectTicket}
+              />
+            )
           )}
         </main>
       </div>

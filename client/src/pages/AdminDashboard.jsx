@@ -14,7 +14,8 @@ import {
   TrendingUp, 
   Calendar,
   Layers,
-  Search
+  Search,
+  Home
 } from 'lucide-react';
 import ThreeDTelemetryOrb from '../components/ThreeDTelemetryOrb';
 
@@ -64,8 +65,11 @@ export default function AdminDashboard({ onSelectTicket, onNavigate }) {
   const topInsight = analytics?.aiOperationalInsights?.[0];
 
   return (
-    <div className="space-y-6 pb-12">
-      
+    <div className="space-y-6 pb-12 relative">
+      {/* Dynamic Ambient Radiant Glows */}
+      <div className="absolute -top-16 -left-16 w-96 h-96 bg-purple-500/15 dark:bg-purple-600/20 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" />
+      <div className="absolute top-1/3 -right-16 w-96 h-96 bg-indigo-500/15 dark:bg-blue-600/20 rounded-full blur-3xl pointer-events-none -z-10" />
+
       {/* Executive Command Header */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 sm:p-7 shadow-lg border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center space-x-4">
@@ -84,7 +88,16 @@ export default function AdminDashboard({ onSelectTicket, onNavigate }) {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3 shrink-0">
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <button
+            type="button"
+            onClick={() => onNavigate('landing')}
+            className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl border border-slate-700 transition-colors shadow-sm flex items-center space-x-1.5 text-xs font-semibold"
+            title="Return to Public Campus Home"
+          >
+            <Home className="w-4 h-4 text-cyan-400" />
+            <span className="hidden sm:inline">Campus Home</span>
+          </button>
           <button
             onClick={loadDashboard}
             className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl border border-slate-700 transition-colors shadow-sm"

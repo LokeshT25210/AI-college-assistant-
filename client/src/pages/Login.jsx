@@ -334,8 +334,10 @@ export default function Login({ onNavigate }) {
             {/* Top Bar with Back Link */}
             <div className="flex items-center justify-between">
               <button
+                type="button"
                 onClick={() => onNavigate('landing')}
-                className="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center space-x-1.5"
+                className="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center space-x-1.5 cursor-pointer py-1 px-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                title="Return to Public Campus Home & Gazettes"
               >
                 <span>&larr; Return to Campus Home</span>
               </button>

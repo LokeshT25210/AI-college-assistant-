@@ -110,12 +110,17 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
   const isHosteler = user?.residenceType === 'Hosteler' || (user?.hostel && user.hostel.toLowerCase().includes('hostel'));
 
   return (
-    <div className="space-y-6 pb-12 transition-colors duration-200">
+    <div className="space-y-6 pb-12 transition-colors duration-200 relative">
+      {/* High-Tech Dynamic Ambient Aura & Multi-Spectrum Glowing Orbs */}
+      <div className="absolute -top-16 -left-16 w-96 h-96 bg-blue-500/15 dark:bg-blue-600/20 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" />
+      <div className="absolute top-1/3 -right-16 w-96 h-96 bg-indigo-500/15 dark:bg-purple-600/20 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute -bottom-10 left-1/3 w-80 h-80 bg-emerald-500/10 dark:bg-cyan-600/15 rounded-full blur-3xl pointer-events-none -z-10" />
       
       {/* 1. Student Command Masthead */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-800 relative overflow-hidden backdrop-blur-md">
         {/* Subtle background glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
@@ -186,8 +191,18 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
             </div>
           </div>
 
-          {/* Primary Quick CTA: Raise Structured Ticket */}
+          {/* Primary Quick CTA: Raise Structured Ticket & Navigation */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => onNavigate('landing')}
+              className="bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 hover:text-white font-semibold text-xs px-4 py-3 rounded-xl border border-slate-700 flex items-center justify-center space-x-2 transition-all shadow-sm hover:scale-[1.02] active:scale-95"
+              title="Return to Public Campus Home & Gazettes"
+            >
+              <Home className="w-4 h-4 text-cyan-400" />
+              <span>Return to Campus Home</span>
+            </button>
+
             <button
               onClick={() => handleOpenCreateModal('fees')}
               className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-lg hover:shadow-blue-500/25 flex items-center justify-center space-x-2 transition-all transform active:scale-95 border border-blue-400/30"
