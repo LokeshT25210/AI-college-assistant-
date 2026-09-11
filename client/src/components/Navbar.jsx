@@ -140,20 +140,7 @@ export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
                       <button
                         onClick={() => handleSwitch('student@mictech.ac.in')}
                         className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'student@mictech.ac.in' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-1.5 truncate">
-                          <UserCheck className="w-3 h-3 text-emerald-400 shrink-0" />
-                          <span className="truncate">K. Sai Rahul</span>
-                        </div>
-                        <span className="text-[9px] text-emerald-400 font-mono shrink-0">91.5% Scholar</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitch('priya.sharma@campus.edu')}
-                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'priya.sharma@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
+                          user.email === 'student@mictech.ac.in' || user.email === 'priya.sharma@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
                         }`}
                       >
                         <div className="flex items-center space-x-1.5 truncate">
@@ -164,9 +151,22 @@ export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
                       </button>
 
                       <button
-                        onClick={() => handleSwitch('karthik.varma@campus.edu')}
+                        onClick={() => handleSwitch('21h71a0501@mictech.ac.in')}
                         className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
-                          user.email === 'karthik.varma@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
+                          user.email === '21h71a0501@mictech.ac.in' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <UserCheck className="w-3 h-3 text-emerald-400 shrink-0" />
+                          <span className="truncate">K. Sai Rahul</span>
+                        </div>
+                        <span className="text-[9px] text-emerald-400 font-mono shrink-0">91.5% Scholar</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSwitch('22h71a0408@mictech.ac.in')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === '22h71a0408@mictech.ac.in' || user.email === 'karthik.varma@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
                         }`}
                       >
                         <div className="flex items-center space-x-1.5 truncate">
@@ -174,6 +174,19 @@ export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
                           <span className="truncate">M. Karthik Varma</span>
                         </div>
                         <span className="text-[9px] text-red-400 font-mono shrink-0">58.0% Detained</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleSwitch('23h71a1205@mictech.ac.in')}
+                        className={`w-full text-left px-2 py-1 rounded text-[11px] flex items-center justify-between transition-colors ${
+                          user.email === '23h71a1205@mictech.ac.in' || user.email === 'ananya.reddy@campus.edu' ? 'bg-blue-600/30 text-blue-300 border border-blue-500/50' : 'hover:bg-slate-800 text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-1.5 truncate">
+                          <UserCheck className="w-3 h-3 text-purple-400 shrink-0" />
+                          <span className="truncate">Ananya Reddy</span>
+                        </div>
+                        <span className="text-[9px] text-purple-400 font-mono shrink-0">72.0% Medical</span>
                       </button>
 
                       <div className="text-[9px] font-bold text-slate-500 uppercase tracking-wider pt-1 pb-0.5">Faculty & Administration</div>
