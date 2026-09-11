@@ -1414,20 +1414,31 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: cleanEmail, password })
       });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.success && data.user) {
-        localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
-        if (data.token) localStorage.setItem('campus_token', data.token);
-        return data;
-      } else {
-        // Explicitly return credential failure from backend
+      const isJson = res.headers.get('content-type')?.includes('application/json');
+      if (res.ok && isJson) {
+        const data = await res.json().catch(() => ({}));
+        if (data.success && data.user) {
+          localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
+          if (data.token) localStorage.setItem('campus_token', data.token);
+          // Cache in localUsers
+          const localUsers = getLocalUsers();
+          localUsers[cleanEmail] = { ...data.user, password };
+          if (data.user.studentId) {
+            localUsers[data.user.studentId.toLowerCase().trim()] = { ...data.user, password };
+          }
+          saveLocalUsers(localUsers);
+          return data;
+        }
+      } else if (res.status === 401 && isJson) {
+        const data = await res.json().catch(() => ({}));
         return {
           success: false,
           message: data.message || 'Invalid credentials. Password incorrect.'
         };
       }
+      // If 404 (e.g. static GitHub Pages host) or non-JSON, fall through to localUsers!
     } catch (e) {
-      // Fallback only when network fetch fails (e.g. static GitHub Pages offline preview)
+      // Network fetch error -> fall through to localUsers
     }
 
     const localUsers = getLocalUsers();
@@ -1438,14 +1449,16 @@ export const api = {
       for (const u of Object.values(localUsers)) {
         if (u.studentId && u.studentId.toLowerCase().trim() === cleanEmail) { matched = u; break; }
         if (u.staffId && u.staffId.toLowerCase().trim() === cleanEmail) { matched = u; break; }
-        if (cleanEmail.includes('@') && u.studentId && cleanEmail.startsWith(u.studentId.toLowerCase().trim())) { matched = u; break; }
+        if (u.email && u.email.toLowerCase().trim() === cleanEmail) { matched = u; break; }
+        if (cleanEmail.includes('@') && u.studentId && cleanEmail.split('@')[0].toLowerCase().trim() === u.studentId.toLowerCase().trim()) { matched = u; break; }
       }
     }
     if (!matched) {
       for (const u of Object.values(DEMO_USERS)) {
         if (u.studentId && u.studentId.toLowerCase().trim() === cleanEmail) { matched = u; break; }
         if (u.staffId && u.staffId.toLowerCase().trim() === cleanEmail) { matched = u; break; }
-        if (cleanEmail.includes('@') && u.studentId && cleanEmail.startsWith(u.studentId.toLowerCase().trim())) { matched = u; break; }
+        if (u.email && u.email.toLowerCase().trim() === cleanEmail) { matched = u; break; }
+        if (cleanEmail.includes('@') && u.studentId && cleanEmail.split('@')[0].toLowerCase().trim() === u.studentId.toLowerCase().trim()) { matched = u; break; }
       }
     }
 
@@ -1456,8 +1469,14 @@ export const api = {
       };
     }
 
-    // Strictly verify password in demo/offline mode
-    const isPasswordMatch = password === 'campus123' || password === 'password123' || (matched.password && matched.password === password);
+    // Verify password:
+    // 1. Matches registered password
+    // 2. Or matches demo fallback passwords
+    const isPasswordMatch = 
+      (matched.password && matched.password === password) ||
+      password === 'campus123' ||
+      password === 'password123';
+
     if (!isPasswordMatch) {
       return {
         success: false,
@@ -1477,31 +1496,50 @@ export const api = {
   },
 
   async register(userData) {
+    const cleanEmail = (userData.email || '').toLowerCase().trim();
     try {
       const res = await fetch(`${API_BASE}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
       });
-      const data = await res.json();
-      if (!res.ok) {
-        return { success: false, message: data.message || 'Registration failed.' };
-      }
-      if (data.success && data.user) {
-        localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
-        if (data.token) localStorage.setItem('campus_token', data.token);
-        return data;
+      const isJson = res.headers.get('content-type')?.includes('application/json');
+      if (res.ok && isJson) {
+        const data = await res.json().catch(() => ({}));
+        if (data.success && data.user) {
+          localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
+          if (data.token) localStorage.setItem('campus_token', data.token);
+          // Cache locally with password
+          const localUsers = getLocalUsers();
+          const userWithPwd = { ...data.user, password: userData.password };
+          localUsers[cleanEmail] = userWithPwd;
+          if (userWithPwd.studentId) {
+            localUsers[userWithPwd.studentId.toLowerCase().trim()] = userWithPwd;
+          }
+          saveLocalUsers(localUsers);
+          return data;
+        }
+      } else if (res.status === 409 && isJson) {
+        const data = await res.json().catch(() => ({}));
+        return { success: false, message: data.message || 'An account with this email already exists.' };
       }
     } catch (e) {}
 
     const localUsers = getLocalUsers();
-    const cleanEmail = (userData.email || '').toLowerCase().trim();
+    if (localUsers[cleanEmail] || DEMO_USERS[cleanEmail]) {
+      return { success: false, message: 'An account with this email already exists.' };
+    }
+
+    const isEnrolled = cleanEmail.endsWith('@mictech.ac.in') || cleanEmail.endsWith('@campus.edu') || Boolean(userData.studentId && /^[0-9]{2}[A-Za-z0-9]{8}$/i.test(userData.studentId.trim()));
     const newUser = {
-      id: 'usr-' + Date.now(),
+      id: 'usr-' + (isEnrolled ? 'student' : 'guest') + '-' + Date.now().toString().slice(-6),
       name: (userData.name || 'Student').trim(),
       email: cleanEmail,
+      password: userData.password,
       role: 'student',
-      studentId: userData.studentId ? userData.studentId.trim() : ('23MICT-CS-' + Math.floor(100 + Math.random() * 900)),
+      isEnrolled,
+      affiliation: isEnrolled ? 'Enrolled College Student' : 'External Guest / Prospective Student',
+      studentId: userData.studentId ? userData.studentId.trim().toUpperCase() : ('23MICT-CS-' + Math.floor(100 + Math.random() * 900)),
       department: userData.department || 'Computer Science & Engineering',
       year: userData.year || 'B.Tech 1st Year (Semester 1)',
       section: userData.section || 'Section A',
@@ -1511,12 +1549,16 @@ export const api = {
       busRoute: userData.busRoute || (userData.residenceType === 'Day Scholar' ? 'Route 01 - Vijayawada' : undefined),
       cgpa: 8.50,
       attendance: 85.0,
+      percentage: 85.0,
       phone: userData.phone || '+91 98765 00000',
       gender: userData.gender || 'Not specified',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
       createdAt: new Date().toISOString()
     };
     localUsers[cleanEmail] = newUser;
+    if (newUser.studentId) {
+      localUsers[newUser.studentId.toLowerCase().trim()] = newUser;
+    }
     saveLocalUsers(localUsers);
 
     const token = 'student-token-' + Date.now();

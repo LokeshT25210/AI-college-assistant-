@@ -206,11 +206,10 @@ export default function Login({ onNavigate }) {
       return;
     }
 
-    // Resolve login identifier: If using roll number, construct institutional format or lookup
+    // Resolve login identifier: If using roll number, support direct student ID / roll number lookup
     let effectiveEmail = email.trim();
     if (loginMethod === 'roll' && rollNumber) {
-      const cleanRoll = rollNumber.trim().toLowerCase();
-      effectiveEmail = cleanRoll.includes('@') ? cleanRoll : `${cleanRoll}@mictech.ac.in`;
+      effectiveEmail = rollNumber.trim();
     }
 
     const res = await login(effectiveEmail, password);
