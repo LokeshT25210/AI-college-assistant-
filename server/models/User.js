@@ -1,4 +1,4 @@
-﻿const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   id: { type: String, unique: true, index: true },
@@ -20,6 +20,17 @@ const userSchema = new mongoose.Schema({
   busRoute: String,
   cgpa: Number,
   attendance: Number,
+  percentage: Number,
+  totalMarks: Number,
+  maxMarks: Number,
+  semesterMarks: [{
+    semester: String,
+    sgpa: Number,
+    percentage: Number,
+    totalMarks: Number,
+    maxMarks: Number,
+    status: { type: String, default: 'PASSED' }
+  }],
   phone: String,
   gender: String,
   avatar: String,

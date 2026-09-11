@@ -46,6 +46,21 @@ exports.createRequest = async (req, res) => {
       sourceNote: 'Created via Smart Campus Assistant AI-to-Action workflow.'
     });
 
+    // Record audit trail in MongoDB
+    try {
+      await db.createAuditLog({
+        logId: `AUD-${Date.now()}-${Math.floor(100 + Math.random() * 900)}`,
+        action: 'TICKET_CREATED',
+        actorId: req.user.id,
+        actorName: req.user.name,
+        actorRole: req.user.role || 'student',
+        targetEntity: 'Ticket',
+        targetId: newTicket.ticketId,
+        details: `Created ${newTicket.priority} priority ticket: "${newTicket.title}" (${newTicket.category})`,
+        ipAddress: req.ip || '127.0.0.1'
+      });
+    } catch (e) {}
+
     return res.status(201).json({
       success: true,
       message: `Official ticket ${newTicket.ticketId} created successfully.`,
@@ -171,6 +186,21 @@ exports.updateRequestStatus = async (req, res) => {
     if (!updated) {
       return res.status(404).json({ success: false, message: `Ticket ${ticketId} not found.` });
     }
+
+    // Record audit trail in MongoDB
+    try {
+      await db.createAuditLog({
+        logId: `AUD-${Date.now()}-${Math.floor(100 + Math.random() * 900)}`,
+        action: 'TICKET_STATUS_UPDATED',
+        actorId: req.user.id,
+        actorName: req.user.name,
+        actorRole: req.user.role || 'admin',
+        targetEntity: 'Ticket',
+        targetId: ticketId,
+        details: `Ticket status set to '${status || updated.status}' by ${actorName}. Note: ${responseNote || 'Status modified'}`,
+        ipAddress: req.ip || '127.0.0.1'
+      });
+    } catch (e) {}
 
     return res.json({
       success: true,

@@ -27,6 +27,30 @@ exports.ask = async (req, res) => {
 
     const result = await processAssistantQuery(query.trim(), studentContext);
 
+    // Persist to MongoDB Conversation collection in background
+    try {
+      const db = require('../db/database');
+      await db.createConversation({
+        conversationId: `CNV-${Date.now()}-${Math.floor(100 + Math.random() * 900)}`,
+        sessionId: req.body.sessionId || `sess-${req.user ? req.user.id : 'anon'}`,
+        userId: req.user ? req.user.id : 'guest',
+        studentName: req.user ? req.user.name : 'Guest Student',
+        studentRollNo: req.user ? (req.user.studentId || 'N/A') : 'N/A',
+        query: query.trim(),
+        category: result.category || 'General',
+        department: result.department || 'Academics',
+        answer: result.answer || '',
+        verified: result.verified || false,
+        policyId: result.policyId || null,
+        confidence: result.confidence || 0.95,
+        ticketProposed: Boolean(result.ticketProposal),
+        proposedTicket: result.ticketProposal || null,
+        modelUsed: result.model || 'gemini-3.5-flash-lite'
+      });
+    } catch (dbErr) {
+      console.error('Failed to log conversation to MongoDB:', dbErr.message);
+    }
+
     return res.json({
       success: true,
       ...result

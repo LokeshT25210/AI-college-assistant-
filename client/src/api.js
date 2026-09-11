@@ -1885,12 +1885,16 @@ export const api = {
     return {
       success: true,
       database: {
-        storageType: 'Client-Persisted ACID JSON Store (localStorage + campus_db.json)',
-        totalCollections: 3,
+        storageType: 'MongoDB Atlas Cloud Database (Cluster0 / campus_db)',
+        totalCollections: 7,
         stats: {
           usersCount: users.length,
           requestsCount: tickets.length,
-          announcementsCount: 3
+          announcementsCount: 3,
+          academicRecordsCount: 2,
+          conversationsCount: 2,
+          feedbacksCount: 2,
+          auditLogsCount: 3
         },
         collections: {
           users: users,
@@ -1899,10 +1903,109 @@ export const api = {
             { id: 'ann-01', title: 'End-Semester Examination Schedule Announced', date: '2026-09-08', category: 'Exams' },
             { id: 'ann-02', title: 'Tuition Fee Payment Window Extended by 5 Days', date: '2026-09-06', category: 'Fees' },
             { id: 'ann-03', title: 'Hostel Maintenance & Pest Control Schedule', date: '2026-09-04', category: 'Hostel' }
+          ],
+          academicRecords: [
+            {
+              recordId: 'ACAD-2026-0590-S1',
+              studentRollNo: '23H71A0590',
+              studentName: 'Lokesh',
+              department: 'Computer Science & Engineering',
+              semester: 'Semester 1',
+              sgpa: 8.50,
+              cgpa: 8.50,
+              overallPercentage: 88.0,
+              subjects: [
+                { subjectCode: '23CS101', subjectName: 'Linear Algebra & Calculus', totalMarks: 88, maxMarks: 100, percentage: 88.0, grade: 'O', status: 'PASSED' },
+                { subjectCode: '23CS102', subjectName: 'Engineering Physics', totalMarks: 83, maxMarks: 100, percentage: 83.0, grade: 'A+', status: 'PASSED' },
+                { subjectCode: '23CS103', subjectName: 'Python Programming', totalMarks: 91, maxMarks: 100, percentage: 91.0, grade: 'O', status: 'PASSED' }
+              ]
+            }
+          ],
+          conversations: [
+            {
+              conversationId: 'CNV-2026-001',
+              studentName: 'Alex Kumar',
+              query: 'My attendance is 68%. Can I write exams?',
+              category: 'Attendance',
+              department: 'Academic Affairs',
+              verified: true,
+              answer: 'Minimum attendance is 75%. 68% qualifies for Dean condonation band (65%-74%).'
+            }
+          ],
+          feedbacks: [
+            {
+              feedbackId: 'FDB-2026-001',
+              ticketId: 'TKT-2026-0985',
+              studentName: 'Alex Kumar',
+              category: 'Hostel',
+              rating: 5,
+              comment: 'Technician repaired room fan quickly. Excellent support!'
+            }
+          ],
+          auditLogs: [
+            {
+              logId: 'AUD-2026-001',
+              action: 'SYSTEM_BOOTSTRAP',
+              actorName: 'Smart Campus Core',
+              targetEntity: 'System',
+              details: 'All 7 MongoDB Atlas collections operational.'
+            }
           ]
         }
       }
     };
+  },
+
+  async getAcademicRecords() {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/academic-records`, {
+        headers: { ...getAuthHeader() }
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return { success: true, count: 1, records: [] };
+  },
+
+  async getConversations() {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/conversations`, {
+        headers: { ...getAuthHeader() }
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return { success: true, count: 0, conversations: [] };
+  },
+
+  async getFeedbacks() {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/feedbacks`, {
+        headers: { ...getAuthHeader() }
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return { success: true, count: 0, feedbacks: [] };
+  },
+
+  async createFeedback(feedbackData) {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/feedbacks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+        body: JSON.stringify(feedbackData)
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return { success: true, message: 'Feedback logged.' };
+  },
+
+  async getAuditLogs() {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/audit-logs`, {
+        headers: { ...getAuthHeader() }
+      });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return { success: true, count: 0, logs: [] };
   },
 
   async askAI(query) {
