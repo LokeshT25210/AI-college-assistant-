@@ -81,7 +81,7 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
           <div className="flex items-center space-x-3 text-[11px]">
             <span className="font-serif italic text-amber-300">Veritas et Excellentia</span>
             <span>&bull;</span>
-            <span className="text-slate-400">DVR & Dr HS MIC COLLEGE OF TECHNOLOGY &bull; Autonomous Institution</span>
+            <span className="text-slate-400">AUTONOMOUS ENGINEERING COLLEGE &bull; UGC Autonomous &bull; NAAC A+</span>
             <span className="hidden md:inline">&bull;</span>
             <span className="hidden md:inline text-emerald-400">Fall Semester 2026 &bull; Regular Session</span>
           </div>
@@ -111,9 +111,9 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg sm:text-xl font-serif text-slate-900 tracking-tight">DVR & Dr HS MIC College of Technology</span>
+                <span className="font-bold text-lg sm:text-xl font-serif text-slate-900 tracking-tight">Autonomous Engineering College</span>
                 <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-300 uppercase tracking-wider">
-                  Autonomous
+                  Autonomous &bull; NAAC A+
                 </span>
               </div>
               <p className="text-xs text-slate-500 font-sans">
@@ -414,13 +414,13 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
                 <GraduationCap className="w-6 h-6 text-blue-500" />
-                <span className="font-bold text-white font-serif text-base">DVR & Dr HS MIC College of Technology</span>
+                <span className="font-bold text-white font-serif text-base">Autonomous Engineering College</span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
                 Smart Campus Assistant & Autonomous Grievance Administration Framework &bull; Built for Academic Excellence.
               </p>
               <p className="text-[11px] text-slate-500">
-                Kanchikacherla, NTR District, Andhra Pradesh &bull; Pincode 521180
+                Autonomous Campus &bull; Approved by AICTE, Affiliated to JNTUK
               </p>
             </div>
 
@@ -464,7 +464,7 @@ export default function LandingPage({ onNavigate, onOpenExaminerGuide }) {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-            <p>&copy; 2026 DVR & Dr HS MIC COLLEGE OF TECHNOLOGY. All Rights Reserved &bull; Autonomous Institution &bull; Approved by AICTE, Affiliated to JNTUK.</p>
+            <p>&copy; 2026 AUTONOMOUS ENGINEERING COLLEGE. All Rights Reserved &bull; Autonomous Institution &bull; Approved by AICTE, Affiliated to JNTUK.</p>
             <div className="flex items-center space-x-4">
               <span className="text-slate-400">SOC-2 Type II Certified</span>
               <span>&bull;</span>

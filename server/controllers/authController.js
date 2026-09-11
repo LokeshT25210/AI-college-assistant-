@@ -52,6 +52,31 @@ exports.register = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Name, email, and password are required.' });
     }
 
+    // Standard Email / Gmail Syntax Validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email.trim())) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email address format. Please provide a valid email (e.g., student@gmail.com or roll@mictech.ac.in).'
+      });
+    }
+
+    // Comprehensive 5-Criteria Password Security Validation
+    const pwd = password;
+    const errors = [];
+    if (pwd.length < 8) errors.push('at least 8 characters');
+    if (!/[A-Z]/.test(pwd)) errors.push('at least 1 uppercase letter (A-Z)');
+    if (!/[a-z]/.test(pwd)) errors.push('at least 1 lowercase letter (a-z)');
+    if (!/[0-9]/.test(pwd)) errors.push('at least 1 numeric digit (0-9)');
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) errors.push('at least 1 special character (!@#$%^&*...)');
+
+    if (errors.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Password does not meet security criteria. It requires: ${errors.join(', ')}.`
+      });
+    }
+
     const existing = db.findUserByEmail(email);
     if (existing) {
       return res.status(409).json({ success: false, message: 'An account with this institutional email already exists.' });

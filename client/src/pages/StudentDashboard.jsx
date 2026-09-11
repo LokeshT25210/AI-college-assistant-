@@ -201,7 +201,7 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mt-6 pt-6 border-t border-slate-800/80">
           
           {/* KPI 1: Attendance Health Gauge */}
-          <div className="bg-slate-800/70 border border-slate-700/80 rounded-xl p-3.5 flex flex-col justify-between hover:border-slate-600 transition-all">
+          <div className="bg-slate-800/70 border border-slate-700/80 rounded-xl p-3.5 flex flex-col justify-between hover:border-slate-600 hover:shadow-lg transition-all">
             <div className="flex items-start justify-between">
               <div>
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Attendance Standing</span>
@@ -221,7 +221,17 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
               </span>
             </div>
 
-            <div className="mt-2.5 pt-2 border-t border-slate-700/50 flex items-center justify-between">
+            {/* Visual Attendance Progress Gauge */}
+            <div className="w-full bg-slate-700/60 rounded-full h-1.5 my-2 overflow-hidden">
+              <div 
+                className={`h-full rounded-full transition-all duration-500 ${
+                  isCondonationReq ? 'bg-amber-400' : isDetained ? 'bg-rose-500' : 'bg-emerald-400'
+                }`}
+                style={{ width: `${Math.min(attendanceVal, 100)}%` }}
+              />
+            </div>
+
+            <div className="pt-1 border-t border-slate-700/50 flex items-center justify-between">
               <span className="text-[10px] text-slate-400">Section 4.2 Rules</span>
               {isCondonationReq ? (
                 <button

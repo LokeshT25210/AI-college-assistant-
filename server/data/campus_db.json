@@ -4,7 +4,7 @@
       "id": "usr-student-01",
       "name": "Alex Kumar",
       "email": "alex.kumar@campus.edu",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "CS-2023-0489",
       "department": "Computer Science & Engineering",
@@ -21,7 +21,7 @@
       "id": "usr-student-02",
       "name": "Priya Sharma",
       "email": "priya.sharma@campus.edu",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "EC-2023-0112",
       "department": "Electronics & Communication",
@@ -38,7 +38,7 @@
       "id": "usr-student-std",
       "name": "Priya Sharma",
       "email": "student@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "21H71A0502",
       "department": "Computer Science & Engineering",
@@ -55,7 +55,7 @@
       "id": "usr-student-03",
       "name": "K. Sai Rahul",
       "email": "21h71a0501@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "21H71A0501",
       "department": "Computer Science & Engineering (AI&ML)",
@@ -72,7 +72,7 @@
       "id": "usr-student-04",
       "name": "Ananya Reddy",
       "email": "23h71a1205@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "23H71A1205",
       "department": "Information Technology",
@@ -89,7 +89,7 @@
       "id": "usr-student-05",
       "name": "M. Karthik Varma",
       "email": "22h71a0408@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "22H71A0408",
       "department": "Electronics & Communication Engineering",
@@ -106,7 +106,7 @@
       "id": "usr-student-06",
       "name": "Sneha Patel",
       "email": "sneha.patel@campus.edu",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "21H71A1202",
       "department": "Information Technology",
@@ -123,7 +123,7 @@
       "id": "usr-student-07",
       "name": "Rohan Das",
       "email": "rohan.das@campus.edu",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "24H71A0101",
       "department": "Civil Engineering",
@@ -140,7 +140,7 @@
       "id": "usr-student-08",
       "name": "T. Harika",
       "email": "22h71a0204@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "student",
       "studentId": "22H71A0204",
       "department": "Electrical & Electronics Engineering",
@@ -157,7 +157,7 @@
       "id": "usr-admin-principal",
       "name": "Dr. T. Vamsee Kiran",
       "email": "principal@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "admin",
       "staffId": "EMP-001",
       "designation": "Principal & Head of Institution",
@@ -170,7 +170,7 @@
       "id": "usr-admin-01",
       "name": "Dr. S. Raman",
       "email": "admin@campus.edu",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "admin",
       "staffId": "EMP-002",
       "designation": "Registrar & Chief Grievance Officer",
@@ -183,7 +183,7 @@
       "id": "usr-admin-coe",
       "name": "Dr. K. Srinivas",
       "email": "coe@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "admin",
       "staffId": "EMP-003",
       "designation": "Controller of Examinations (CoE)",
@@ -196,7 +196,7 @@
       "id": "usr-admin-02",
       "name": "Prof. Vikram Mehta",
       "email": "finance@campus.edu",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "admin",
       "staffId": "EMP-004",
       "designation": "Finance Officer",
@@ -209,7 +209,7 @@
       "id": "usr-admin-hod-cse",
       "name": "Dr. P. Sunitha",
       "email": "hod.cse@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "admin",
       "staffId": "EMP-005",
       "designation": "Head of Department (HOD) - CSE",
@@ -222,7 +222,7 @@
       "id": "usr-admin-hod-ece",
       "name": "Dr. M. Raghava",
       "email": "hod.ece@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "admin",
       "staffId": "EMP-006",
       "designation": "Head of Department (HOD) - ECE",
@@ -235,7 +235,7 @@
       "id": "usr-admin-warden",
       "name": "Capt. R. Rajesh",
       "email": "warden@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "admin",
       "staffId": "EMP-007",
       "designation": "Chief Hostel Warden",
@@ -248,7 +248,7 @@
       "id": "usr-admin-transport",
       "name": "G. Venkat Rao",
       "email": "transport@mictech.ac.in",
-      "password": "$2a$10$ZZ4EINBclQ..vF7sHlvHnOUgk4KOtX5PEjNkNsB055jJSb6Pzt3X2",
+      "password": "$2a$10$jo1O9YV267HZJj7ngm.EwOUOiQoX/BpxwbGVsEnZV.f9kDoUg9oYW",
       "role": "admin",
       "staffId": "EMP-008",
       "designation": "Transport & Fleet Manager",
@@ -273,18 +273,18 @@
       "specifications": {},
       "status": "In Progress",
       "urgencyReason": "",
-      "createdAt": "2026-09-11T03:58:32.826Z",
-      "updatedAt": "2026-09-11T03:58:32.827Z",
+      "createdAt": "2026-09-11T04:14:10.175Z",
+      "updatedAt": "2026-09-11T04:14:10.177Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-11T03:58:32.826Z",
+          "timestamp": "2026-09-11T04:14:10.175Z",
           "actor": "Alex Kumar (Student)",
           "note": "Request submitted through Smart Campus Assistant."
         },
         {
           "stage": "In Progress",
-          "timestamp": "2026-09-11T03:58:32.827Z",
+          "timestamp": "2026-09-11T04:14:10.177Z",
           "actor": "Dr. S. Raman (Registrar)",
           "note": "Application received and passed to verifying officer."
         }
@@ -306,12 +306,12 @@
       "specifications": {},
       "status": "Submitted",
       "urgencyReason": "",
-      "createdAt": "2026-09-11T03:58:32.825Z",
-      "updatedAt": "2026-09-11T03:58:32.825Z",
+      "createdAt": "2026-09-11T04:14:10.174Z",
+      "updatedAt": "2026-09-11T04:14:10.174Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-11T03:58:32.825Z",
+          "timestamp": "2026-09-11T04:14:10.174Z",
           "actor": "Alex Kumar (Student)",
           "note": "Request submitted through Smart Campus Assistant."
         }
@@ -333,12 +333,12 @@
       "specifications": {},
       "status": "Submitted",
       "urgencyReason": "",
-      "createdAt": "2026-09-11T03:58:32.823Z",
-      "updatedAt": "2026-09-11T03:58:32.823Z",
+      "createdAt": "2026-09-11T04:14:10.172Z",
+      "updatedAt": "2026-09-11T04:14:10.172Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-11T03:58:32.823Z",
+          "timestamp": "2026-09-11T04:14:10.172Z",
           "actor": "Alex Kumar (Student)",
           "note": "Request submitted through Smart Campus Assistant."
         }
@@ -359,24 +359,24 @@
       "description": "I paid my semester fee of ₹45,000 on Sep 07 via HDFC NetBanking (UTR: HDFC009823101). The amount was deducted from my account, but the fee payment status in the portal still indicates UNPAID.",
       "status": "In Progress",
       "urgencyReason": "Late fine will be triggered if not reconciled before deadline.",
-      "createdAt": "2026-09-09T15:58:19.075Z",
-      "updatedAt": "2026-09-10T23:58:19.076Z",
+      "createdAt": "2026-09-09T16:13:56.889Z",
+      "updatedAt": "2026-09-11T00:13:56.890Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-09T15:58:19.076Z",
+          "timestamp": "2026-09-09T16:13:56.890Z",
           "actor": "Alex Kumar (Student)",
           "note": "Ticket automatically classified as High Priority (Finance) via Smart Campus AI-to-Action engine."
         },
         {
           "stage": "Under Review",
-          "timestamp": "2026-09-10T07:58:19.076Z",
+          "timestamp": "2026-09-10T08:13:56.890Z",
           "actor": "Prof. Vikram Mehta (Finance Officer)",
           "note": "Received UTR HDFC009823101. Forwarded to HDFC Payment Gateway settlement desk for batch reconciliation."
         },
         {
           "stage": "In Progress",
-          "timestamp": "2026-09-10T23:58:19.076Z",
+          "timestamp": "2026-09-11T00:13:56.890Z",
           "actor": "Finance Accounts Desk",
           "note": "Settlement confirmed by bank. Ledger update queued for midnight batch sync."
         }
@@ -397,36 +397,36 @@
       "description": "Room 204, Block B ceiling fan has stopped rotating smoothly and regulator is non-responsive.",
       "status": "Resolved",
       "urgencyReason": "Hostel resident comfort and ventilation.",
-      "createdAt": "2026-09-08T03:58:19.076Z",
-      "updatedAt": "2026-09-10T15:58:19.076Z",
+      "createdAt": "2026-09-08T04:13:56.890Z",
+      "updatedAt": "2026-09-10T16:13:56.890Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-08T03:58:19.076Z",
+          "timestamp": "2026-09-08T04:13:56.890Z",
           "actor": "Alex Kumar (Student)",
           "note": "Created via AI Campus Assistant."
         },
         {
           "stage": "Under Review",
-          "timestamp": "2026-09-08T15:58:19.076Z",
+          "timestamp": "2026-09-08T16:13:56.890Z",
           "actor": "Hostel Warden Block B",
           "note": "Maintenance job scheduled for afternoon electrician rounds."
         },
         {
           "stage": "In Progress",
-          "timestamp": "2026-09-09T21:58:19.076Z",
+          "timestamp": "2026-09-09T22:13:56.890Z",
           "actor": "Campus Electrical Maintenance",
           "note": "Electrician assigned with replacement capacitor and stepped regulator unit."
         },
         {
           "stage": "Resolved",
-          "timestamp": "2026-09-10T15:58:19.076Z",
+          "timestamp": "2026-09-10T16:13:56.890Z",
           "actor": "Hostel Warden Block B",
           "note": "Fan bearing replaced and tested. Resident confirmed working condition."
         }
       ],
       "adminNotes": "Replaced capacitor and fan regulator switch. Signature logged.",
-      "resolvedAt": "2026-09-10T15:58:19.076Z"
+      "resolvedAt": "2026-09-10T16:13:56.890Z"
     },
     {
       "ticketId": "TKT-2026-1011",
@@ -441,30 +441,30 @@
       "description": "Requesting official signed bonafide certificate stating current enrollment in B.Tech ECE for passport renewal.",
       "status": "Resolved",
       "urgencyReason": "Passport office appointment scheduled next Tuesday.",
-      "createdAt": "2026-09-07T03:58:19.076Z",
-      "updatedAt": "2026-09-09T03:58:19.076Z",
+      "createdAt": "2026-09-07T04:13:56.890Z",
+      "updatedAt": "2026-09-09T04:13:56.890Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-07T03:58:19.076Z",
+          "timestamp": "2026-09-07T04:13:56.890Z",
           "actor": "Priya Sharma (Student)",
           "note": "Submitted certificate issuance request."
         },
         {
           "stage": "In Progress",
-          "timestamp": "2026-09-08T03:58:19.076Z",
+          "timestamp": "2026-09-08T04:13:56.890Z",
           "actor": "Student Records Section",
           "note": "Verification of academic record completed."
         },
         {
           "stage": "Resolved",
-          "timestamp": "2026-09-09T03:58:19.076Z",
+          "timestamp": "2026-09-09T04:13:56.890Z",
           "actor": "Dr. S. Raman (Registrar)",
           "note": "Digital bonafide certificate with QR code issued and attached to student portal."
         }
       ],
       "adminNotes": "Digital certificate issued: CERT-BF-2026-4412.",
-      "resolvedAt": "2026-09-09T03:58:19.076Z"
+      "resolvedAt": "2026-09-09T04:13:56.890Z"
     },
     {
       "ticketId": "TKT-2026-1055",
@@ -479,18 +479,18 @@
       "description": "During online exam registration, first payment errored out at UPI gateway but was debited. Second payment succeeded. Need refund of ₹1,500.",
       "status": "Under Review",
       "urgencyReason": "Double debit on student savings account.",
-      "createdAt": "2026-09-10T13:58:19.076Z",
-      "updatedAt": "2026-09-10T21:58:19.076Z",
+      "createdAt": "2026-09-10T14:13:56.890Z",
+      "updatedAt": "2026-09-10T22:13:56.890Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-10T13:58:19.077Z",
+          "timestamp": "2026-09-10T14:13:56.890Z",
           "actor": "Priya Sharma (Student)",
           "note": "Auto-escalated from AI Chat regarding duplicate payment."
         },
         {
           "stage": "Under Review",
-          "timestamp": "2026-09-10T21:58:19.077Z",
+          "timestamp": "2026-09-10T22:13:56.890Z",
           "actor": "Prof. Vikram Mehta (Finance Officer)",
           "note": "Validating duplicate reference with bank payment switch."
         }
@@ -511,12 +511,12 @@
       "description": "Seeking attendance condonation for 6 days absence due to viral fever. Attaching medical certificate and fitness certificate from campus health clinic.",
       "status": "Submitted",
       "urgencyReason": "Attendance margin currently at 68.5% requiring condonation to meet 75% exam cutoff.",
-      "createdAt": "2026-09-11T01:58:19.077Z",
-      "updatedAt": "2026-09-11T01:58:19.077Z",
+      "createdAt": "2026-09-11T02:13:56.890Z",
+      "updatedAt": "2026-09-11T02:13:56.890Z",
       "timeline": [
         {
           "stage": "Submitted",
-          "timestamp": "2026-09-11T01:58:19.077Z",
+          "timestamp": "2026-09-11T02:13:56.890Z",
           "actor": "Alex Kumar (Student)",
           "note": "Submitted attendance condonation application via assistant escalation."
         }

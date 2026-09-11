@@ -1473,13 +1473,14 @@ export const api = {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.user) {
-          localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
-          if (data.token) localStorage.setItem('campus_token', data.token);
-          return data;
-        }
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, message: data.message || 'Registration failed.' };
+      }
+      if (data.success && data.user) {
+        localStorage.setItem(STORAGE_KEY_CURRENT_USER, JSON.stringify(data.user));
+        if (data.token) localStorage.setItem('campus_token', data.token);
+        return data;
       }
     } catch (e) {}
 

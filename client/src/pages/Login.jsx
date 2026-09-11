@@ -108,19 +108,23 @@ export default function Login({ onNavigate }) {
     setPassword('');
   };
 
-  // Password strength calculation
-  const getPasswordStrength = (pwd) => {
-    if (!pwd) return 0;
-    let score = 0;
-    if (pwd.length >= 6) score += 1;
-    if (pwd.length >= 8) score += 1;
-    if (/[A-Z]/.test(pwd)) score += 1;
-    if (/[0-9]/.test(pwd)) score += 1;
-    if (/[^A-Za-z0-9]/.test(pwd)) score += 1;
-    return score;
+  // Standard Email Syntax & Domain Detection
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const isEmailValid = emailRegex.test(email.trim());
+  const isGmail = email.trim().toLowerCase().endsWith('@gmail.com');
+  const isInstitutional = email.trim().toLowerCase().includes('@mictech.ac.in') || email.trim().toLowerCase().includes('@campus.edu');
+
+  // Comprehensive 5-Criteria Password Security Rules
+  const pwdRules = {
+    hasLength8: regPassword.length >= 8,
+    hasUppercase: /[A-Z]/.test(regPassword),
+    hasLowercase: /[a-z]/.test(regPassword),
+    hasNumber: /[0-9]/.test(regPassword),
+    hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(regPassword)
   };
 
-  const regStrength = getPasswordStrength(regPassword);
+  const satisfiedRulesCount = Object.values(pwdRules).filter(Boolean).length;
+  const isPasswordCompliant = satisfiedRulesCount === 5;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -145,6 +149,21 @@ export default function Login({ onNavigate }) {
         setError('Student Human Verification Required: Please enter the exact security code shown to prove human student identity.');
         return;
       }
+
+      // Enforce valid Email / Gmail format
+      if (!isEmailValid) {
+        setLoading(false);
+        setError('Valid Email Required: Please provide a proper email address (e.g. student@gmail.com or 23h71a0501@mictech.ac.in).');
+        return;
+      }
+
+      // Enforce 5-criteria password security
+      if (!isPasswordCompliant) {
+        setLoading(false);
+        setError('Security Criteria Incomplete: Password must satisfy all 5 requirements (8+ chars, uppercase, lowercase, number, special symbol).');
+        return;
+      }
+
       if (regPassword !== confirmPassword) {
         setLoading(false);
         setError('Passwords do not match. Please re-enter your password.');
@@ -482,16 +501,42 @@ export default function Login({ onNavigate }) {
                   </div>
 
                   {loginMethod === 'email' ? (
-                    <div className="relative">
-                      <Mail className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        placeholder={roleTab === 'admin' ? "principal@mictech.ac.in" : "student@mictech.ac.in"}
-                        className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all"
-                      />
+                    <div>
+                      <div className="relative">
+                        <Mail className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3" />
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          placeholder={roleTab === 'admin' ? "principal@mictech.ac.in" : "student@gmail.com or 23h71a0501@mictech.ac.in"}
+                          className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans transition-all"
+                        />
+                      </div>
+                      {email && (
+                        <div className="mt-1 flex items-center justify-between text-[10px] px-1">
+                          {isGmail ? (
+                            <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center space-x-1">
+                              <Check className="w-3 h-3 text-emerald-500" />
+                              <span>Google Gmail recognized</span>
+                            </span>
+                          ) : isInstitutional ? (
+                            <span className="text-blue-600 dark:text-blue-400 font-semibold flex items-center space-x-1">
+                              <Check className="w-3 h-3 text-blue-500" />
+                              <span>Institutional college domain recognized</span>
+                            </span>
+                          ) : isEmailValid ? (
+                            <span className="text-teal-600 dark:text-teal-400 font-semibold flex items-center space-x-1">
+                              <Check className="w-3 h-3 text-teal-500" />
+                              <span>Valid email syntax</span>
+                            </span>
+                          ) : (
+                            <span className="text-amber-600 dark:text-amber-400 font-medium">
+                              Format: student@gmail.com or roll@mictech.ac.in
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <div className="relative">
@@ -651,17 +696,48 @@ export default function Login({ onNavigate }) {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="sm:col-span-2">
-                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
-                        Institutional Email Address
-                      </label>
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        placeholder="e.g. 23h71a0501@mictech.ac.in"
-                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                      />
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase">
+                          Email Address (Gmail / College)
+                        </label>
+                        {email && (
+                          <div>
+                            {isGmail ? (
+                              <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 px-2 py-0.5 rounded-full inline-flex items-center space-x-1">
+                                <Check className="w-3 h-3 text-emerald-500" />
+                                <span>Google Gmail Verified</span>
+                              </span>
+                            ) : isInstitutional ? (
+                              <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/80 border border-blue-300 dark:border-blue-700 px-2 py-0.5 rounded-full inline-flex items-center space-x-1">
+                                <Check className="w-3 h-3 text-blue-500" />
+                                <span>College Domain Verified</span>
+                              </span>
+                            ) : isEmailValid ? (
+                              <span className="text-[10px] font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/80 border border-teal-300 dark:border-teal-700 px-2 py-0.5 rounded-full inline-flex items-center space-x-1">
+                                <Check className="w-3 h-3 text-teal-500" />
+                                <span>Valid Email Syntax</span>
+                              </span>
+                            ) : (
+                              <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
+                                Needs valid email format
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <div className="relative">
+                        <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          placeholder="e.g. rahul.varma@gmail.com or 23h71a0501@mictech.ac.in"
+                          className={`w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-800 border rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-sans transition-colors ${
+                            email && !isEmailValid ? 'border-amber-300 dark:border-amber-600' : 'border-slate-200 dark:border-slate-700'
+                          }`}
+                        />
+                      </div>
                     </div>
 
                     <div>
@@ -838,66 +914,170 @@ export default function Login({ onNavigate }) {
                     <span>Security Credentials</span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
-                        Account Password
-                      </label>
-                      <input
-                        type="password"
-                        value={regPassword}
-                        onChange={(e) => setRegPassword(e.target.value)}
-                        required
-                        placeholder="••••••••••••"
-                        className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                      />
-                      {/* Password strength bar */}
-                      {regPassword && (
-                        <div className="mt-1 flex items-center space-x-1">
-                          {[1, 2, 3, 4, 5].map((lvl) => (
-                            <div
-                              key={lvl}
-                              className={`h-1 flex-1 rounded-full ${
-                                regStrength >= lvl
-                                  ? regStrength <= 2
-                                    ? 'bg-red-500'
-                                    : regStrength <= 3
-                                    ? 'bg-amber-500'
-                                    : 'bg-emerald-500'
-                                  : 'bg-slate-200 dark:bg-slate-700'
-                              }`}
-                            />
-                          ))}
-                          <span className="text-[9px] text-slate-500 dark:text-slate-400 font-mono ml-1">
-                            {regStrength <= 2 ? 'Weak' : regStrength <= 3 ? 'Medium' : 'Strong'}
-                          </span>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase">
+                            Account Password
+                          </label>
+                          {regPassword && (
+                            <span className={`text-[10px] font-bold font-mono px-2 py-0.5 rounded-full ${
+                              isPasswordCompliant
+                                ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700'
+                                : satisfiedRulesCount >= 3
+                                  ? 'bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700'
+                                  : 'bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-300 border border-red-300 dark:border-red-700'
+                            }`}>
+                              {satisfiedRulesCount}/5 Met {isPasswordCompliant ? '• Strong' : satisfiedRulesCount >= 3 ? '• Moderate' : '• Weak'}
+                            </span>
+                          )}
                         </div>
-                      )}
+                        <input
+                          type="password"
+                          value={regPassword}
+                          onChange={(e) => setRegPassword(e.target.value)}
+                          required
+                          placeholder="••••••••••••"
+                          className={`w-full px-3 py-2 bg-white dark:bg-slate-800 border rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-sans transition-colors ${
+                            regPassword && !isPasswordCompliant
+                              ? 'border-amber-300 dark:border-amber-600'
+                              : regPassword && isPasswordCompliant
+                                ? 'border-emerald-400 dark:border-emerald-600'
+                                : 'border-slate-200 dark:border-slate-700'
+                          }`}
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase">
+                            Confirm Password
+                          </label>
+                          {confirmPassword && (
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                              confirmPassword === regPassword 
+                                ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700' 
+                                : 'bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-700'
+                            }`}>
+                              {confirmPassword === regPassword ? '✓ Matches' : '✗ Mismatch'}
+                            </span>
+                          )}
+                        </div>
+                        <input
+                          type="password"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          required
+                          placeholder="••••••••••••"
+                          className={`w-full px-3 py-2 bg-white dark:bg-slate-800 border rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 font-sans transition-colors ${
+                            confirmPassword && confirmPassword !== regPassword
+                              ? 'border-red-300 dark:border-red-600 focus:ring-red-500'
+                              : confirmPassword && confirmPassword === regPassword
+                                ? 'border-emerald-400 dark:border-emerald-600'
+                                : 'border-slate-200 dark:border-slate-700'
+                          }`}
+                        />
+                      </div>
                     </div>
 
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase">
-                          Confirm Password
-                        </label>
-                        {confirmPassword && (
-                          <span className={`text-[10px] font-bold ${confirmPassword === regPassword ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
-                            {confirmPassword === regPassword ? '✓ Matches' : '✗ Mismatch'}
-                          </span>
-                        )}
+                    {/* Interactive 5-Criteria Password Security Checklist Card */}
+                    <div className="p-3 bg-white dark:bg-slate-900/90 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-2.5 shadow-sm">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="font-bold text-slate-700 dark:text-slate-200 flex items-center space-x-1.5">
+                          <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                          <span>Password Security Specifications (5 Rules)</span>
+                        </span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+                          {isPasswordCompliant ? '100% Satisfied' : 'All 5 Required'}
+                        </span>
                       </div>
-                      <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                        placeholder="••••••••••••"
-                        className={`w-full px-3 py-2 bg-white dark:bg-slate-800 border rounded-xl text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 ${
-                          confirmPassword && confirmPassword !== regPassword
-                            ? 'border-red-300 focus:ring-red-500'
-                            : 'border-slate-200 dark:border-slate-700'
-                        }`}
-                      />
+
+                      {/* Dynamic Multi-segment Progress Bar */}
+                      <div className="flex items-center space-x-1">
+                        {[1, 2, 3, 4, 5].map((lvl) => (
+                          <div
+                            key={lvl}
+                            className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                              satisfiedRulesCount >= lvl
+                                ? satisfiedRulesCount <= 2
+                                  ? 'bg-red-500'
+                                  : satisfiedRulesCount <= 4
+                                    ? 'bg-amber-500'
+                                    : 'bg-emerald-500'
+                                : 'bg-slate-200 dark:bg-slate-800'
+                            }`}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Real-time 5 Criteria Live Pills Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-0.5 text-[11px]">
+                        <div className={`flex items-center space-x-1.5 px-2 py-1.5 rounded-lg border transition-all ${
+                          pwdRules.hasLength8 
+                            ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800/80 font-semibold'
+                            : 'bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/70'
+                        }`}>
+                          {pwdRules.hasLength8 ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          ) : (
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600 shrink-0" />
+                          )}
+                          <span>8+ Characters Minimum</span>
+                        </div>
+
+                        <div className={`flex items-center space-x-1.5 px-2 py-1.5 rounded-lg border transition-all ${
+                          pwdRules.hasUppercase 
+                            ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800/80 font-semibold'
+                            : 'bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/70'
+                        }`}>
+                          {pwdRules.hasUppercase ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          ) : (
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600 shrink-0" />
+                          )}
+                          <span>Uppercase Letter (A-Z)</span>
+                        </div>
+
+                        <div className={`flex items-center space-x-1.5 px-2 py-1.5 rounded-lg border transition-all ${
+                          pwdRules.hasLowercase 
+                            ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800/80 font-semibold'
+                            : 'bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/70'
+                        }`}>
+                          {pwdRules.hasLowercase ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          ) : (
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600 shrink-0" />
+                          )}
+                          <span>Lowercase Letter (a-z)</span>
+                        </div>
+
+                        <div className={`flex items-center space-x-1.5 px-2 py-1.5 rounded-lg border transition-all ${
+                          pwdRules.hasNumber 
+                            ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800/80 font-semibold'
+                            : 'bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/70'
+                        }`}>
+                          {pwdRules.hasNumber ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          ) : (
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600 shrink-0" />
+                          )}
+                          <span>Numeric Digit (0-9)</span>
+                        </div>
+
+                        <div className={`sm:col-span-2 flex items-center space-x-1.5 px-2 py-1.5 rounded-lg border transition-all ${
+                          pwdRules.hasSpecial 
+                            ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800/80 font-semibold'
+                            : 'bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/70'
+                        }`}>
+                          {pwdRules.hasSpecial ? (
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          ) : (
+                            <div className="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600 shrink-0" />
+                          )}
+                          <span>Special Symbol (!@#$%^&*(),.?":{}|&lt;&gt;)</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -931,7 +1111,11 @@ export default function Login({ onNavigate }) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all flex items-center justify-center space-x-2 shadow-md shadow-blue-500/20 hover:shadow-lg"
+                  className={`w-full py-3.5 rounded-xl text-white text-xs font-bold transition-all flex items-center justify-center space-x-2 shadow-md hover:shadow-lg ${
+                    isPasswordCompliant && isEmailValid
+                      ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 shadow-blue-500/30 ring-2 ring-blue-400/20'
+                      : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20'
+                  }`}
                 >
                   {loading ? (
                     <span>Registering Autonomous Identity...</span>
@@ -939,6 +1123,9 @@ export default function Login({ onNavigate }) {
                     <>
                       <UserPlus className="w-4 h-4" />
                       <span>Complete Registration & Open Student Portal</span>
+                      {isPasswordCompliant && isEmailValid && (
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-300 ml-1" />
+                      )}
                     </>
                   )}
                 </button>
