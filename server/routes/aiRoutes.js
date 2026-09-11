@@ -22,6 +22,8 @@ function optionalAuth(req, res, next) {
 }
 
 router.post('/ask', optionalAuth, aiController.ask);
+router.post('/query', optionalAuth, aiController.ask);
+router.post('/chat', optionalAuth, aiController.ask);
 router.post('/classify', aiController.classify);
 router.get('/knowledge', aiController.getKnowledge);
 
