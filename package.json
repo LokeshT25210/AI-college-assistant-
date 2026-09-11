@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Enterprise Smart Campus Assistant & Grievance SLA Platform",
   "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js",
     "test": "node server/tests/runTests.js",
     "server": "npm --prefix server start",
     "client": "npm --prefix client run dev",
