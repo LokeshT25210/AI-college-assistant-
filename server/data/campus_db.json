@@ -256,6 +256,28 @@
       "phone": "+91 98404 56789",
       "avatar": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=80",
       "createdAt": "2019-11-20T09:00:00.000Z"
+    },
+    {
+      "id": "usr-student-9505",
+      "name": "lokesh",
+      "email": "mogililokesh10@gmail.com",
+      "password": "$2a$10$Fg28Laq8wEoO2aPuIkB4YukwsM4IMIYhyXhiaGDqgtpkSzVNTFICW",
+      "role": "student",
+      "isEnrolled": true,
+      "affiliation": "Enrolled College Student",
+      "studentId": "23H71A0590",
+      "department": "Computer Science & Engineering",
+      "year": "B.Tech 1st Year (Semester 1)",
+      "section": "Section A",
+      "regulation": "R23 Autonomous",
+      "residenceType": "Day Scholar",
+      "hostel": "Route 01 - Vijayawada (Benz Circle & High Court)",
+      "cgpa": 8.5,
+      "attendance": 85,
+      "phone": "7386962418",
+      "gender": "Male",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "createdAt": "2026-09-11T05:58:19.505Z"
     }
   ],
   "requests": [

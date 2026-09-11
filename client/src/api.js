@@ -975,6 +975,23 @@ const DEMO_USERS = {
     phone: '+91 98765 43210',
     avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80'
   },
+  'mogililokesh10@gmail.com': {
+    id: 'usr-student-9505',
+    name: 'Lokesh',
+    email: 'mogililokesh10@gmail.com',
+    role: 'student',
+    studentId: '23H71A0590',
+    department: 'Computer Science & Engineering',
+    year: 'B.Tech 1st Year (Semester 1)',
+    section: 'Section A',
+    regulation: 'R23 Autonomous',
+    residenceType: 'Day Scholar',
+    hostel: 'Route 01 - Vijayawada (Benz Circle & High Court)',
+    cgpa: 8.5,
+    attendance: 85,
+    phone: '7386962418',
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80'
+  },
   '21h71a0501@mictech.ac.in': {
     id: 'usr-student-03',
     name: 'K. Sai Rahul',

@@ -171,6 +171,28 @@ function getInitialData() {
         createdAt: '2023-08-01T09:00:00.000Z'
       },
       {
+        id: 'usr-student-9505',
+        name: 'Lokesh',
+        email: 'mogililokesh10@gmail.com',
+        password: passwordHash,
+        role: 'student',
+        isEnrolled: true,
+        affiliation: 'Enrolled College Student',
+        studentId: '23H71A0590',
+        department: 'Computer Science & Engineering',
+        year: 'B.Tech 1st Year (Semester 1)',
+        section: 'Section A',
+        regulation: 'R23 Autonomous',
+        residenceType: 'Day Scholar',
+        hostel: 'Route 01 - Vijayawada (Benz Circle & High Court)',
+        cgpa: 8.5,
+        attendance: 85,
+        phone: '7386962418',
+        gender: 'Male',
+        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+        createdAt: '2026-09-11T05:58:19.505Z'
+      },
+      {
         id: 'usr-admin-principal',
         name: 'Dr. T. Vamsee Kiran',
         email: 'principal@mictech.ac.in',
