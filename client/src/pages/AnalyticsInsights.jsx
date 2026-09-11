@@ -18,12 +18,13 @@ import {
   AlertTriangle, 
   CheckCircle2, 
   Lightbulb, 
-  RefreshCw,
-  Building2,
-  Flame,
-  Layers,
-  ArrowRight
+  RefreshCw, 
+  Building2, 
+  Flame, 
+  Layers, 
+  ArrowRight 
 } from 'lucide-react';
+import ThreeDTelemetryOrb from '../components/ThreeDTelemetryOrb';
 
 const COLORS = ['#2563eb', '#7c3aed', '#d97706', '#059669', '#dc2626', '#0891b2', '#4f46e5'];
 
@@ -66,21 +67,24 @@ export default function AnalyticsInsights({ onNavigate }) {
   return (
     <div className="space-y-6 pb-12">
       
-      {/* Header */}
+      {/* Header with 3D Telemetry Orb */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center space-x-2">
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif flex items-center space-x-2">
-              <Sparkles className="w-6 h-6 text-amber-500" />
-              <span>Campus Analytics & AI Operational Insights</span>
-            </h1>
-            <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded-full">
-              Automated Diagnosis
-            </span>
+        <div className="flex items-center space-x-3.5">
+          <ThreeDTelemetryOrb size={62} className="hidden sm:inline-block drop-shadow-md shrink-0" />
+          <div>
+            <div className="flex items-center space-x-2">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif flex items-center space-x-2">
+                <Sparkles className="w-6 h-6 text-amber-500" />
+                <span>Campus Analytics & AI Operational Insights</span>
+              </h1>
+              <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded-full">
+                Automated Diagnosis
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Machine intelligence discovering root causes, operational bottlenecks, and recommended university policy adjustments.
+            </p>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Machine intelligence discovering root causes, operational bottlenecks, and recommended university policy adjustments.
-          </p>
         </div>
 
         <button

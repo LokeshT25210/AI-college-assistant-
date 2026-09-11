@@ -16,6 +16,7 @@ import {
   Layers,
   Search
 } from 'lucide-react';
+import ThreeDTelemetryOrb from '../components/ThreeDTelemetryOrb';
 
 export default function AdminDashboard({ onSelectTicket, onNavigate }) {
   const { user } = useAuth();
@@ -67,17 +68,20 @@ export default function AdminDashboard({ onSelectTicket, onNavigate }) {
       
       {/* Executive Command Header */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 sm:p-7 shadow-lg border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center space-x-2 text-indigo-300 text-xs font-semibold mb-1">
-            <Building2 className="w-4 h-4" />
-            <span>Campus Administration &bull; Executive Command Center</span>
+        <div className="flex items-center space-x-4">
+          <ThreeDTelemetryOrb size={74} className="hidden sm:inline-block drop-shadow-xl shrink-0" />
+          <div>
+            <div className="flex items-center space-x-2 text-indigo-300 text-xs font-semibold mb-1">
+              <Building2 className="w-4 h-4" />
+              <span>Campus Administration &bull; Executive Command Center</span>
+            </div>
+            <h1 className="text-xl sm:text-2xl font-bold font-serif">
+              Student Grievance & Service Telemetry
+            </h1>
+            <p className="text-xs text-slate-300 mt-1">
+              Logged in as <strong>{user?.name}</strong> ({user?.designation}) &bull; Campus Registrar
+            </p>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold font-serif">
-            Student Grievance & Service Telemetry
-          </h1>
-          <p className="text-xs text-slate-300 mt-1">
-            Logged in as <strong>{user?.name}</strong> ({user?.designation}) &bull; Campus Registrar
-          </p>
         </div>
 
         <div className="flex items-center space-x-3 shrink-0">

@@ -21,6 +21,7 @@ import {
   Info
 } from 'lucide-react';
 import StudentCaptcha from '../components/StudentCaptcha';
+import ThreeDAssistantCore from '../components/ThreeDAssistantCore';
 
 const SUGGESTED_QUESTIONS = [
   { text: "My attendance is 68 percent can I write exams", category: "Attendance", tag: "Academics • Condonation" },
@@ -293,9 +294,7 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
       {/* Assistant Header */}
       <div className="bg-slate-900 dark:bg-slate-950 text-white px-5 py-3.5 flex items-center justify-between border-b border-slate-800">
         <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/30">
-            <Bot className="w-5 h-5" />
-          </div>
+          <ThreeDAssistantCore size={44} isThinking={isProcessing} className="shrink-0" />
           <div>
             <div className="flex items-center space-x-2">
               <h2 className="text-sm font-bold text-white">Smart Campus AI Assistant</h2>
@@ -305,7 +304,7 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
               </span>
             </div>
             <p className="text-[11px] text-slate-400">
-              Autonomous College Knowledge Base &bull; Key: <span className="font-mono text-emerald-400">AQ.Ab8...9QGA</span> &bull; AI-to-Action Escalation
+              Autonomous College Knowledge Base &bull; Key: <span className="font-mono text-emerald-400">AQ.Ab8...9QGA</span> &bull; 3D Real-Time Cognitive Engine
             </p>
           </div>
         </div>
@@ -318,6 +317,25 @@ export default function Assistant({ initialQuery, onSelectTicket, onNavigate }) 
 
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 bg-slate-50/50 dark:bg-slate-950/60 transition-colors">
+        
+        {/* Interactive 3D AI Neural Core Hero Banner (Shown initially) */}
+        {messages.length <= 1 && (
+          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 rounded-2xl p-5 text-white shadow-xl flex flex-col sm:flex-row items-center gap-5 my-1">
+            <ThreeDAssistantCore size={78} isThinking={isProcessing} className="drop-shadow-2xl shrink-0" />
+            <div className="flex-1 text-center sm:text-left">
+              <div className="flex items-center justify-center sm:justify-start space-x-2 text-xs font-mono text-cyan-400 mb-1">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                <span className="font-bold">3D REAL-TIME AI NEURAL ENGINE</span>
+              </div>
+              <h3 className="text-base font-bold font-serif text-white">
+                Autonomous University Knowledge & Escalation Assistant
+              </h3>
+              <p className="text-xs text-slate-300 mt-1 max-w-xl">
+                Ready to answer attendance policies, condonation criteria, exam dates, fee receipts, hostel repairs, and certificate workflows with zero hallucination.
+              </p>
+            </div>
+          </div>
+        )}
         {messages.map((msg) => (
           <div 
             key={msg.id} 

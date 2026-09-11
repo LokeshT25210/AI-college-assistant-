@@ -71,3 +71,36 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* 3D Perspective & Depth Layering Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.card-3d {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+  transform: translateZ(0);
+}
+
+.card-3d:hover {
+  transform: translateY(-3px) scale(1.01) translateZ(12px);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.12), 0 8px 16px -6px rgba(0, 0, 0, 0.08);
+}
+
+.dark .card-3d:hover {
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5), 0 8px 16px -6px rgba(59, 130, 246, 0.15);
+}
+
+.tilt-3d {
+  transition: transform 0.3s ease;
+  transform: perspective(800px) rotateX(0deg) rotateY(0deg);
+}
+
+.tilt-3d:hover {
+  transform: perspective(800px) rotateX(2deg) rotateY(-2deg) translateY(-2px);
+}
+

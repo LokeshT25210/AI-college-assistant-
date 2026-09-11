@@ -86,12 +86,10 @@ export default function Campus3DScene({ className = '', height = '340px' }) {
     camera.position.set(0, 1.2, 5.5);
     sceneContextRef.current.camera = camera;
 
-    // 3. Renderer with antialiasing and alpha
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    // 3. Renderer with antialiasing and alpha (optimized for low-power and fast 60fps)
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
     renderer.setSize(width, heightPx);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     container.appendChild(renderer.domElement);
     sceneContextRef.current.renderer = renderer;
 
@@ -472,6 +470,18 @@ export default function Campus3DScene({ className = '', height = '340px' }) {
     };
     window.addEventListener('resize', handleResize);
 
+    // Visibility Tracking (Pauses WebGL rendering when off-screen)
+    let isVisible = true;
+    let observer;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          isVisible = entry.isIntersecting;
+        });
+      }, { threshold: 0.05 });
+      observer.observe(container);
+    }
+
     // ----------------------------------------------------
     // Animation Loop (60 FPS)
     // ----------------------------------------------------
@@ -482,6 +492,7 @@ export default function Campus3DScene({ className = '', height = '340px' }) {
 
     const animate = () => {
       reqId = requestAnimationFrame(animate);
+      if (!isVisible) return;
 
       const delta = clock.getDelta();
       const elapsedTime = clock.getElapsedTime();
@@ -564,6 +575,7 @@ export default function Campus3DScene({ className = '', height = '340px' }) {
     // ----------------------------------------------------
     return () => {
       cancelAnimationFrame(reqId);
+      if (observer) observer.disconnect();
       container.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);

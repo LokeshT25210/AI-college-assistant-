@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { api } from '../api';
 import RequestCard from '../components/RequestCard';
 import CreateTicketModal from '../components/CreateTicketModal';
+import ThreeDCampusBadge from '../components/ThreeDCampusBadge';
 import { 
   Bot, 
   Search, 
@@ -135,27 +136,31 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
               <span className="text-slate-300">Academic Year 2026-27</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-bold font-serif tracking-tight">
-              Welcome back, {user?.name || 'Student'}
-            </h1>
-
-            <div className="text-xs sm:text-sm text-slate-300 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 font-sans">
-              <span className="flex items-center space-x-1">
-                <span className="text-slate-400">Roll No:</span>
-                <span className="text-amber-300 font-mono font-bold bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">
-                  {user?.studentId || '23MICT-CS-001'}
-                </span>
-              </span>
-              <span>&bull;</span>
-              <span>{user?.department || 'Computer Science & Engineering'}</span>
-              <span>&bull;</span>
-              <span className="text-slate-300">{user?.year || 'B.Tech 1st Year (Semester 1)'}</span>
-              {user?.section && (
-                <>
+            <div className="flex items-center space-x-4">
+              <ThreeDCampusBadge size={58} className="hidden sm:inline-block drop-shadow-md" />
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold font-serif tracking-tight">
+                  Welcome back, {user?.name || 'Student'}
+                </h1>
+                <div className="text-xs sm:text-sm text-slate-300 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-sans">
+                  <span className="flex items-center space-x-1">
+                    <span className="text-slate-400">Roll No:</span>
+                    <span className="text-amber-300 font-mono font-bold bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">
+                      {user?.studentId || '23MICT-CS-001'}
+                    </span>
+                  </span>
                   <span>&bull;</span>
-                  <span className="text-blue-300 font-medium">{user.section}</span>
-                </>
-              )}
+                  <span>{user?.department || 'Computer Science & Engineering'}</span>
+                  <span>&bull;</span>
+                  <span className="text-slate-300">{user?.year || 'B.Tech 1st Year (Semester 1)'}</span>
+                  {user?.section && (
+                    <>
+                      <span>&bull;</span>
+                      <span className="text-blue-300 font-medium">{user.section}</span>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Commute / Residence Info Pill */}

@@ -14,6 +14,8 @@ import {
   Moon
 } from 'lucide-react';
 
+import ThreeDCampusBadge from './ThreeDCampusBadge';
+
 export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
   const { user, logout } = useAuth();
   const { theme, toggleTheme, isDark } = useTheme();
@@ -23,10 +25,10 @@ export default function Navbar({ onOpenExaminerGuide, onNavigate }) {
     <header className="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
-        {/* Brand & Crest */}
+        {/* Brand & 3D Crest */}
         <div className="flex items-center space-x-3 cursor-pointer" onClick={() => onNavigate(user ? (user.role === 'admin' ? 'admin-dashboard' : 'student-dashboard') : 'landing')}>
-          <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/30">
-            <GraduationCap className="w-6 h-6" />
+          <div className="relative flex items-center justify-center">
+            <ThreeDCampusBadge size={42} className="shrink-0" />
           </div>
           <div>
             <div className="flex items-center space-x-2">

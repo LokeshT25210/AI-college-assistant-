@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Search
 } from 'lucide-react';
+import ThreeDCampusBadge from '../components/ThreeDCampusBadge';
 
 export default function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
@@ -39,14 +40,17 @@ export default function Announcements() {
   return (
     <div className="space-y-6 pb-12">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif flex items-center space-x-2">
-            <Bell className="w-6 h-6 text-blue-600" />
-            <span>Official Campus Circulars & Public Gazettes</span>
-          </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Verified academic notifications, semester schedules, and institutional executive orders.
-          </p>
+        <div className="flex items-center space-x-3.5">
+          <ThreeDCampusBadge size={52} className="hidden sm:inline-block drop-shadow-md shrink-0" />
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif flex items-center space-x-2">
+              <Bell className="w-6 h-6 text-blue-600" />
+              <span>Official Campus Circulars & Public Gazettes</span>
+            </h1>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Verified academic notifications, semester schedules, and institutional executive orders.
+            </p>
+          </div>
         </div>
 
         <div className="w-full sm:w-72">

@@ -13,6 +13,7 @@ import {
   Calendar,
   Lock
 } from 'lucide-react';
+import ThreeDCampusBadge from '../components/ThreeDCampusBadge';
 
 export default function Profile() {
   const { user } = useAuth();
@@ -57,6 +58,11 @@ export default function Profile() {
               <span>{user.phone}</span>
             </span>
           </div>
+        </div>
+
+        <div className="hidden md:flex flex-col items-center justify-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-center shrink-0">
+          <ThreeDCampusBadge size={58} className="drop-shadow-md" />
+          <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider">Verified Crest</span>
         </div>
       </div>
 
