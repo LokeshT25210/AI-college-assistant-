@@ -122,101 +122,99 @@ export default function StudentDashboard({ onNavigate, onAskAssistant, onSelectT
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
         
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <div className="flex flex-wrap items-center gap-2 text-blue-300 text-xs font-semibold mb-2">
-              <span className={`flex items-center space-x-1 px-2.5 py-0.5 rounded-full border ${
+        <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
+          <div className="flex-1 min-w-0">
+            {/* Top badge row */}
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold mb-3">
+              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border ${
                 !isEnrolled 
                   ? 'bg-amber-950/80 text-amber-300 border-amber-700/50' 
                   : 'bg-blue-900/60 text-blue-200 border-blue-700/50'
               }`}>
-                <ShieldCheck className={`w-3.5 h-3.5 ${!isEnrolled ? 'text-amber-400' : 'text-blue-400'}`} />
-                <span>{user?.affiliation || (isEnrolled ? 'Autonomous Engineering College Student Portal' : 'External Guest / Prospective Student')}</span>
+                <ShieldCheck className={`w-3.5 h-3.5 shrink-0 ${!isEnrolled ? 'text-amber-400' : 'text-blue-400'}`} />
+                <span className="truncate">{user?.affiliation || (isEnrolled ? 'Autonomous Engineering College Student Portal' : 'External Guest / Prospective Student')}</span>
               </span>
-              <span>&bull;</span>
-              <span className="bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded border border-amber-400/30 font-mono text-[11px]">
+              <span className="bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded border border-amber-400/30 font-mono text-[11px] whitespace-nowrap">
                 {user?.regulation || (isEnrolled ? 'R23 Autonomous' : 'General Campus Guidelines')}
               </span>
-              <span>&bull;</span>
-              <span className="text-slate-300">Academic Year 2026-27</span>
+              <span className="text-slate-400 text-[11px] whitespace-nowrap">Academic Year 2026-27</span>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <ThreeDCampusBadge size={58} className="hidden sm:inline-block drop-shadow-md" />
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold font-serif tracking-tight">
-                  Welcome back, {user?.name || 'Student'}
-                </h1>
-                <div className="text-xs sm:text-sm text-slate-300 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-sans">
-                  <span className="flex items-center space-x-1">
-                    <span className="text-slate-400">Roll No:</span>
-                    <span className="text-amber-300 font-mono font-bold bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">
-                      {user?.studentId || '23MICT-CS-001'}
-                    </span>
-                  </span>
-                  <span>&bull;</span>
-                  <span>{user?.department || 'Computer Science & Engineering'}</span>
-                  <span>&bull;</span>
-                  <span className="text-slate-300">{user?.year || 'B.Tech 1st Year (Semester 1)'}</span>
-                  {user?.section && (
-                    <>
-                      <span>&bull;</span>
-                      <span className="text-blue-300 font-medium">{user.section}</span>
-                    </>
-                  )}
-                </div>
-              </div>
+            {/* Avatar + Welcome name */}
+            <div className="flex items-center gap-4 mb-3">
+              <ThreeDCampusBadge size={56} className="hidden sm:inline-block drop-shadow-md shrink-0" />
+              <h1 className="text-2xl sm:text-3xl font-bold font-serif tracking-tight leading-tight">
+                Welcome back,&nbsp;<span className="text-blue-300">{user?.name || 'Student'}</span>
+              </h1>
             </div>
 
-            {/* Commute / Residence Info Pill */}
-            <div className="mt-2.5 flex flex-wrap items-center gap-2 text-[11px] text-slate-300">
-              {isHosteler ? (
-                <span className="inline-flex items-center space-x-1.5 bg-emerald-950/60 border border-emerald-700/50 text-emerald-300 px-2.5 py-0.5 rounded-md">
-                  <Home className="w-3 h-3 text-emerald-400" />
-                  <span>Hostel: {user?.hostel || 'Hostel Block B'}</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center space-x-1.5 bg-cyan-950/60 border border-cyan-700/50 text-cyan-300 px-2.5 py-0.5 rounded-md">
-                  <Bus className="w-3 h-3 text-cyan-400" />
-                  <span>Transport: {user?.busRoute || 'Day Scholar Transit'}</span>
+            {/* Info chips row — all on one line, no bullet wrapping */}
+            <div className="flex items-center gap-2 flex-wrap mb-3">
+              <span className="inline-flex items-center gap-1 bg-slate-800/80 border border-slate-700 rounded-lg px-2.5 py-1 text-[11px]">
+                <span className="text-slate-400 font-medium">Roll No</span>
+                <span className="text-amber-300 font-mono font-bold ml-0.5">{user?.studentId || '23MICT-CS-001'}</span>
+              </span>
+              <span className="inline-flex items-center gap-1 bg-slate-800/50 border border-slate-700/60 rounded-lg px-2.5 py-1 text-[11px] text-slate-300 max-w-[180px]">
+                <span className="truncate">{user?.department || 'Computer Science & Engineering'}</span>
+              </span>
+              <span className="inline-flex items-center gap-1 bg-slate-800/50 border border-slate-700/60 rounded-lg px-2.5 py-1 text-[11px] text-slate-300 whitespace-nowrap">
+                {user?.year || 'B.Tech 1st Year (Semester 1)'}
+              </span>
+              {user?.section && (
+                <span className="inline-flex items-center gap-1 bg-blue-900/40 border border-blue-700/50 rounded-lg px-2.5 py-1 text-[11px] text-blue-300 font-semibold whitespace-nowrap">
+                  {user.section}
                 </span>
               )}
+            </div>
 
+            {/* Commute + Phone */}
+            <div className="flex flex-wrap items-center gap-2">
+              {isHosteler ? (
+                <span className="inline-flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-700/50 text-emerald-300 px-2.5 py-1 rounded-lg text-[11px]">
+                  <Home className="w-3 h-3 text-emerald-400 shrink-0" />
+                  <span className="truncate max-w-[200px]">Hostel: {user?.hostel || 'Hostel Block B'}</span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 bg-cyan-950/60 border border-cyan-700/50 text-cyan-300 px-2.5 py-1 rounded-lg text-[11px]">
+                  <Bus className="w-3 h-3 text-cyan-400 shrink-0" />
+                  <span className="truncate max-w-[220px]">Transport: {user?.busRoute || 'Day Scholar Transit'}</span>
+                </span>
+              )}
               {user?.phone && (
-                <span className="inline-flex items-center space-x-1 bg-slate-800/80 border border-slate-700 text-slate-300 px-2 py-0.5 rounded-md font-mono text-[10px]">
-                  <Phone className="w-3 h-3 text-slate-400" />
+                <span className="inline-flex items-center gap-1 bg-slate-800/80 border border-slate-700 text-slate-300 px-2 py-1 rounded-lg font-mono text-[10px]">
+                  <Phone className="w-3 h-3 text-slate-400 shrink-0" />
                   <span>{user.phone}</span>
                 </span>
               )}
             </div>
           </div>
 
-          {/* Primary Quick CTA: Raise Structured Ticket & Navigation */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+          {/* Primary CTA buttons — stacked vertically on the right */}
+          <div className="flex flex-row md:flex-col items-stretch gap-2 shrink-0 md:min-w-[200px]">
             <button
               type="button"
               onClick={() => onNavigate('landing')}
-              className="bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 hover:text-white font-semibold text-xs px-4 py-3 rounded-xl border border-slate-700 flex items-center justify-center space-x-2 transition-all shadow-sm hover:scale-[1.02] active:scale-95"
+              className="bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 hover:text-white font-semibold text-xs px-4 py-2.5 rounded-xl border border-slate-700 flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 whitespace-nowrap"
               title="Return to Public Campus Home & Gazettes"
             >
-              <Home className="w-4 h-4 text-cyan-400" />
+              <Home className="w-4 h-4 text-cyan-400 shrink-0" />
               <span>Return to Campus Home</span>
             </button>
 
             <button
               onClick={() => handleOpenCreateModal('fees')}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-lg hover:shadow-blue-500/25 flex items-center justify-center space-x-2 transition-all transform active:scale-95 border border-blue-400/30"
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2 transition-all active:scale-95 border border-blue-400/30 whitespace-nowrap"
             >
-              <PlusCircle className="w-4 h-4 text-white" />
+              <PlusCircle className="w-4 h-4 shrink-0" />
               <span>Raise Structured Ticket</span>
-              <Sparkles className="w-3.5 h-3.5 text-amber-300 ml-1" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
             </button>
 
             <button
               onClick={() => onNavigate('assistant')}
-              className="bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs px-4 py-3 rounded-xl border border-slate-700 flex items-center justify-center space-x-2 transition-colors"
+              className="bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs px-4 py-2.5 rounded-xl border border-slate-700 flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
             >
-              <Bot className="w-4 h-4 text-blue-400" />
+              <Bot className="w-4 h-4 text-blue-400 shrink-0" />
               <span>Campus AI Copilot</span>
             </button>
           </div>
